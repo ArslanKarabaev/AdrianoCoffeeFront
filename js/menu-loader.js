@@ -150,77 +150,7 @@ function closeDeleteModal() {
     currentDishElement = null;
 }
 
-// EDIT
-function openEditModal(dishId) {
-    const token = localStorage.getItem('authToken');
-    fetch(BACKEND_URL + `/api/v2/AdrianoCoffee/Menu/getMenuById/${dishId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-    })
-        .then(r => r.json())
-        .then(dish => {
-            document.getElementById('editDishId').value = dish.id;
-            document.getElementById('editDishName').value = dish.name;
-            document.getElementById('editDishCategory').value = dish.category;
-            document.getElementById('editDishDescription').value = dish.description || '';
-            document.getElementById('editDishPrice').value = dish.price;
-            document.getElementById('editDishVolume').value = dish.volume || '';
 
-            const img = document.getElementById('currentImage');
-            const preview = document.getElementById('currentImagePreview');
-            if (dish.imageUrl && img && preview) {
-                img.src = BACKEND_URL + dish.imageUrl;
-                preview.style.display = 'block';
-            } else if (preview) {
-                preview.style.display = 'none';
-            }
-
-            document.getElementById('edit-dish-modal').style.display = 'flex';
-        })
-        .catch(() => alert('Не удалось загрузить данные'));
-}
-
-function closeEditModal() {
-    document.getElementById('edit-dish-modal').style.display = 'none';
-    document.getElementById('editDishForm').reset();
-}
-
-function initEditHandlers() {
-    document.getElementById('close-edit-modal')?.addEventListener('click', closeEditModal);
-    document.getElementById('cancelEdit')?.addEventListener('click', closeEditModal);
-
-    const modal = document.getElementById('edit-dish-modal');
-    if (modal) {
-        modal.onclick = e => { if (e.target === modal) closeEditModal(); };
-    }
-
-    document.getElementById('editDishForm')?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem('authToken');
-        const dishId = document.getElementById('editDishId').value;
-        const formData = new FormData();
-        formData.append('name', document.getElementById('editDishName').value);
-        formData.append('category', document.getElementById('editDishCategory').value);
-        formData.append('description', document.getElementById('editDishDescription').value);
-        formData.append('price', document.getElementById('editDishPrice').value);
-        formData.append('volume', document.getElementById('editDishVolume').value || '');
-
-        const img = document.getElementById('editDishImage').files[0];
-        if (img) formData.append('image', img);
-
-        try {
-            const r = await fetch(BACKEND_URL + `/api/v2/AdrianoCoffee/Admin/updateMenuItem/${dishId}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${token}` },
-                body: formData
-            });
-            if (!r.ok) throw new Error('Ошибка обновления');
-            closeEditModal();
-            fetchAndRenderMenu();
-        } catch {
-            alert('Не удалось обновить блюдо');
-        }
-    });
-}
 
 // USER FUNCTIONS
 function addToCart(id, name, price) {
@@ -246,5 +176,4 @@ function promptLogin() {
 // INIT
 document.addEventListener("DOMContentLoaded", () => {
     fetchAndRenderMenu();
-    initEditHandlers();
 });
