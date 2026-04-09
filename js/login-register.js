@@ -41,8 +41,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.log('Response status:', response.status);
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `Ошибка HTTP: ${response.status}`);
+                    if (response.status === 403 || response.status === 401) {
+                     alert('Неверный email или пароль');
+                    } else {
+                    alert('Ошибка входа: ' + (data.message || response.status));
+                }
+                return;
+                //    const errorData = await response.json();
+                //    throw new Error(errorData.message || `Ошибка HTTP: ${response.status}`);
                 }
 
                 const data = await response.json();
