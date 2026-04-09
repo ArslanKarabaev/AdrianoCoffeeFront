@@ -31,7 +31,7 @@ function openEditModal(dishId) {
 
             // Показываем текущее изображение
             if (dish.imageUrl) {
-                document.getElementById('currentImage').src = BACKEND_URL + dish.imageUrl;
+                document.getElementById('currentImage').src = dish.imageUrl;
                 document.getElementById('currentImagePreview').style.display = 'block';
             } else {
                 document.getElementById('currentImagePreview').style.display = 'none';
