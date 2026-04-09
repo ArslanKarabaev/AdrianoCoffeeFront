@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <title>Login-Register</title>
+    <link rel="stylesheet" href="../css/login-register.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="../images/logored.png" alt="Логотип" />
+        </div>
+        <nav class="navigation">
+            <a href="pageuser.html#aboutus">О нас</a>
+            <a href="menuuser.html">Меню</a>
+            <a href="pageuser.html#ourbranches">Контакты</a>
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <span class="icon-close">
+            <ion-icon name="close"></ion-icon>
+        </span>
+        <div class="form-box login">
+            <h2>Вход</h2>
+            <form id="loginForm" action="#">
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="mail"></ion-icon>
+                    </span>
+                    <input type="email" id="loginEmail" required>
+                    <label>Почта</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="lock-closed"></ion-icon>
+                    </span>
+                    <input type="password" id="loginPassword" required>
+                    <label>Пароль</label>
+                </div>
+                <div class="remember-forgot">
+                    <label><input type="checkbox">Запомнить меня</label>
+                    <a href="#">Забыли пароль?</a>
+                </div>
+                <button type="submit" class="btn"> Войти </button>
+                <div class="login-register">
+                    <p>Нет аккаунта?<a href="#" class="register-link">Зарегистрироваться</a></p>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-box register">
+            <h2>Регистрация</h2>
+            <form id="registerForm" action="#">
+                <div class="name-fields">
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="person"></ion-icon>
+                    </span>
+                    <input type="text" id="registerFirstName" required>
+                    <label>Имя</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="person"></ion-icon>
+                    </span>
+                    <input type="text" id="registerSecondName" required>
+                    <label>Фамилия</label>
+                </div>
+            </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="call"></ion-icon>
+                    </span>
+                    <input type="tel" id="registerPhone" required>
+                    <label>Номер телефона</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="calendar"></ion-icon>
+                    </span>
+                    <input type="date" required id="registerBirthdate" placeholder="ДД-ММ-ГГГГ">
+                    <label>Дата рождения</label>
+                </div>
+                
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="mail"></ion-icon>
+                    </span>
+                    <input type="email" id="registerEmail" required>
+                    <label>Почта</label>
+                </div>
+                <div class="input-box">
+                    <span class="icon">
+                        <ion-icon name="lock-closed"></ion-icon>
+                    </span>
+                    <input type="password" id="registerPassword" required>
+                    <label>Пароль</label>
+                </div>
+                <!--<div class="remember-forgot">
+                    <label><input type="checkbox">Я согласен</label>
+                </div>-->
+                <button type="submit" class="btn"> Зарегистрироваться </button>
+                <div class="login-register">
+                    <p>Уже есть аккаунт?<a href="#" class="login-link">Войти</a></p>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+
+    <script src="../js/login-register.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

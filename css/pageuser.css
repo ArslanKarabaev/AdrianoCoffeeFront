@@ -1,0 +1,572 @@
+@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+
+*{
+    margin: 0;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+.header {
+    background-color: #560404; /* Темно-красный */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.logo img{
+    width: 100px;
+    margin-left: 90px;
+}
+
+.nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    text-align: right;
+    padding: 5px 10px;
+}
+
+.nav a:hover{
+    background-color: #f1e8e8;/* изменяем цвет фона при наведении */
+    color: #610303;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: background 0.5s;
+}
+.header nav{
+    margin-right: 100px;
+}
+
+.hero {
+    position: relative;
+    height: 100vh; /* Высота экрана */
+    overflow: hidden; /* Прячем возможное переполнение */
+    display: flex; /* Используем flexbox */
+    align-items: center; /* Вертикальное центрирование */
+    justify-content: center; /* Горизонтальное центрирование */
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/coffeepage.jpg'); /* Путь к вашему изображению */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8; /* Прозрачность фонового изображения */
+    z-index: -1; /* Помещаем фоновое изображение за текстом */
+}
+
+.overlay {
+    position: relative; /* Убираем абсолютное позиционирование */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #610303;
+    z-index: 1; /* Текст должен быть поверх фонового изображения */
+}
+
+.main-title {
+    font-family: 'Limelight', sans-serif;
+    font-size: 84px;
+    margin: 0;
+}
+
+.description {
+    font-size: 24px;
+    margin-top: 10px;
+    max-width: 600px;
+}
+
+.next-container { 
+    background-color: #fbeabf; 
+    position: relative; 
+    width: 100%; 
+    height: 100vh; /* Высота контейнера по высоте экрана */ 
+    z-index: 1; 
+    display: flex; /* Применяем flexbox */ 
+    flex-direction: column; /* Располагаем дочерние элементы в столбец */ 
+    align-items: center;  
+} 
+ 
+.background-image1 { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-image: url("../images/Component 6.png"); /* Путь к фоновому изображению */
+    background-size: cover; 
+    z-index: 1; /* Помещаем фон за остальным контентом */ 
+} 
+ 
+.ellipse { 
+    position: absolute; 
+    top: 50%; 
+    left: 25%; 
+    transform: translate(-50%, -50%); 
+    width: 500px; /* Ширина эллипса */ 
+    height: 500px; /* Высота эллипса */ 
+    border-radius: 50%;  
+    overflow: hidden; /* Обрезаем изображение, выходящее за пределы эллипса */ 
+    border: 4px solid #7D0505;  
+} 
+ 
+.ellipse img { 
+    width: 100%; /* Ширина изображения равна ширине эллипса */ 
+    height: auto; /* Автоматическая высота изображения */ 
+} 
+ 
+.details { 
+    position: absolute; 
+    top: 50%; 
+    left: 70%; 
+    right: -10%;  
+    transform: translate(-50%, -50%); 
+    /*text-align: center;*/ 
+} 
+ 
+.detail-text { 
+    /*font-family: "Limelight", sans-serif; /* Используем шрифт Bad Script */ 
+    display: block; 
+    color: #7d0505; 
+    font-size: 60px; 
+    margin: 0px; 
+ 
+} 
+ 
+.about-us { 
+    /*display: inline-block;*/ 
+    /*font-family: "Bad Script", sans-serif; /* Используем шрифт Bad Script */ 
+    font-family: 'Limelight', sans-serif; 
+    color: #7d0505; 
+    font-size: 55px; 
+    font-weight: 300; 
+    margin: 0; 
+    padding-bottom: 20px; 
+} 
+ 
+.additional-text { 
+    font-family: "Montserrat", sans-serif; /* Используем шрифт Montserrat */ 
+    font-size: 20px; 
+    color: #7D0505; 
+    text-align: left; 
+} 
+
+.new-container {
+    background-color: #3D1705; /* Цвет фона */
+    width: 100%; /* Ширина контейнера */
+    height: 410px;
+    padding: 0px;
+    display: flex; /* Используем flexbox */
+    flex-direction: row; /* Располагаем дочерние элементы в столбец */
+    justify-content: space-evenly;
+    position: relative;
+    
+}
+
+.inner-container {
+    background-color: #EFD9A2; /* Цвет фона */
+    margin-top: 85px;
+    margin-bottom: 120px;
+    width: 100px;
+    padding: 30px;
+    border-radius: 27px; /* Закругление углов */
+    flex-direction: column; /* Располагаем внутренние элементы в столбец */
+    align-items: center; /* Выравниваем внутренние элементы по центру */
+    text-align: center; /* Выравниваем текст по центру */
+    transition: transform 0.3s ease; /* Плавный переход при увеличении */
+}
+
+.inner-container:hover {
+    transform: scale(1.1); /* Увеличиваем размер на 10% при наведении */
+}
+
+.inner-container img {
+    width: 85px; /* Ширина картинки */
+    height: 90px; /* Высота картинки */
+    margin-top: auto; /* Отступ сверху */
+    margin-bottom: auto;
+}
+
+/* Стили для текста внутри контейнеров */
+.inner-container p {
+    text-align: center;
+    margin: 10px 0;
+    font-family: 'Inter', sans-serif; /* Шрифт Montserrat */
+    color: #7D0505; /* Цвет текста */
+    font-size: 20px; /* Размер шрифта */
+}
+
+.new-container a{
+    text-decoration: none;
+}
+
+.new-container .inner-container:hover p {
+    font-weight: bold; /* Жирный текст при наведении */
+}
+
+/* Стили для закругленного прямоугольника */
+.review-menu-rectangle {
+    width: 280px; /* Ширина прямоугольника */
+    height: 50px; /* Высота прямоугольника */
+    background-color: white; /* Цвет фона прямоугольника */
+    border-radius: 29px; /* Закругление углов */
+    border: 2px solid #7D0505; /* Обводка */
+    position: absolute;
+    bottom: 25px; /* Отступ от нижнего края контейнера */
+    left: 50%; /* Центрирование по горизонтали */
+    transform: translateX(-50%); /* Центрирование по горизонтали с учетом ширины */
+    display: flex; /* Используем flexbox для центрирования текста */
+    align-items: center; /* Выравниваем текст по вертикали */
+    justify-content: center; /* Выравниваем текст по горизонтали */
+}
+
+.reviewmenu {
+    font-family: 'Montserrat', sans-serif; /* Шрифт Montserrat */
+    color: #7D0505; /* Цвет текста */
+    font-size: 19px; /* Размер шрифта */
+    font-weight: 600;
+    margin: 0;
+    text-decoration: none;
+}
+
+.review-menu-rectangle .reviewmenu {
+    color: #7D0505; /* Исходный цвет текста */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Плавный переход для текста */
+}
+
+.review-menu-rectangle:hover {
+    background-color: #7d0505; /* Цвет фона при наведении */
+}
+
+.review-menu-rectangle:hover .reviewmenu {
+    color: white; /* Цвет текста при наведении */
+}
+
+.roasting-section {
+    background-color: #EFD9A2; /* Бежевый фон */
+    padding: 20px;
+    /*border: 1px solid #8C3C1B; /* Рамка вокруг секции */
+}
+
+.roasting-title {
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.roasting-title h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: #610303; /* Цвет текста заголовка */
+}
+
+.roasting-title p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    color: #6D4B34; /* Цвет текста описания */
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.roasting-media {
+    overflow: hidden; /* Прячет любые выступающие части видео */
+}
+
+.order-cakes {
+    background-color: #EFD9A2;
+    display: flex;
+    align-items: center;
+    padding: 60px;
+    gap: 40px;
+}
+
+.text-content {
+    max-width: 50%;
+}
+
+.text-content h3 {
+    font-size: 50px;
+    color: #7D0505;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 90px;
+    padding-bottom: 20px;
+    font-weight: 500;
+}
+
+.text-content p {
+    font-size: 24px;
+    color: #333;
+    margin-left: 90px;
+}
+
+.order-link {
+    font-size: 20px;
+    color: #7D0505;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 5px; /* Уменьшен отступ слева между иконкой и текстом */
+}
+
+.whatsapp-icon {
+    width: 20px; /* Установите нужный размер */
+    height: auto; /* Сохраняет пропорции */
+    margin-right: 5px; /* Отступ справа для текста */
+    vertical-align: middle; /* Выравнивание по центру текста */
+}
+
+.gallery-container {
+    position: relative;
+    width: 600px; /* Задай нужный размер контейнера */
+    height: 400px;
+    /*left: 120px;*/
+}
+
+.gallery {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.gallery-item {
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    display: none;
+}
+
+.gallery-item.active {
+    opacity: 1;
+    display: block;
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #7D0505;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #C4C4C4;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #7D0505; /* Цвет активной точки */
+}
+
+.ourbranches-section {
+    background-color: #EFD9A2; /* Бежевый фон */
+    padding: 20px;
+    /*border: 1px solid #8C3C1B; /* Рамка вокруг секции */
+}
+
+.our-branches {
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.our-branches h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: #610303; /* Цвет текста заголовка */
+}
+
+.branches-section {
+    background-color: #EFD9A2;
+    padding: 0px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.branch-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+    grid-auto-rows: 300px; /* Высота всех строк одинаковая */
+    gap: 0; /* Убираем все промежутки между блоками */
+}
+
+.branch-gallery {
+    background-color: #3D1705;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.branch-gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* Скрываем все изображения по умолчанию */
+}
+
+.branch-gallery img.active {
+    display: block; /* Показываем только активное изображение */
+}
+
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.4); 
+    color: #610303;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.branch-info {
+    background-color: #EFD9A2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.branch-info p {
+    font-size: 20px;
+    color: #610303;
+    margin: 6px;
+}
+
+.gis-link img {
+    width: 40px;
+    vertical-align: middle;
+    border-radius: 20%;
+}
+
+
+/* Для мобильных устройств */
+@media (max-width: 768px) {
+    .branch-container {
+        grid-template-columns: 1fr; /* Одна колонка на мобильных устройствах */
+    }
+
+    .branch-container > div {
+        margin: 10px 0; /* Отступы между блоками на мобильных */
+    }
+}
+
+.footer {
+    background-color: #610303; /* Бордовый цвет */
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Равномерное распределение элементов */
+    padding: 0 20px; /* Отступы по бокам */
+}
+
+.footlogo img{
+    width: 100px;
+    
+} 
+
+.footer-content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Разделяем контент слева и справа */
+    color: white;
+}
+
+.footer-text {
+    font-family: 'Limelight', sans-serif;
+    font-size: 40px;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* Чтобы текст центрировался */
+}
+
+.social-left {
+    display: flex;
+    align-items: center;
+    margin-left: 150px;
+}
+
+.social-right{
+    display: flex;
+    align-items: center;
+    margin-right: 150px;
+}
+.social-icon {
+    margin-right: 10px; /* Отступ справа от иконки */
+}
+
+.social-icon img {
+    width: 30px; /* Размер иконок */
+    height: auto;
+}
+
+.small-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    color: white;
+    margin: 0;
+}

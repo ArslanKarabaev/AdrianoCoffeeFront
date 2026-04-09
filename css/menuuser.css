@@ -1,0 +1,470 @@
+@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #EFD9A2; /* Бежевый фон */
+    color: #7D0505;
+}
+
+/* Хедер */
+.header {
+    background-color: #610303; /* Темно-красный */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img{
+    width: 80px;
+    margin-left: 90px;
+}
+
+.nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    text-align: right;
+    padding: 5px 10px;
+}
+
+.nav a:hover{
+    background-color: #f1e8e8;/* изменяем цвет фона при наведении */
+    color: #610303;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.header nav{
+    margin-right: 100px;
+}
+
+.menu-section {
+    padding: 20px;
+    background-color: #EFD9A2; /* Бежевый */
+}
+
+.menu-section h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.menu-categories {
+    display: flex; /* Для горизонтального расположения элементов */
+    justify-content: center; /* Чтобы выровнять элементы по центру */
+    gap: 4px; /* Добавляем отступы между элементами */
+    margin: 20px 0; /* Немного отступа сверху и снизу */
+}
+
+
+.menu-categories a, .dropbtn {
+    position: relative; /* Позволяет использовать абсолютное позиционирование для псевдоэлемента */
+    margin: 10px;
+    padding: 10px;
+    text-decoration: none;
+    color: #7D0505;
+    font-size: 22px;
+    border-bottom: 2px solid transparent; /* Скрываем нижнюю границу */
+}
+
+.menu-categories a:hover {
+    border-bottom: 2px solid #8b0000; /* Цвет линии при наведении */
+}
+
+.menu-categories a.active {
+    font-weight: bold; /* Делаем текст жирным */
+    color: #8b0000; /* Цвет текста */
+    border-bottom: 2px solid #8b0000; /* Добавляем черточку под активной ссылкой */
+}
+
+.menu-categories a.active,
+.menu-categories a:hover,
+.dropbtn:hover {
+    font-weight: bold;
+    color: #8b0000;
+}
+
+/* Стиль для выпадающих меню */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #7D0505;
+    opacity: 80%;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ffffff;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* Секция с блюдами */
+.dishes {
+    display: flex;
+    flex-wrap: wrap; /* Контейнеры блюд будут обтекаться в новый ряд, когда не помещаются */
+    justify-content: space-between;
+    gap: 10px;
+    padding: 20px;
+    padding-left: 70px;
+    padding-right: 70px;
+}
+
+.dish-item {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 22%; /* Уменьшаем ширину блюда, чтобы с учетом отступов вмещалось 4 блюда в ряд */
+    height: auto;
+    min-height: 380px;     /* минимальная высота чтобы короткие карточки не съёживались */
+    text-align: left;
+    padding: 0px;
+    margin: 10px 0; /* Отступ сверху и снизу */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.dish-item img {
+    width: 100%;
+    margin: 0;
+    display: block; /* Убирает возможные дополнительные отступы */
+    height: 200px;
+    object-fit: cover;
+    flex-shrink: 0; 
+}
+
+.dish-info {
+    padding: 10px; /* Внутренние отступы для текста, чтобы он не прижимался к краям */
+    height: calc(300px - 150px); /* Высота блока с текстом, чтобы поместилось в общую высоту */
+    padding-left: 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;               /* растягивается на всё свободное пространство */
+    height: auto;          /* убираем calc() который обрезал текст */
+    padding: 10px 15px;
+}
+
+.dish-info h3 {
+    margin: 10px 0;
+}
+
+.name-and-gr {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px; /* Отступ снизу между названием и составом */
+    flex-shrink: 0;
+}
+
+.name-and-gr h3 {
+    margin: 0;
+}
+
+.name-and-gr p {
+    margin: 0;
+    font-size: 16px; /* Размер шрифта для веса */
+}
+
+.dish-info .description {
+    flex: 1;               /* описание занимает свободное место */
+    font-size: 14px;
+    color: #555;
+    margin: 6px 0;
+    line-height: 1.4;
+    /* Опционально: если хочешь ограничить до 3 строк и добавить "..." */
+    /* display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden; */
+}
+
+.price {
+    font-size: 18px;
+    color: #8b0000;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 15px;
+    flex-shrink: 0;
+    margin-top: auto;      /* прижимает цену к кнопке снизу */
+    padding-top: 8px;
+}
+
+button {
+    background-color: white;
+    color: #610303;
+    border: 2px solid #610303; /* Красная обводка */
+    padding: 10px 20px; /* Отступы внутри кнопки */
+    cursor: pointer;
+    border-radius: 25px; /* Закругленные углы */
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px; /* Отступ сверху, чтобы кнопка не прижималась к тексту */
+    display: block; /* Делаем кнопку блочным элементом */
+    margin-left: auto; /* Для центрирования по горизонтали */
+    margin-right: auto; /* Для центрирования по горизонтали */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    
+}
+button:hover {
+    background-color: #610303; /* Красный фон при наведении */
+    color: white; /* Белый текст при наведении */
+}
+.dish-item button,
+.dish-item .add-to-cart-btn,
+.dish-item .admin-buttons {
+    flex-shrink: 0;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.cart-modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5); /* Полупрозрачный фон */
+}
+
+#cart-button {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(71, 8, 8);
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+
+.cart-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.cart-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+.cart-item {
+    display: flex;
+    /*justify-content: space-between;*/
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item-image {
+    width: 80px;
+    height: 80px;
+}
+
+.cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cart-item-info {
+    flex-grow: 1;
+    padding-left: 15px;
+}
+
+.cart-item-info h3 {
+    margin: 0;
+    font-size: 18px;
+    padding-left: 90px;
+    margin-top: -80px;
+}
+
+.cart-item-info .description {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+    padding-left: 90px;
+}
+
+.cart-item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.cart-item-actions p{
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(71, 8, 8);
+    margin-left: 105px;
+    margin-top: -5px;
+}
+.cart-item-actions .remove-button {
+    background: none;
+    border: none;
+    color: #b22b2b;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: -10px;
+    margin-top: -10px;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Равномерное распределение кнопок */
+    flex-direction: row; /* Горизонтальное расположение элементов */
+    width: 100%; /* Ширина контейнера с кнопками */
+    padding-left: 350px;
+    margin-top: -40px;
+}
+
+.cart-item-quantity button {
+    background-color: rgb(255, 249, 249);
+    color: #811111;
+    border-color: #610303;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%; /* Круглая форма кнопок */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-item-quantity button:hover{
+    background-color: #811111;
+    color: rgb(255, 249, 249);
+}
+.cart-item-quantity span {
+    font-size: 16px;
+    margin: 0 15px; /* Отступы между кнопками и количеством */
+    display: inline-block; /* Убедиться, что это строковый элемент */
+    width: 30px; /* Фиксированная ширина для числа */
+    text-align: center; /* Центровка текста внутри span */
+    margin-top: 10px;
+}
+
+.cart-summary {
+    text-align: right;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.order-form label {
+    display: block;
+    margin-top: 10px;
+}
+
+.order-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.order-form button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    background-color: #610303;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.order-form button:hover {
+    background-color: #8b0000;
+}
+
+/* Адаптация кнопки корзины */
+#cart-button {
+    position: relative;
+}
+
+#cart-button::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    display: none; /* Скрыто по умолчанию */
+}
+
+#cart-button[data-count]:not([data-count="0"])::after {
+    display: block;
+}

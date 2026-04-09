@@ -1,0 +1,318 @@
+/* ─── ОБЩИЕ ПЕРЕМЕННЫЕ ─────────────────────── */
+:root {
+    --red-dark: #610303;
+    --red-medium: #7D0505;
+    --red-hover: #8b0000;
+    --beige: #EFD9A2;
+    --white: #ffffff;
+}
+
+/* =============================================
+   ПЛАНШЕТ: 480px – 1024px
+   ============================================= */
+@media (max-width: 1024px) {
+
+    .logo img {
+        margin-left: 30px;
+    }
+
+    .header nav {
+        margin-right: 30px;
+    }
+
+    .nav a {
+        font-size: 15px;
+        margin-left: 10px;
+        padding: 5px 6px;
+    }
+
+    /* Карточки: 3 колонки */
+    .dish-item {
+        width: 30%;
+    }
+
+    .dishes {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .menu-categories a, .dropbtn {
+        font-size: 18px;
+        margin: 6px;
+    }
+}
+
+/* =============================================
+   МОБИЛКА: до 768px
+   ============================================= */
+@media (max-width: 768px) {
+
+    /* ── HEADER ── */
+    .header {
+        padding: 0 16px;
+        height: 60px;
+        position: sticky;
+        top: 0;
+    }
+
+    .logo img {
+        width: 55px;
+        margin-left: 0;
+    }
+
+    /* Скрываем обычную навигацию */
+    .header > .nav,
+    .header nav.nav {
+        display: none;
+    }
+
+    /* ── HAMBURGER КНОПКА ── */
+    .hamburger-btn {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 28px;
+        height: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        z-index: 1100;
+    }
+
+    .hamburger-btn span {
+        display: block;
+        height: 2px;
+        background-color: white;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    /* Анимация при открытии */
+    .hamburger-btn.open span:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+    .hamburger-btn.open span:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger-btn.open span:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+
+    /* ── МОБИЛЬНОЕ МЕНЮ (DRAWER) ── */
+    .mobile-nav-drawer {
+        display: block !important;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: var(--red-dark);
+        z-index: 1050;
+        padding: 10px 0 20px;
+        transform: translateY(-110%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .mobile-nav-drawer.open {
+        transform: translateY(0);
+    }
+
+    .mobile-nav-drawer a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        font-size: 17px;
+        font-weight: 500;
+        padding: 14px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        transition: background 0.2s;
+    }
+
+    .mobile-nav-drawer a:last-child {
+        border-bottom: none;
+    }
+
+    .mobile-nav-drawer a:hover,
+    .mobile-nav-drawer a:active {
+        background-color: rgba(255,255,255,0.12);
+    }
+
+    .mobile-nav-drawer a i {
+        margin-right: 10px;
+        width: 18px;
+        text-align: center;
+    }
+
+    /* Оверлей при открытом меню */
+    .nav-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: 1040;
+    }
+
+    .nav-overlay.open {
+        display: block;
+    }
+
+    /* ── КАТЕГОРИИ МЕНЮ ── */
+    .menu-section {
+        padding: 12px 0 0;
+    }
+
+    .menu-section h2 {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+
+    .menu-categories {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+        gap: 0;
+        padding: 8px 16px 12px;
+        margin: 0;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .menu-categories::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+
+    .menu-categories a {
+        flex-shrink: 0;
+        font-size: 14px;
+        margin: 0 4px;
+        padding: 8px 14px;
+        white-space: nowrap;
+        border: 1px solid var(--red-medium);
+        border-radius: 20px;
+        border-bottom: 1px solid var(--red-medium);
+    }
+
+    .menu-categories a.active {
+        background-color: var(--red-dark);
+        color: white;
+        border-color: var(--red-dark);
+        border-bottom: 1px solid var(--red-dark);
+    }
+
+    /* ── КАРТОЧКИ БЛЮД ── */
+    .dishes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .dish-item {
+        width: 100%;
+        height: auto;
+        min-height: 320px;
+    }
+
+    .dish-item img {
+        height: 160px;
+    }
+
+    .dish-info {
+        height: auto;
+        padding: 10px 12px;
+    }
+
+    .dish-info h3 {
+        font-size: 14px;
+        margin: 6px 0 4px;
+    }
+
+    .name-and-gr p {
+        font-size: 13px;
+    }
+
+    .price {
+        font-size: 15px;
+        padding-right: 10px;
+    }
+
+    .dish-item button {
+        font-size: 13px;
+        padding: 8px 14px;
+        margin-top: 10px;
+    }
+
+    /* ── КОРЗИНА МОДАЛ ── */
+    .cart-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 16px;
+    }
+
+    .cart-item {
+        flex-wrap: wrap;
+    }
+
+    .cart-item-info h3 {
+        padding-left: 10px;
+        margin-top: 0;
+        font-size: 15px;
+    }
+
+    .cart-item-info .description {
+        padding-left: 10px;
+    }
+
+    .cart-item-quantity {
+        padding-left: 0;
+        margin-top: 10px;
+        justify-content: flex-end;
+    }
+
+    .cart-item-actions p {
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    .cart-item-actions {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+/* =============================================
+   МАЛЕНЬКИЕ ТЕЛЕФОНЫ: до 420px — 1 колонка
+   ============================================= */
+@media (max-width: 420px) {
+
+    .dishes {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+
+    .dish-item {
+        min-height: auto;
+    }
+
+    .dish-item img {
+        height: 200px;
+    }
+
+    .menu-section h2 {
+        font-size: 22px;
+    }
+}
+
+/* =============================================
+   HAMBURGER — скрыт на десктопе по умолчанию
+   ============================================= */
+.hamburger-btn {
+    display: none;
+}
+
+.mobile-nav-drawer {
+    display: none;
+}

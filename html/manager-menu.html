@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Меню - Менеджер - Adriano Coffee</title>
+    <link rel="stylesheet" href="/css/admin-menu.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+</head>
+<body>
+<!-- Хедер -->
+<header class="header">
+    <div class="logo">
+        <img src="/images/logo.png" alt="Логотип" />
+    </div>
+
+    <nav class="nav">
+        <a href="manager-menu.html">Меню</a>
+        <a href="manager-dashboard.html#adddish">Добавить блюдо</a>
+        <a href="manager-orders.html">Заказы</a>
+        <a href="manager-dashboard.html"><i class="fas fa-user"></i></a>
+        <a href="#" id="logout-button">Выйти</a>
+    </nav>
+</header>
+
+<!-- Секция "Меню" -->
+<section class="menu-section">
+    <h2>Меню</h2>
+    <nav class="menu-categories">
+        <a href="#coffee-section" class="active">Кофе</a>
+        <a href="#breakfast-section">Завтраки</a>
+        <a href="#salads-section">Салаты</a>
+        <a href="#soups-section">Супы</a>
+        <a href="#pasts-section">Паста</a>
+        <a href="#hotDishes-section">Горячие блюда</a>
+        <a href="#bowels-section">Боулы</a>
+        <a href="#deserts-section">Десерты</a>
+        <a href="#teas-section">Чаи</a>
+        <a href="#drinks-section">Холодные напитки</a>
+    </nav>
+</section>
+
+<!-- Секция с блюдами -->
+<main class="menu-container">
+    <section id="coffee-section" class="menu-section">
+        <h2>Кофе</h2>
+        <div class="dishes" id="container-COFFEE"></div>
+    </section>
+
+    <section id="breakfast-section" class="menu-section">
+        <h2>Завтраки</h2>
+        <div class="dishes" id="container-BREAKFAST"></div>
+    </section>
+
+    <section id="salads-section" class="menu-section">
+        <h2>Салаты</h2>
+        <div class="dishes" id="container-SALADS"></div>
+    </section>
+
+    <section id="soups-section" class="menu-section">
+        <h2>Супы</h2>
+        <div class="dishes" id="container-SOUPS"></div>
+    </section>
+
+    <section id="pasts-section" class="menu-section">
+        <h2>Пасты</h2>
+        <div class="dishes" id="container-PASTS"></div>
+    </section>
+
+    <section id="hotDishes-section" class="menu-section">
+        <h2>Горячие блюда</h2>
+        <div class="dishes" id="container-HOTDISHES"></div>
+    </section>
+
+    <section id="bowels-section" class="menu-section">
+        <h2>Боулы</h2>
+        <div class="dishes" id="container-BOWELS"></div>
+    </section>
+
+    <section id="deserts-section" class="menu-section">
+        <h2>Десерты</h2>
+        <div class="dishes" id="container-DESERTS"></div>
+    </section>
+
+    <section id="teas-section" class="menu-section">
+        <h2>Чаи</h2>
+        <div class="dishes" id="container-TEAS"></div>
+    </section>
+
+    <section id="drinks-section" class="menu-section">
+        <h2>Холодные напитки</h2>
+        <div class="dishes" id="container-DRINKS"></div>
+    </section>
+</main>
+
+<!-- Модальное окно редактирования -->
+<div id="edit-dish-modal" class="modal">
+    <div class="modal-content edit-modal">
+        <span class="close" id="close-edit-modal">&times;</span>
+        <h2>Редактировать блюдо</h2>
+
+        <form id="editDishForm">
+            <input type="hidden" id="editDishId">
+
+            <div class="form-group">
+                <label for="editDishName">Название:</label>
+                <input type="text" id="editDishName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="editDishCategory">Категория:</label>
+                <select id="editDishCategory" required>
+                    <option value="COFFEE">Кофе</option>
+                    <option value="BREAKFAST">Завтраки</option>
+                    <option value="SALADS">Салаты</option>
+                    <option value="SOUPS">Супы</option>
+                    <option value="PASTAS">Паста</option>
+                    <option value="HOTDISHES">Горячие блюда</option>
+                    <option value="BOWLS">Боулы</option>
+                    <option value="DESSERTS">Десерты</option>
+                    <option value="TEAS">Чаи</option>
+                    <option value="DRINKS">Напитки</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="editDishDescription">Описание:</label>
+                <textarea id="editDishDescription" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="editDishPrice">Цена (сом):</label>
+                <input type="number" id="editDishPrice" min="0" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="editDishVolume">Объем:</label>
+                <input type="text" id="editDishVolume" placeholder="250 мл">
+            </div>
+
+            <div class="form-group">
+                <label for="editDishImage">Изменить фото:</label>
+                <div class="current-image" id="currentImagePreview">
+                    <img src="" alt="Текущее фото" id="currentImage">
+                </div>
+                <input type="file" id="editDishImage" accept="image/*">
+                <p class="hint">Оставьте пустым, если не хотите менять изображение</p>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i> Сохранить
+                </button>
+                <button type="button" class="btn-cancel" id="cancelEdit">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/js/menu-loader.js"></script>
+<script src="/js/manager-menu.js"></script>
+</body>
+</html>

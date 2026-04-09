@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Adriano Coffee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="/css/cart-modal-styles.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+</head>
+<body>
+<!-- Хедер с навигацией -->
+<header class="header">
+    <div class="logo">
+        <img src="../images/logo.png" alt="Логотип" />
+    </div>
+
+    <nav class="nav">
+        <a href="pageuser.html#aboutus">О нас</a>
+        <a href="menuuser.html">Меню</a>
+        <a href="pageuser.html#order">Торты на заказ</a>
+        <a href="pageuser.html#ourbranches">Филиалы</a>
+        <a href="pageuser.html#ourbranches">Контакты</a>
+        <a href="#" id="open-cart-button" onclick="event.preventDefault(); openCart();">
+            <i class="fas fa-shopping-cart"></i> Корзина
+        </a>
+        <a href="login-register.html" id="logout-button">Выйти</a>
+    </nav>
+</header>
+
+<!-- Секция личного кабинета -->
+<section class="dashboard-section">
+    <h2>Личный кабинет</h2>
+    <form id="userForm" class="user-form">
+        <div class="form-group">
+            <label for="firstName">Имя:</label>
+            <input type="text" id="firstName" name="firstName" disabled required>
+        </div>
+        <div class="form-group">
+            <label for="secondName">Фамилия:</label>
+            <input type="text" id="secondName" name="secondName" disabled required>
+        </div>
+
+        <div class="form-group">
+            <label for="birthday">Дата рождения:</label>
+            <input type="date" id="birthday" name="birthday" disabled required>
+        </div>
+        <div class="form-group">
+            <label for="email">Почта:</label>
+            <input type="email" id="email" name="email" autocomplete="email" disabled required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Номер телефона:</label>
+            <input type="tel" id="phone" name="phone" autocomplete="phone" disabled required>
+        </div>
+        <div class="form-group">
+            <label for="age">Возраст:</label>
+            <input type="number" id="age" name="age" autocomplete="age" disabled>
+        </div>
+
+        <!-- Секция смены пароля -->
+        <div class="password-section">
+            <h3>Смена пароля</h3>
+            <div class="form-group">
+                <label for="newPassword">Новый пароль:</label>
+                <input type="password" id="newPassword" class="password-field" placeholder="Новый пароль" disabled>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Подтвердите пароль:</label>
+                <input type="password" id="confirmPassword" class="password-field" placeholder="Подтвердите новый пароль" disabled>
+            </div>
+            <button type="button" id="changePasswordBtn" class="btn">Изменить пароль</button>
+            <button type="button" id="savePasswordBtn" class="btn" style="display:none;">Сохранить пароль</button>
+        </div>
+
+        <!-- Кнопки управления формой -->
+        <div class="form-actions">
+            <button type="button" id="changeBtn" class="btn">Изменить данные</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Сохранить изменения</button>
+        </div>
+    </form>
+    <div id="responseMessage" class="response-message"></div>
+</section>
+
+<!-- Модальное окно корзины -->
+<div id="cart-modal" class="modal">
+    <div class="modal-content cart-modal-content">
+        <div class="cart-header">
+            <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
+            <span class="close" id="close-cart-modal">&times;</span>
+        </div>
+
+        <div id="cart-items-container" class="cart-items-container">
+            <!-- Товары загружаются через JS -->
+            <div class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Загрузка корзины...</p>
+            </div>
+        </div>
+
+        <div id="empty-cart-state" class="empty-state" style="display: none;">
+            <i class="fas fa-shopping-bag"></i>
+            <h3>Корзина пуста</h3>
+            <p>Добавьте товары из меню</p>
+        </div>
+
+        <div id="cart-summary" class="cart-summary" style="display: none;">
+            <div class="summary-row">
+                <span>Итого:</span>
+                <span id="cart-total" class="total-price">0 сом</span>
+            </div>
+        </div>
+
+        <div id="order-form-container" class="order-form-container" style="display: none;">
+            <h3>Оформление заказа</h3>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="orderAddress">Адрес доставки: *</label>
+                    <input type="text" id="orderAddress" required placeholder="Улица, дом, квартира">
+                </div>
+
+                <div class="form-group">
+                    <label for="orderPhone">Телефон: *</label>
+                    <input type="tel" id="orderPhone" required placeholder="+996 555 123 456">
+                </div>
+
+                <div class="form-group">
+                    <label for="orderComment">Комментарий:</label>
+                    <textarea id="orderComment" rows="3" placeholder="Пожелания к заказу..."></textarea>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-check"></i> Оформить заказ
+                    </button>
+                    <button type="button" class="btn-clear-cart" id="clearCartBtn">
+                        <i class="fas fa-trash"></i> Очистить корзину
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Контейнер для уведомлений -->
+<div id="notifications" class="notifications-container"></div>
+
+<!-- Футер -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="social-left">
+            <a href="https://www.instagram.com/adriano_coffee?igsh=N3d3amFjMmYzZG8x" class="social-icon">
+                <img src="../images/instagram.png" alt="Instagram">
+            </a>
+            <span class="small-text">adriano_coffee</span>
+        </div>
+        <div class="footlogo">
+            <img src="../images/logo.png" alt="Логотип" />
+        </div>
+        <div class="social-right">
+            <a href="https://wa.me/996555707083" class="social-icon">
+                <img src="../images/whatsapp.png" alt="WhatsApp">
+            </a>
+            <span class="small-text">+996555707083</span>
+        </div>
+    </div>
+</footer>
+
+<!-- Подключение скриптов в конце для лучшей производительности -->
+<script src="../js/dashboard.js"></script>
+<script src="/js/cart-functionality.js"></script>
+</body>
+</html>

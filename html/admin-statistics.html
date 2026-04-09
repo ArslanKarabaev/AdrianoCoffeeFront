@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика - Adriano Coffee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    <link rel="stylesheet" href="/css/admin-statistics.css">
+    <link rel="stylesheet" href="/css/mobile.css">
+    
+    <!-- Chart.js для графиков -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<!-- Хедер -->
+<header class="header">
+    <div class="logo">
+        <img src="/images/logo.png" alt="Логотип" />
+    </div>
+    <nav class="nav">
+        <a href="admin-menu.html">Меню</a>
+        <a href="admin-dashboard.html#adddish">Добавить блюдо</a>
+        <a href="admin-dashboard.html#users">Пользователи</a>
+        <a href="admin-orders.html">Заказы</a>
+        <a href="admin-statistics.html" class="active">Статистика</a>
+        <a href="admin-dashboard.html"><i class="fas fa-user"></i></a>
+        <a href="#" id="logout-button">Выйти</a>
+    </nav>
+</header>
+
+<!-- Секция статистики -->
+<section class="statistics-section">
+    <div class="stats-header">
+        <h2><i class="fas fa-chart-line"></i> Статистика и аналитика</h2>
+        
+        <!-- Фильтр по периоду -->
+        <div class="period-filter">
+            <label>Период:</label>
+            <select id="periodSelect">
+                <option value="7">Последние 7 дней</option>
+                <option value="30" selected>Последние 30 дней</option>
+                <option value="90">Последние 3 месяца</option>
+                <option value="365">Последний год</option>
+                <option value="custom">Свой период</option>
+            </select>
+            
+            <div id="customDateRange" style="display: none;">
+                <input type="date" id="startDate">
+                <span>—</span>
+                <input type="date" id="endDate">
+                <button id="applyDates" class="btn-apply">Применить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Карточки общей статистики -->
+    <div class="stats-overview">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Всего заказов</h3>
+                <p class="stat-value" id="totalOrders">0</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Выручка</h3>
+                <p class="stat-value" id="totalRevenue">0 сом</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calculator"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Средний чек</h3>
+                <p class="stat-value" id="averageCheck">0 сом</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3>Активные гости</h3>
+                <p class="stat-value" id="activeUsers">0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Топ блюд -->
+    <div class="stats-section">
+        <h3><i class="fas fa-trophy"></i> Топ блюд</h3>
+        
+        <div class="top-dishes-grid">
+            <!-- Самое популярное -->
+            <div class="top-dish-card highlight">
+                <h4>🏆 Самое популярное</h4>
+                <div id="mostPopular" class="dish-details">
+                    <p class="no-data">Нет данных</p>
+                </div>
+            </div>
+
+            <!-- Самое прибыльное -->
+            <div class="top-dish-card highlight">
+                <h4>💰 Самое прибыльное</h4>
+                <div id="mostProfitable" class="dish-details">
+                    <p class="no-data">Нет данных</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Топ-10 таблица -->
+        <div class="top-dishes-table">
+            <h4>Топ-10 блюд по количеству заказов</h4>
+            <table id="topDishesTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Блюдо</th>
+                        <th>Категория</th>
+                        <th>Раз заказано</th>
+                        <th>Всего штук</th>
+                        <th>Выручка</th>
+                    </tr>
+                </thead>
+                <tbody id="topDishesBody">
+                    <tr>
+                        <td colspan="6" class="no-data">Загрузка...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Статистика по категориям -->
+    <div class="stats-section">
+        <h3><i class="fas fa-chart-pie"></i> Статистика по категориям</h3>
+        
+        <div class="charts-grid">
+            <div class="chart-container">
+                <canvas id="categoryOrdersChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="categoryRevenueChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Таблица категорий -->
+        <div class="category-table">
+            <table id="categoryStatsTable">
+                <thead>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Заказов</th>
+                        <th>Всего штук</th>
+                        <th>Выручка</th>
+                        <th>Средний чек</th>
+                    </tr>
+                </thead>
+                <tbody id="categoryStatsBody">
+                    <tr>
+                        <td colspan="5" class="no-data">Загрузка...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Статистика по времени -->
+    <div class="stats-section">
+        <h3><i class="fas fa-clock"></i> Анализ по времени</h3>
+        
+        <!-- График по часам -->
+        <div class="chart-container">
+            <h4>Заказы по часам дня</h4>
+            <canvas id="ordersByHourChart"></canvas>
+        </div>
+
+        <!-- График по дням недели -->
+        <div class="chart-container">
+            <h4>Заказы по дням недели</h4>
+            <canvas id="ordersByDayChart"></canvas>
+        </div>
+
+        <!-- График по месяцам -->
+        <div class="chart-container" id="monthlyChartContainer" style="display: none;">
+            <h4>Заказы по месяцам</h4>
+            <canvas id="ordersByMonthChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- Футер -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="social-left">
+            <a href="https://www.instagram.com/adriano_coffee" class="social-icon">
+                <img src="/images/instagram.png" alt="Instagram">
+            </a>
+            <span class="small-text">adriano_coffee</span>
+        </div>
+        <div class="footlogo">
+            <img src="/images/logo.png" alt="Логотип" />
+        </div>
+        <div class="social-right">
+            <a href="https://wa.me/996555707083" class="social-icon">
+                <img src="/images/whatsapp.png" alt="WhatsApp">
+            </a>
+            <span class="small-text">+996 555 707 083</span>
+        </div>
+    </div>
+</footer>
+
+<!-- Подключаем скрипты -->
+
+<script src="/js/admin-statistics.js"></script>
+</body>
+</html>

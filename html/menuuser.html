@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Menu - Adriano </title>
+    <link rel="stylesheet" href="../css/menuuser.css">
+    <link rel="stylesheet" href="/css/cart-modal-styles.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+</head>
+<body>
+    <!-- Хедер с навигацией -->
+    <header class="header">
+        <div class="logo">
+            <img src="../images/logo.png" alt="Логотип" />
+        </div>
+
+        <!-- Десктопная навигация (скрывается на мобилке через mobile.css) -->
+        <nav class="nav">
+            <a href="pageuser.html#aboutus">О нас</a>
+            <a href="menuuser.html">Меню</a>
+            <a href="pageuser.html#order">Торты на заказ</a>
+            <a href="pageuser.html#ourbranches">Филиалы</a>
+            <a href="pageuser.html#ourbranches">Контакты</a>
+            <a href="login-register.html"><i class="fas fa-user"></i></a>
+            <a href="#" id="open-cart-button" onclick="event.preventDefault(); openCart();">
+                <i class="fas fa-shopping-cart"></i> Корзина
+            </a>
+        </nav>
+
+        <!-- Hamburger кнопка (появляется только на мобилке) -->
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Открыть меню">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Мобильное выдвижное меню -->
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+        <a href="pageuser.html#aboutus"><i class="fas fa-info-circle"></i> О нас</a>
+        <a href="menuuser.html"><i class="fas fa-utensils"></i> Меню</a>
+        <a href="pageuser.html#order"><i class="fas fa-birthday-cake"></i> Торты на заказ</a>
+        <a href="pageuser.html#ourbranches"><i class="fas fa-map-marker-alt"></i> Филиалы</a>
+        <a href="pageuser.html#ourbranches"><i class="fas fa-phone"></i> Контакты</a>
+        <a href="login-register.html"><i class="fas fa-user"></i> Войти</a>
+        <a href="#" onclick="event.preventDefault(); closeMobileNav(); openCart();">
+            <i class="fas fa-shopping-cart"></i> Корзина
+        </a>
+    </div>
+
+    <!-- Оверлей (затемнение фона при открытом меню) -->
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <!-- Секция "Меню" -->
+    <section class="menu-section">
+        <h2>Меню</h2>
+        <nav class="menu-categories">
+            <a href="#coffee-section" class="active">Кофе</a>
+            <a href="#breakfast-section">Завтраки</a>
+            <a href="#salads-section">Салаты</a>
+            <a href="#soups-section">Супы</a>
+            <a href="#pasts-section">Паста</a>
+            <a href="#hotDishes-section">Горячие блюда</a>
+            <a href="#bowels-section">Боулы</a>
+            <a href="#deserts-section">Десерты</a>
+            <a href="#teas-section">Чаи</a>
+            <a href="#drinks-section">Холодные напитки</a>
+        </nav>
+    </section>
+
+    <!-- Секция с блюдами -->
+    <main class="menu-container">
+        <section id="coffee-section" class="menu-section">
+            <h2>Кофе</h2>
+            <div class="dishes" id="container-COFFEE"></div>
+        </section>
+
+        <section id="breakfast-section" class="menu-section">
+            <h2>Завтраки</h2>
+            <div class="dishes" id="container-BREAKFAST"></div>
+        </section>
+
+        <section id="salads-section" class="menu-section">
+            <h2>Салаты</h2>
+            <div class="dishes" id="container-SALADS"></div>
+        </section>
+
+        <section id="soups-section" class="menu-section">
+            <h2>Супы</h2>
+            <div class="dishes" id="container-SOUPS"></div>
+        </section>
+
+        <section id="pasts-section" class="menu-section">
+            <h2>Пасты</h2>
+            <div class="dishes" id="container-PASTAS"></div>
+        </section>
+
+        <section id="hotDishes-section" class="menu-section">
+            <h2>Горячие блюда</h2>
+            <div class="dishes" id="container-HOTDISHES"></div>
+        </section>
+
+        <section id="bowels-section" class="menu-section">
+            <h2>Боулы</h2>
+            <div class="dishes" id="container-BOWLS"></div>
+        </section>
+
+        <section id="deserts-section" class="menu-section">
+            <h2>Десерты</h2>
+            <div class="dishes" id="container-DESSERTS"></div>
+        </section>
+
+        <section id="teas-section" class="menu-section">
+            <h2>Чаи</h2>
+            <div class="dishes" id="container-TEAS"></div>
+        </section>
+
+        <section id="drinks-section" class="menu-section">
+            <h2>Холодные напитки</h2>
+            <div class="dishes" id="container-DRINKS"></div>
+        </section>
+    </main>
+
+    <!-- Модальное окно корзины -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content cart-modal-content">
+            <div class="cart-header">
+                <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
+                <span class="close" id="close-cart-modal">&times;</span>
+            </div>
+
+            <div id="cart-items-container" class="cart-items-container">
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Загрузка корзины...</p>
+                </div>
+            </div>
+
+            <div id="empty-cart-state" class="empty-state" style="display: none;">
+                <i class="fas fa-shopping-bag"></i>
+                <h3>Корзина пуста</h3>
+                <p>Добавьте товары из меню</p>
+            </div>
+
+            <div id="cart-summary" class="cart-summary" style="display: none;">
+                <div class="summary-row">
+                    <span>Итого:</span>
+                    <span id="cart-total" class="total-price">0 сом</span>
+                </div>
+            </div>
+
+            <div id="order-form-container" class="order-form-container" style="display: none;">
+                <h3>Оформление заказа</h3>
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="orderAddress">Адрес доставки: *</label>
+                        <input type="text" id="orderAddress" required placeholder="Улица, дом, квартира">
+                    </div>
+                    <div class="form-group">
+                        <label for="orderPhone">Телефон: *</label>
+                        <input type="tel" id="orderPhone" required placeholder="+996 555 123 456">
+                    </div>
+                    <div class="form-group">
+                        <label for="orderComment">Комментарий:</label>
+                        <textarea id="orderComment" rows="3" placeholder="Пожелания к заказу..."></textarea>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-check"></i> Оформить заказ
+                        </button>
+                        <button type="button" class="btn-clear-cart" id="clearCartBtn">
+                            <i class="fas fa-trash"></i> Очистить корзину
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/cart-functionality.js"></script>
+    <script src="/js/menu-loader.js"></script>
+    <script src="/js/mobile-nav.js"></script>
+
+</body>
+</html>
