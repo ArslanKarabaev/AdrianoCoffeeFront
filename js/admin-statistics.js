@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const token = localStorage.getItem('authToken');
     const userRole = localStorage.getItem('userRole');
-    const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
+    
 
 
     // Проверка авторизации и роли
@@ -107,6 +107,15 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totalRevenue').textContent = formatMoney(data.totalRevenue || 0);
         document.getElementById('averageCheck').textContent = formatMoney(data.averageCheck || 0);
         document.getElementById('activeUsers').textContent = data.activeUsers || 0;
+
+        // Бонусная статистика
+        const bonusBlock = document.getElementById('bonusStatsBlock');
+        if (bonusBlock) {
+            document.getElementById('totalBonusUsed').textContent =
+                (data.totalBonusPointsUsed || 0) + ' баллов';
+            document.getElementById('ordersWithBonus').textContent =
+                (data.ordersWithBonus || 0) + ' заказов';
+        }
         
         // 2. Топ блюд
         renderTopDishes(data.topDishes, data.mostPopular, data.mostProfitable);
@@ -427,4 +436,17 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(message);
         hideLoading();
     }
+});
+
+function logout() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+    window.location.href = 'login-register.html';
+}
+
+// logout-button может отсутствовать на этой странице
+document.getElementById('logout-button')?.addEventListener('click', function (event) {
+    event.preventDefault();
+    logout();
 });

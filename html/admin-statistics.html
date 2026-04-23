@@ -76,6 +76,21 @@
             </div>
         </div>
 
+        <div id="bonusStatsBlock" class="stat-card">
+            <div class="stat-icon"><i class="fas fa-star"></i></div>
+            <div class="stat-info">
+                <div class="stat-label">Оплачено баллами</div>
+                <div class="stat-value" id="totalBonusUsed">—</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+            <div class="stat-info">
+                <div class="stat-label">Заказов с бонусами</div>
+                <div class="stat-value" id="ordersWithBonus">—</div>
+            </div>
+        </div>
+
         <div class="stat-card">
             <div class="stat-icon">
                 <i class="fas fa-calculator"></i>
@@ -200,6 +215,25 @@
     </div>
 </section>
 
+<nav class="mobile-bottom-nav">
+    <a href="admin-orders.html" class="bottom-nav-item active">
+        <i class="fas fa-clipboard-list"></i>
+        <span>Заказы</span>
+    </a>
+    <a href="admin-statistics.html" class="bottom-nav-item">
+        <i class="fas fa-chart-bar"></i>
+        <span>Статистика</span>
+    </a>
+    <a href="admin-menu.html" class="bottom-nav-item">
+        <i class="fas fa-utensils"></i>
+        <span>Меню</span>
+    </a>
+    <a href="#" class="bottom-nav-item" onclick="localStorage.clear(); window.location.href='login-register.html'">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Выйти</span>
+    </a>
+</nav>
+
 <!-- Футер -->
 <footer class="footer">
     <div class="footer-content">
@@ -223,6 +257,7 @@
 
 <!-- Подключаем скрипты -->
 
+<script src="/js/config.js"></script>
 <script src="/js/admin-statistics.js"></script>
 </body>
 </html>

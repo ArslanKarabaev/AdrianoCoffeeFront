@@ -10,122 +10,72 @@
     <link rel="stylesheet" href="/css/mobile.css">
 </head>
 <body>
-    <!-- Хедер с навигацией -->
     <header class="header">
         <div class="logo">
             <img src="/images/logo.png" alt="Логотип" />
         </div>
-
-        <!-- Десктопная навигация (скрывается на мобилке через mobile.css) -->
         <nav class="nav">
             <a href="pageuser.html#aboutus">О нас</a>
             <a href="menuuser.html">Меню</a>
             <a href="pageuser.html#order">Торты на заказ</a>
             <a href="pageuser.html#ourbranches">Филиалы</a>
             <a href="pageuser.html#ourbranches">Контакты</a>
-            <a href="login-register.html"><i class="fas fa-user"></i></a>
             <a href="#" id="open-cart-button" onclick="event.preventDefault(); openCart();">
                 <i class="fas fa-shopping-cart"></i> Корзина
             </a>
+            <a href="dashboard.html"><i class="fas fa-user"></i></a>
         </nav>
-
-        <!-- Hamburger кнопка (появляется только на мобилке) -->
-        <button class="hamburger-btn" id="hamburger-btn" aria-label="Открыть меню">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
     </header>
 
-    <!-- Мобильное выдвижное меню -->
-    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-        <a href="pageuser.html#aboutus"><i class="fas fa-info-circle"></i> О нас</a>
-        <a href="menuuser.html"><i class="fas fa-utensils"></i> Меню</a>
-        <a href="pageuser.html#order"><i class="fas fa-birthday-cake"></i> Торты на заказ</a>
-        <a href="pageuser.html#ourbranches"><i class="fas fa-map-marker-alt"></i> Филиалы</a>
-        <a href="pageuser.html#ourbranches"><i class="fas fa-phone"></i> Контакты</a>
-        <a href="login-register.html"><i class="fas fa-user"></i> Войти</a>
-        <a href="#" onclick="event.preventDefault(); closeMobileNav(); openCart();">
-            <i class="fas fa-shopping-cart"></i> Корзина
-        </a>
+    <section class="menu-section">
+    <!-- Поиск -->
+    <div class="menu-search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" id="menu-search-input" placeholder="Поиск по меню..." autocomplete="off">
+        <button id="menu-search-clear" style="display:none;">
+            <i class="fas fa-times"></i>
+        </button>
     </div>
 
-    <!-- Оверлей (затемнение фона при открытом меню) -->
-    <div class="nav-overlay" id="nav-overlay"></div>
+    <!-- Фильтр категорий -->
+    <div class="menu-filter-bar" id="menu-filter-bar">
+        <button class="filter-chip active" data-category="ALL">Все</button>
+        <button class="filter-chip" data-category="COFFEE">Кофе</button>
+        <button class="filter-chip" data-category="BREAKFAST">Завтраки</button>
+        <button class="filter-chip" data-category="SALADS">Салаты</button>
+        <button class="filter-chip" data-category="SOUPS">Супы</button>
+        <button class="filter-chip" data-category="PASTAS">Паста</button>
+        <button class="filter-chip" data-category="HOTDISHES">Горячие блюда</button>
+        <button class="filter-chip" data-category="BOWLS">Боулы</button>
+        <button class="filter-chip" data-category="DESSERTS">Десерты</button>
+        <button class="filter-chip" data-category="TEAS">Чаи</button>
+        <button class="filter-chip" data-category="DRINKS">Напитки</button>
+    </div>
+</section>
 
-    <!-- Секция "Меню" -->
-    <section class="menu-section">
-        <h2>Меню</h2>
-        <nav class="menu-categories">
-            <a href="#coffee-section" class="active">Кофе</a>
-            <a href="#breakfast-section">Завтраки</a>
-            <a href="#salads-section">Салаты</a>
-            <a href="#soups-section">Супы</a>
-            <a href="#pasts-section">Паста</a>
-            <a href="#hotDishes-section">Горячие блюда</a>
-            <a href="#bowels-section">Боулы</a>
-            <a href="#deserts-section">Десерты</a>
-            <a href="#teas-section">Чаи</a>
-            <a href="#drinks-section">Холодные напитки</a>
-        </nav>
-    </section>
+<!-- Сообщение "ничего не найдено" -->
+<div id="search-no-results" style="display:none;" class="search-no-results">
+    <i class="fas fa-search"></i>
+    <p>Ничего не найдено</p>
+</div>
 
-    <!-- Секция с блюдами -->
-    <main class="menu-container">
-        <section id="coffee-section" class="menu-section">
-            <h2>Кофе</h2>
-            <div class="dishes" id="container-COFFEE"></div>
-        </section>
-
-        <section id="breakfast-section" class="menu-section">
-            <h2>Завтраки</h2>
-            <div class="dishes" id="container-BREAKFAST"></div>
-        </section>
-
-        <section id="salads-section" class="menu-section">
-            <h2>Салаты</h2>
-            <div class="dishes" id="container-SALADS"></div>
-        </section>
-
-        <section id="soups-section" class="menu-section">
-            <h2>Супы</h2>
-            <div class="dishes" id="container-SOUPS"></div>
-        </section>
-
-        <section id="pasts-section" class="menu-section">
-            <h2>Пасты</h2>
-            <div class="dishes" id="container-PASTAS"></div>
-        </section>
-
-        <section id="hotDishes-section" class="menu-section">
-            <h2>Горячие блюда</h2>
-            <div class="dishes" id="container-HOTDISHES"></div>
-        </section>
-
-        <section id="bowels-section" class="menu-section">
-            <h2>Боулы</h2>
-            <div class="dishes" id="container-BOWLS"></div>
-        </section>
-
-        <section id="deserts-section" class="menu-section">
-            <h2>Десерты</h2>
-            <div class="dishes" id="container-DESSERTS"></div>
-        </section>
-
-        <section id="teas-section" class="menu-section">
-            <h2>Чаи</h2>
-            <div class="dishes" id="container-TEAS"></div>
-        </section>
-
-        <section id="drinks-section" class="menu-section">
-            <h2>Холодные напитки</h2>
-            <div class="dishes" id="container-DRINKS"></div>
-        </section>
-    </main>
+<main class="menu-container">
+    <section id="coffee-section" class="menu-section"><h2>Кофе</h2><div class="dishes" id="container-COFFEE"></div></section>
+    <section id="breakfast-section" class="menu-section"><h2>Завтраки</h2><div class="dishes" id="container-BREAKFAST"></div></section>
+    <section id="salads-section" class="menu-section"><h2>Салаты</h2><div class="dishes" id="container-SALADS"></div></section>
+    <section id="soups-section" class="menu-section"><h2>Супы</h2><div class="dishes" id="container-SOUPS"></div></section>
+    <section id="pasts-section" class="menu-section"><h2>Пасты</h2><div class="dishes" id="container-PASTAS"></div></section>
+    <section id="hotDishes-section" class="menu-section"><h2>Горячие блюда</h2><div class="dishes" id="container-HOTDISHES"></div></section>
+    <section id="bowels-section" class="menu-section"><h2>Боулы</h2><div class="dishes" id="container-BOWLS"></div></section>
+    <section id="deserts-section" class="menu-section"><h2>Десерты</h2><div class="dishes" id="container-DESSERTS"></div></section>
+    <section id="teas-section" class="menu-section"><h2>Чаи</h2><div class="dishes" id="container-TEAS"></div></section>
+    <section id="drinks-section" class="menu-section"><h2>Холодные напитки</h2><div class="dishes" id="container-DRINKS"></div></section>
+</main>
 
     <!-- Модальное окно корзины -->
     <div id="cart-modal" class="modal">
         <div class="modal-content cart-modal-content">
+
             <div class="cart-header">
                 <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
                 <span class="close" id="close-cart-modal">&times;</span>
@@ -151,6 +101,7 @@
                 </div>
             </div>
 
+            <!-- Шаг 1: Форма оформления заказа -->
             <div id="order-form-container" class="order-form-container" style="display: none;">
                 <h3>Оформление заказа</h3>
                 <form id="orderForm">
@@ -168,20 +119,70 @@
                     </div>
                     <div class="form-buttons">
                         <button type="submit" class="btn-submit">
-                            <i class="fas fa-check"></i> Оформить заказ
+                            <i class="fas fa-credit-card"></i> Перейти к оплате
                         </button>
                         <button type="button" class="btn-clear-cart" id="clearCartBtn">
-                            <i class="fas fa-trash"></i> Очистить корзину
+                            <i class="fas fa-trash"></i> Очистить
                         </button>
                     </div>
                 </form>
             </div>
+
+            <!-- Шаг 2: Форма оплаты Stripe -->
+            <div id="stripe-payment-section" class="stripe-payment-section" style="display: none;">
+
+                <div class="stripe-payment-header">
+                    <button class="btn-back" onclick="backToOrderForm()">
+                        <i class="fas fa-arrow-left"></i> Назад
+                    </button>
+                    <h3>Оплата</h3>
+                </div>
+
+                <div class="payment-amount-row">
+                    <span>К оплате:</span>
+                    <span id="payment-total" class="payment-total">0 сом</span>
+                </div>
+
+                <!-- Stripe монтирует сюда форму -->
+                <div id="stripe-payment-element" class="stripe-element-container"></div>
+
+                <div class="test-card-hint">
+                    <i class="fas fa-info-circle"></i>
+                    Тест: <strong>4242 4242 4242 4242</strong> · любой CVV · любая дата
+                </div>
+
+                <button id="stripe-pay-btn" class="btn-pay" onclick="confirmStripePayment()">
+                    <i class="fas fa-lock"></i> Оплатить
+                </button>
+
+            </div>
+
         </div>
     </div>
 
+    <nav class="mobile-bottom-nav">
+    <a href="menuuser.html" class="bottom-nav-item active">
+        <i class="fas fa-utensils"></i>
+        <span>Меню</span>
+    </a>
+    <button class="bottom-nav-item bottom-nav-item-cart" onclick="openCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Корзина</span>
+    </button>
+    <a href="dashboard.html?tab=bonus" class="bottom-nav-item">
+        <i class="fas fa-qrcode"></i>
+        <span>QR-код</span>
+    </a>
+    <a href="dashboard.html" class="bottom-nav-item">
+        <i class="fas fa-user"></i>
+        <span>Профиль</span>
+    </a>
+</nav>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="/js/config.js"></script>
     <script src="/js/cart-functionality.js"></script>
     <script src="/js/menu-loader.js"></script>
-    <script src="/js/mobile-nav.js"></script>
-
+    
 </body>
 </html>

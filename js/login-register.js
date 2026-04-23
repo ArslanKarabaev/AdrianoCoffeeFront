@@ -1,9 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const wrapper = document.querySelector('.wrapper');
     const loginLink = document.querySelector('.login-link');
     const registerLink = document.querySelector('.register-link');
     const iconClose = document.querySelector('.icon-close');
-    const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
 
     // Переключение между формами
     registerLink?.addEventListener('click', () => wrapper.classList.add('active'));
@@ -16,20 +15,17 @@ document.addEventListener("DOMContentLoaded", function() {
     // ===== ФОРМА ВХОДА =====
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
-        loginForm.addEventListener('submit', async function(event) {
+        loginForm.addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.querySelector('.remember-forgot input[type="checkbox"]')?.checked;
 
-            // Валидация
             if (!email || !password) {
-                alert('Пожалуйста, заполните все поля');
+                showFormError('Пожалуйста, заполните все поля');
                 return;
             }
-
-            console.log('=== НАЧАЛО ПРОЦЕССА ВХОДА ===');
-            console.log('Email:', email);
 
             try {
                 const response = await fetch(BACKEND_URL + '/api/v2/auth/authentication', {
@@ -38,81 +34,64 @@ document.addEventListener("DOMContentLoaded", function() {
                     body: JSON.stringify({ email, password })
                 });
 
-                console.log('Response status:', response.status);
+                let data = {};
+                try { data = await response.json(); } catch {}
 
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                     alert('Неверный email или пароль');
+                        showFormError('Неверный email или пароль');
                     } else {
-                    alert('Ошибка входа: ' + (data.message || response.status));
-                }
-                return;
-                //    const errorData = await response.json();
-                //    throw new Error(errorData.message || `Ошибка HTTP: ${response.status}`);
+                        showFormError('Ошибка входа: ' + (data.message || response.status));
+                    }
+                    return;
                 }
 
-                const data = await response.json();
-                console.log('=== ОТВЕТ ОТ СЕРВЕРА ===');
-                console.log('Полный ответ:', data);
-                console.log('Token:', data.token ? 'Получен' : 'ОТСУТСТВУЕТ');
-                console.log('UserId:', data.userId);
-                console.log('Role:', data.role);
-                console.log('Тип role:', typeof data.role);
-                console.log('Status:', data.status);
-
-                // Проверяем наличие токена
                 if (data.token && data.userId) {
                     if (data.status === false || data.status === 'false' || data.status === 0) {
-                        alert('Ваш аккаунт заблокирован. Обратитесь к администратору.');
-                        return; // Прерываем выполнение, не сохраняем токен
+                        showFormError('Ваш аккаунт заблокирован. Обратитесь к администратору.');
+                        return;
                     }
 
-                    // ВАЖНО: Сохраняем ВСЕ данные
+                    // Запомнить меня
+                    if (rememberMe) {
+                        localStorage.setItem('rememberedEmail', email);
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
+                    }
+
                     localStorage.setItem('authToken', data.token);
                     localStorage.setItem('userId', data.userId);
 
-                    // КРИТИЧНО: правильно определяем роль
-                    let userRole = 'USER'; // значение по умолчанию
-
-                    if (data.role) {
-                        userRole = data.role.toUpperCase(); // Приводим к верхнему регистру
-                    }
-
+                    const userRole = data.role ? data.role.toUpperCase() : 'USER';
                     localStorage.setItem('userRole', userRole);
 
-                    console.log('=== СОХРАНЕНО В LOCALSTORAGE ===');
-                    console.log('authToken:', localStorage.getItem('authToken') ? 'Сохранен' : 'НЕ СОХРАНЕН');
-                    console.log('userId:', localStorage.getItem('userId'));
-                    console.log('userRole:', localStorage.getItem('userRole'));
-
-                    // Перенаправление в зависимости от роли
-                    console.log('=== ПЕРЕНАПРАВЛЕНИЕ ===');
                     if (userRole === 'ADMIN') {
-                        console.log('Роль ADMIN - перенаправление на admin-dashboard.html');
                         window.location.href = 'admin-dashboard.html';
-                    }else if(userRole === 'MANAGER'){
-                        console.log('Роль MANAGER - перенаправление на manager-dashboard.html');
+                    } else if (userRole === 'MANAGER') {
                         window.location.href = 'manager-dashboard.html';
                     } else {
-                        console.log('Роль USER - перенаправление на dashboard.html');
                         window.location.href = 'dashboard.html';
                     }
                 } else {
-                    console.error('ОШИБКА: Токен или userId не получены');
-                    alert('Ошибка авторизации: токен не получен');
+                    showFormError('Ошибка авторизации: токен не получен');
                 }
             } catch (error) {
-                console.error('=== ОШИБКА ВХОДА ===');
-                console.error('Error:', error);
-                alert(`Ошибка при входе: ${error.message}`);
+                showFormError('Ошибка при входе: ' + error.message);
             }
         });
     }
 
+    // ===== ЗАБЫЛИ ПАРОЛЬ =====
+    const forgotLink = document.querySelector('.remember-forgot a[href="#"]');
+    forgotLink?.addEventListener('click', (e) => {
+        e.preventDefault();
+        openForgotPasswordModal();
+    });
+
     // ===== ФОРМА РЕГИСТРАЦИИ =====
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
-        registerForm.addEventListener('submit', async function(event) {
+        registerForm.addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const firstName = document.getElementById('registerFirstName').value;
@@ -121,16 +100,13 @@ document.addEventListener("DOMContentLoaded", function() {
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
 
-            // Валидация
             if (!firstName || !secondName || !phone || !email || !password) {
-                alert('Пожалуйста, заполните все обязательные поля');
+                showFormError('Пожалуйста, заполните все обязательные поля');
                 return;
             }
 
-            // Получаем дату рождения
             let formattedBirthdate = null;
             const birthdateInput = document.getElementById('registerBirthdate');
-
             if (birthdateInput && birthdateInput._flatpickr) {
                 const selectedDate = birthdateInput._flatpickr.selectedDates[0];
                 if (selectedDate) {
@@ -146,12 +122,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        firstName,
-                        secondName,
+                        firstName, secondName,
                         dateOfBirth: formattedBirthdate,
-                        email,
-                        mobNum: phone,
-                        password,
+                        email, mobNum: phone, password,
                         role: "USER"
                     })
                 });
@@ -162,22 +135,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 const data = await response.json();
-                console.log('Register response:', data);
 
                 if (data.token) {
-                    alert('Регистрация успешна! Теперь вы можете войти.');
-
-                    // Переключаемся на форму входа
+                    showFormSuccess('Регистрация успешна! Теперь войдите в аккаунт.');
                     wrapper.classList.remove('active');
-
-                    // Очищаем форму регистрации
                     registerForm.reset();
-                } else {
-                    alert('Регистрация завершена, но токен не получен');
                 }
             } catch (error) {
-                console.error('Ошибка регистрации:', error);
-                alert(`Ошибка при регистрации: ${error.message}`);
+                showFormError('Ошибка при регистрации: ' + error.message);
             }
         });
     }
@@ -198,43 +163,236 @@ document.addEventListener("DOMContentLoaded", function() {
                     longhand: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
                 }
             },
-            maxDate: "today",
-            defaultDate: new Date(2000, 0, 1)
+            maxDate: "today"
         });
     }
 });
 
-// ===== ФУНКЦИЯ ПРОВЕРКИ АВТОРИЗАЦИИ ПРИ ЗАГРУЗКЕ =====
+// ===== МОДАЛЬНОЕ ОКНО "ЗАБЫЛИ ПАРОЛЬ" =====
+function openForgotPasswordModal() {
+    // Удаляем старый модал если есть
+    document.getElementById('forgot-modal')?.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'forgot-modal';
+    modal.style.cssText = `
+        position: fixed; inset: 0; z-index: 9999;
+        background: rgba(0,0,0,0.6);
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'Poppins', sans-serif;
+    `;
+
+    modal.innerHTML = `
+        <div style="background:white;border-radius:16px;padding:36px 32px;
+                    width:90%;max-width:420px;position:relative;
+                    box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            
+            <button onclick="document.getElementById('forgot-modal').remove()"
+                    style="position:absolute;top:14px;right:16px;background:none;
+                           border:none;font-size:22px;cursor:pointer;color:#aaa;">✕</button>
+
+            <div id="forgot-step-1">
+                <h3 style="margin:0 0 8px;color:#610303;font-size:20px;">Сброс пароля</h3>
+                <p style="margin:0 0 20px;color:#888;font-size:14px;">
+                    Введите email вашего аккаунта — мы отправим код подтверждения.
+                </p>
+                <input type="email" id="forgot-email" placeholder="Ваш email"
+                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                              border-radius:8px;font-size:14px;font-family:inherit;
+                              outline:none;box-sizing:border-box;margin-bottom:12px;">
+                <div id="forgot-error-1" style="color:#e74c3c;font-size:13px;
+                     margin-bottom:10px;display:none;"></div>
+                <button onclick="sendResetCode()"
+                        style="width:100%;padding:12px;background:#610303;color:white;
+                               border:none;border-radius:8px;font-size:14px;
+                               font-weight:600;cursor:pointer;font-family:inherit;">
+                    Отправить код
+                </button>
+            </div>
+
+            <div id="forgot-step-2" style="display:none;">
+                <h3 style="margin:0 0 8px;color:#610303;font-size:20px;">Введите код</h3>
+                <p style="margin:0 0 20px;color:#888;font-size:14px;">
+                    Код отправлен на вашу почту. Действует 15 минут.
+                </p>
+                <input type="text" id="forgot-code" placeholder="6-значный код"
+                       maxlength="6"
+                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                              border-radius:8px;font-size:18px;font-family:monospace;
+                              letter-spacing:6px;text-align:center;outline:none;
+                              box-sizing:border-box;margin-bottom:12px;">
+                <input type="password" id="forgot-new-password" placeholder="Новый пароль"
+                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                              border-radius:8px;font-size:14px;font-family:inherit;
+                              outline:none;box-sizing:border-box;margin-bottom:12px;">
+                <input type="password" id="forgot-confirm-password" placeholder="Подтвердите пароль"
+                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                              border-radius:8px;font-size:14px;font-family:inherit;
+                              outline:none;box-sizing:border-box;margin-bottom:12px;">
+                <div id="forgot-error-2" style="color:#e74c3c;font-size:13px;
+                     margin-bottom:10px;display:none;"></div>
+                <button onclick="confirmResetCode()"
+                        style="width:100%;padding:12px;background:#610303;color:white;
+                               border:none;border-radius:8px;font-size:14px;
+                               font-weight:600;cursor:pointer;font-family:inherit;">
+                    Сменить пароль
+                </button>
+                <button onclick="document.getElementById('forgot-step-1').style.display='block';
+                                 document.getElementById('forgot-step-2').style.display='none';"
+                        style="width:100%;padding:10px;background:none;color:#aaa;
+                               border:none;font-size:13px;cursor:pointer;margin-top:8px;">
+                    ← Назад
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+
+    document.getElementById('forgot-email').focus();
+}
+
+async function sendResetCode() {
+    const email = document.getElementById('forgot-email').value.trim();
+    const errorEl = document.getElementById('forgot-error-1');
+
+    if (!email) {
+        errorEl.textContent = 'Введите email';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    try {
+        const response = await fetch(BACKEND_URL + '/api/v2/auth/password-reset/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('forgot-step-1').style.display = 'none';
+            document.getElementById('forgot-step-2').style.display = 'block';
+        } else {
+            errorEl.textContent = data.message || 'Ошибка отправки кода';
+            errorEl.style.display = 'block';
+        }
+    } catch {
+        errorEl.textContent = 'Ошибка соединения с сервером';
+        errorEl.style.display = 'block';
+    }
+}
+
+async function confirmResetCode() {
+    const email = document.getElementById('forgot-email').value.trim();
+    const code = document.getElementById('forgot-code').value.trim();
+    const newPassword = document.getElementById('forgot-new-password').value;
+    const confirmPassword = document.getElementById('forgot-confirm-password').value;
+    const errorEl = document.getElementById('forgot-error-2');
+
+    if (!code || !newPassword || !confirmPassword) {
+        errorEl.textContent = 'Заполните все поля';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        errorEl.textContent = 'Пароли не совпадают';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        errorEl.textContent = 'Пароль должен быть не менее 6 символов';
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    try {
+        const response = await fetch(BACKEND_URL + '/api/v2/auth/password-reset/confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, code, newPassword })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            document.getElementById('forgot-modal').remove();
+            showFormSuccess('Пароль успешно изменён! Войдите с новым паролем.');
+        } else {
+            errorEl.textContent = data.message || 'Неверный код';
+            errorEl.style.display = 'block';
+        }
+    } catch {
+        errorEl.textContent = 'Ошибка соединения с сервером';
+        errorEl.style.display = 'block';
+    }
+}
+
+// ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+function showFormError(message) {
+    showFormMessage(message, '#e74c3c');
+}
+
+function showFormSuccess(message) {
+    showFormMessage(message, '#27ae60');
+}
+
+function showFormMessage(message, color) {
+    let el = document.getElementById('form-message');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = 'form-message';
+        el.style.cssText = `
+            position:fixed;top:80px;left:50%;transform:translateX(-50%);
+            padding:12px 24px;border-radius:8px;color:white;font-size:14px;
+            font-family:'Poppins',sans-serif;font-weight:500;
+            z-index:10000;box-shadow:0 4px 12px rgba(0,0,0,0.2);
+            transition:opacity 0.3s;text-align:center;max-width:360px;
+        `;
+        document.body.appendChild(el);
+    }
+    el.style.background = color;
+    el.style.opacity = '1';
+    el.textContent = message;
+
+    setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 300);
+    }, 3000);
+}
+
+// ===== ПРОВЕРКА АВТОРИЗАЦИИ ПРИ ЗАГРУЗКЕ =====
 function checkAuthOnLoad() {
     const authToken = localStorage.getItem('authToken');
     const userRole = localStorage.getItem('userRole');
 
-    console.log('=== ПРОВЕРКА ПРИ ЗАГРУЗКЕ СТРАНИЦЫ ===');
-    console.log('authToken:', authToken ? 'Есть' : 'Нет');
-    console.log('userRole:', userRole);
-
-    // Если пользователь уже авторизован
     if (authToken) {
-        console.log('Пользователь авторизован, перенаправление...');
-
         if (userRole === 'ADMIN') {
-            console.log('→ Перенаправление на admin-dashboard.html');
             window.location.href = 'admin-dashboard.html';
+        } else if (userRole === 'MANAGER') {
+            window.location.href = 'manager-dashboard.html';
         } else {
-            console.log('→ Перенаправление на dashboard.html');
             window.location.href = 'dashboard.html';
         }
-    } else {
-        console.log('Пользователь не авторизован, остаёмся на странице входа');
     }
 }
 
-// ===== УТИЛИТА: ОЧИСТКА АВТОРИЗАЦИИ =====
+// ===== ВЫХОД =====
 function logout() {
-    console.log('=== ВЫХОД ИЗ СИСТЕМЫ ===');
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('userRole');
-    console.log('localStorage очищен');
     window.location.href = 'login-register.html';
 }
+
+// logout-button может отсутствовать на этой странице
+document.getElementById('logout-button')?.addEventListener('click', function (event) {
+    event.preventDefault();
+    logout();
+});

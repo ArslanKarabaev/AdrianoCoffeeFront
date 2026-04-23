@@ -1,45 +1,28 @@
-/* ─── ОБЩИЕ ПЕРЕМЕННЫЕ ─────────────────────── */
 :root {
     --red-dark: #610303;
     --red-medium: #7D0505;
-    --red-hover: #8b0000;
     --beige: #EFD9A2;
-    --white: #ffffff;
+    --bottom-nav-height: 64px;
 }
+
+/* =============================================
+   BOTTOM NAV — базовые стили (скрыт на десктопе)
+   ============================================= */
+.mobile-bottom-nav { display: none; }
+.hamburger-btn     { display: none !important; }
+.mobile-nav-drawer { display: none !important; }
+.nav-overlay       { display: none !important; }
 
 /* =============================================
    ПЛАНШЕТ: 480px – 1024px
    ============================================= */
 @media (max-width: 1024px) {
-
-    .logo img {
-        margin-left: 30px;
-    }
-
-    .header nav {
-        margin-right: 30px;
-    }
-
-    .nav a {
-        font-size: 15px;
-        margin-left: 10px;
-        padding: 5px 6px;
-    }
-
-    /* Карточки: 3 колонки */
-    .dish-item {
-        width: 30%;
-    }
-
-    .dishes {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .menu-categories a, .dropbtn {
-        font-size: 18px;
-        margin: 6px;
-    }
+    .logo img { margin-left: 30px; }
+    .header nav { margin-right: 30px; }
+    .nav a { font-size: 15px; margin-left: 10px; padding: 5px 6px; }
+    .dish-item { width: 30%; }
+    .dishes { padding-left: 20px; padding-right: 20px; }
+    .menu-categories a { font-size: 18px; margin: 6px; }
 }
 
 /* =============================================
@@ -47,125 +30,95 @@
    ============================================= */
 @media (max-width: 768px) {
 
-    /* ── HEADER ── */
+    /* Отступ снизу для контента — чтобы bottom nav не перекрывал */
+    body { padding-bottom: var(--bottom-nav-height); }
+
+    /* ── HEADER — компактный ── */
     .header {
-        padding: 0 16px;
-        height: 60px;
+        padding: 8px 16px;
+        min-height: 56px;
         position: sticky;
         top: 0;
+        z-index: 100;
     }
 
-    .logo img {
-        width: 55px;
-        margin-left: 0;
-    }
+    .logo img { width: 48px; margin-left: 0; }
 
-    /* Скрываем обычную навигацию */
+    /* Скрываем десктопную навигацию */
     .header > .nav,
-    .header nav.nav {
-        display: none;
+    .header nav.nav,
+    .header nav { display: none !important; }
+
+    /* ── BOTTOM NAV ── */
+    .mobile-bottom-nav {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: var(--bottom-nav-height);
+        background: white;
+        border-top: 1px solid #e8e0e0;
+        z-index: 999;
+        box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
     }
 
-    /* ── HAMBURGER КНОПКА ── */
-    .hamburger-btn {
-        display: flex !important;
+    .bottom-nav-item {
+        flex: 1;
+        display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        width: 28px;
-        height: 20px;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        text-decoration: none;
+        color: #aaa;
+        font-size: 10px;
+        font-weight: 500;
+        font-family: 'Montserrat', sans-serif;
+        transition: color 0.2s;
+        padding: 6px 0;
+        cursor: pointer;
         background: none;
         border: none;
-        cursor: pointer;
-        padding: 0;
-        margin: 0;
-        z-index: 1100;
     }
 
-    .hamburger-btn span {
-        display: block;
-        height: 2px;
-        background-color: white;
-        border-radius: 2px;
-        transition: all 0.3s ease;
+    .bottom-nav-item i {
+        font-size: 20px;
+        line-height: 1;
     }
 
-    /* Анимация при открытии */
-    .hamburger-btn.open span:nth-child(1) {
-        transform: translateY(9px) rotate(45deg);
-    }
-    .hamburger-btn.open span:nth-child(2) {
-        opacity: 0;
-    }
-    .hamburger-btn.open span:nth-child(3) {
-        transform: translateY(-9px) rotate(-45deg);
+    .bottom-nav-item.active,
+    .bottom-nav-item:active {
+        color: var(--red-dark);
     }
 
-    /* ── МОБИЛЬНОЕ МЕНЮ (DRAWER) ── */
-    .mobile-nav-drawer {
-        display: block !important;
-        position: fixed;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background-color: var(--red-dark);
-        z-index: 1050;
-        padding: 10px 0 20px;
-        transform: translateY(-110%);
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-
-    .mobile-nav-drawer.open {
-        transform: translateY(0);
-    }
-
-    .mobile-nav-drawer a {
-        display: block;
+    .bottom-nav-item .nav-badge {
+        position: absolute;
+        top: 6px;
+        background: var(--red-dark);
         color: white;
-        text-decoration: none;
-        font-size: 17px;
-        font-weight: 500;
-        padding: 14px 24px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        transition: background 0.2s;
+        font-size: 9px;
+        font-weight: 700;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .mobile-nav-drawer a:last-child {
-        border-bottom: none;
-    }
-
-    .mobile-nav-drawer a:hover,
-    .mobile-nav-drawer a:active {
-        background-color: rgba(255,255,255,0.12);
-    }
-
-    .mobile-nav-drawer a i {
-        margin-right: 10px;
-        width: 18px;
-        text-align: center;
-    }
-
-    /* Оверлей при открытом меню */
-    .nav-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.4);
-        z-index: 1040;
-    }
-
-    .nav-overlay.open {
-        display: block;
+    .bottom-nav-item-cart {
+        position: relative;
     }
 
     /* ── КАТЕГОРИИ МЕНЮ ── */
     .menu-section {
-        padding: 12px 0 0;
+        padding: 10px 0 0;
     }
 
     .menu-section h2 {
-        font-size: 26px;
-        margin-bottom: 12px;
+        font-size: 24px;
+        margin-bottom: 8px;
     }
 
     .menu-categories {
@@ -173,146 +126,636 @@
         flex-wrap: nowrap;
         overflow-x: auto;
         justify-content: flex-start;
-        gap: 0;
-        padding: 8px 16px 12px;
+        padding: 8px 12px 12px;
         margin: 0;
+        gap: 8px;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none; /* Firefox */
+        scrollbar-width: none;
     }
 
-    .menu-categories::-webkit-scrollbar {
-        display: none; /* Chrome/Safari */
-    }
+    .menu-categories::-webkit-scrollbar { display: none; }
 
     .menu-categories a {
         flex-shrink: 0;
-        font-size: 14px;
-        margin: 0 4px;
-        padding: 8px 14px;
+        font-size: 13px;
+        margin: 0;
+        padding: 6px 14px;
         white-space: nowrap;
-        border: 1px solid var(--red-medium);
+        border: 1.5px solid var(--red-medium);
         border-radius: 20px;
-        border-bottom: 1px solid var(--red-medium);
+        text-decoration: none;
+        color: var(--red-medium);
     }
 
     .menu-categories a.active {
         background-color: var(--red-dark);
         color: white;
         border-color: var(--red-dark);
-        border-bottom: 1px solid var(--red-dark);
+        font-weight: 600;
     }
 
-    /* ── КАРТОЧКИ БЛЮД ── */
+    /* ── ПОИСК ── */
+    .menu-search-wrapper {
+        max-width: 100%;
+        margin: 8px 12px 0;
+    }
+
+    /* ── КАРТОЧКИ БЛЮД — 2 в ряд ── */
     .dishes {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        padding: 16px;
+        gap: 10px;
+        padding: 12px;
     }
 
     .dish-item {
         width: 100%;
         height: auto;
-        min-height: 320px;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        overflow: hidden;
     }
 
     .dish-item img {
-        height: 160px;
+        height: 130px;
+        width: 100%;
+        object-fit: cover;
     }
 
     .dish-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 8px 10px;
         height: auto;
-        padding: 10px 12px;
     }
 
     .dish-info h3 {
-        font-size: 14px;
-        margin: 6px 0 4px;
+        font-size: 13px;
+        margin: 0 0 3px;
+        line-height: 1.3;
     }
 
-    .name-and-gr p {
-        font-size: 13px;
+    .dish-info .description {
+        font-size: 11px;
+        color: #888;
+        flex: 1;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .dish-info .volume {
+        font-size: 11px;
+        color: #aaa;
     }
 
     .price {
-        font-size: 15px;
-        padding-right: 10px;
+        font-size: 14px;
+        padding-right: 0;
+        margin-top: 4px;
     }
 
-    .dish-item button {
-        font-size: 13px;
-        padding: 8px 14px;
-        margin-top: 10px;
-    }
-
-    /* ── КОРЗИНА МОДАЛ ── */
-    .cart-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 16px;
-    }
-
-    .cart-item {
-        flex-wrap: wrap;
-    }
-
-    .cart-item-info h3 {
-        padding-left: 10px;
-        margin-top: 0;
-        font-size: 15px;
-    }
-
-    .cart-item-info .description {
-        padding-left: 10px;
-    }
-
-    .cart-item-quantity {
-        padding-left: 0;
-        margin-top: 10px;
-        justify-content: flex-end;
-    }
-
-    .cart-item-actions p {
+    /* Кнопка "в корзину" — внизу карточки */
+    .dish-info .add-to-cart-btn {
+        margin-top: auto;
+        width: 100%;
+        font-size: 11px;
+        padding: 7px 8px;
         margin-left: 0;
-        margin-top: 0;
+        margin-right: 0;
+        border-radius: 8px;
     }
 
-    .cart-item-actions {
-        flex-wrap: wrap;
-        gap: 6px;
+    /* ── МОДАЛКА КОРЗИНЫ ── */
+    .cart-modal-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        position: fixed !important;
+        bottom: var(--bottom-nav-height) !important;
+        left: 0 !important;
+        right: 0 !important;
+        border-radius: 20px 20px 0 0 !important;
+        max-height: 90vh;
+        overflow-y: auto;
     }
+
+    #cart-modal {
+        align-items: flex-end !important;
+    }
+
+    /* ── DASHBOARD ── */
+    .dashboard-section {
+        margin: 12px;
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .dashboard-section h2 {
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .dashboard-tabs {
+        gap: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .dashboard-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .user-form input {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Бонусы */
+    .bonus-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .bonus-balance-value { font-size: 36px; }
+
+    /* История заказов */
+    .order-history-meta {
+        grid-template-columns: 1fr;
+    }
+
+    /* ── ФУТЕР ── */
+    .footer {
+        height: auto;
+        padding: 16px;
+        margin-bottom: 0;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .social-left, .social-right {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .footlogo img { width: 60px; }
+
+    /* ── LOGIN ── */
+    body:has(.wrapper) {
+        display: block;
+        padding: 80px 16px 30px;
+        padding-bottom: 30px; /* на login нет bottom nav */
+    }
+
+    .wrapper {
+        width: 100%;
+        max-width: 440px;
+        height: auto !important;
+        min-height: auto !important;
+        margin: 0 auto;
+        overflow: visible;
+    }
+
+    .wrapper.active { height: auto !important; }
+
+    .wrapper .form-box {
+        padding: 24px 20px;
+        transform: none !important;
+    }
+
+    .wrapper .form-box.register {
+        position: relative;
+        transform: none !important;
+        display: none;
+    }
+
+    .wrapper.active .form-box.login {
+        display: none;
+        transform: none !important;
+    }
+
+    .wrapper.active .form-box.register {
+        display: block;
+        transform: none !important;
+    }
+
+    .name-fields { flex-direction: column; }
+    .name-fields .input-box { width: 100%; }
+
+    /* ── ADMIN ORDERS ── */
+    .admin-section { padding: 12px; }
+
+    .orders-controls {
+        flex-direction: column;
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .stats-panel {
+        width: 100%;
+        gap: 8px;
+    }
+
+    .stat-card {
+        flex: 1;
+        padding: 10px 12px;
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+    }
+
+    .stat-card i { font-size: 18px; }
+    .stat-value { font-size: 20px; }
+    .stat-label { font-size: 10px; }
+
+    .order-card { padding: 14px; }
+    .order-header { flex-wrap: wrap; gap: 8px; }
+    .order-number { font-size: 15px; }
+    .order-info { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .info-label { font-size: 11px; }
+    .info-value { font-size: 13px; }
+
+    .order-items-preview { flex-wrap: wrap; gap: 6px; }
+    .item-preview { font-size: 12px; padding: 6px 10px; }
+
+    .order-footer { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .btn-view-details { width: 100%; justify-content: center; }
+
+    /* Модалка деталей заказа */
+    .order-details-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        border-radius: 20px 20px 0 0;
+        max-height: 92vh;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    #order-details-modal {
+        align-items: flex-end !important;
+    }
+
+    .detail-grid { grid-template-columns: 1fr; gap: 10px; }
+
+    .order-progress { overflow-x: auto; padding: 16px 0; }
+    .progress-label { font-size: 9px; }
+    .progress-dot { width: 28px; height: 28px; font-size: 12px; }
+
+    /* ── ADMIN STATISTICS ── */
+    .statistics-section { padding: 12px; }
+
+    .stats-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .stats-header h2 { font-size: 20px; }
+
+    .period-filter {
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .period-filter select { flex: 1; }
+
+    #customDateRange {
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+    #customDateRange input { flex: 1; min-width: 120px; }
+
+    .stats-overview {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+
+    .stat-icon { width: 44px; height: 44px; font-size: 18px; }
+    .stat-value { font-size: 22px; }
+
+    .charts-grid { grid-template-columns: 1fr; }
+
+    .top-dishes-grid { grid-template-columns: 1fr; }
+
+    /* ── STAFF SCANNER ── */
+    .scanner-main { margin: 16px auto; padding: 0 12px 20px; }
+
+    /* ── ORDER SUCCESS ── */
+    .success-main { padding: 20px 12px 80px; }
+    .success-actions { flex-direction: column; }
 }
 
 /* =============================================
-   МАЛЕНЬКИЕ ТЕЛЕФОНЫ: до 420px — 1 колонка
+   МАЛЕНЬКИЕ ТЕЛЕФОНЫ: до 420px
    ============================================= */
 @media (max-width: 420px) {
-
     .dishes {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .dish-item img { height: 110px; }
+    .dish-info h3 { font-size: 12px; }
+
+    .stats-overview { grid-template-columns: 1fr; }
+}
+
+/* =============================================
+   PAGEUSER — ГЛАВНАЯ СТРАНИЦА
+   ============================================= */
+@media (max-width: 768px) {
+
+    /* ── HERO ── */
+    .hero {
+        height: 50vh;
+        min-height: 280px;
+    }
+
+    .main-title { font-size: 38px; }
+
+    .description {
+        font-size: 13px;
+        padding: 0 16px;
+        line-height: 1.5;
+    }
+
+    /* ── О НАС ── */
+    .next-container {
+        height: auto !important;
+        padding: 30px 20px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .background-image1 { display: none; }
+
+    .ellipse {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 20px;
+    }
+
+    .details {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        width: 100%;
+        text-align: center;
+    }
+
+    .about-us {
+        font-size: 28px;
+        padding-bottom: 10px;
+    }
+
+    .additional-text {
+        font-size: 13px;
+        line-height: 1.6;
+        text-align: left;
+    }
+
+    /* ── КАТЕГОРИИ ── */
+    .new-container {
+        height: auto !important;
+        flex-wrap: wrap;
+        padding: 20px 12px 60px;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .inner-container {
+        margin: 0;
+        width: 72px;
+        padding: 12px 8px;
+        border-radius: 14px;
+    }
+
+    .inner-container img { width: 42px; height: 42px; }
+    .inner-container p { font-size: 12px; margin: 4px 0 0; }
+
+    .review-menu-rectangle {
+        width: 200px;
+        height: 40px;
+        bottom: 14px;
+    }
+
+    .reviewmenu { font-size: 14px; }
+
+    /* ── ОБЖАРОЧНЫЙ ЦЕХ ── */
+    .roasting-section { padding: 20px 16px; }
+    .roasting-title h1 { font-size: 20px; letter-spacing: 2px; }
+    .roasting-title p { font-size: 13px; margin-top: 10px; }
+    .roasting-media video { width: 100%; height: auto; }
+
+    /* ── ТОРТЫ ── */
+    .order-cakes {
+        flex-direction: column;
+        padding: 20px 16px;
+        gap: 20px;
+    }
+
+    .text-content { max-width: 100%; }
+    .text-content h3 { font-size: 24px; margin-left: 0; text-align: center; }
+    .text-content p { font-size: 14px; margin-left: 0; text-align: center; line-height: 1.6; }
+
+    .gallery-container { width: 100%; height: 240px; }
+
+    /* ── ФИЛИАЛЫ ── */
+    .ourbranches-section { padding: 16px; }
+    .our-branches h1 { font-size: 20px; letter-spacing: 2px; }
+
+    .branches-section { padding: 0 12px 20px; }
+
+    .branch-container {
+        grid-template-columns: 1fr !important;
+        grid-auto-rows: auto;
+        margin-bottom: 12px;
+    }
+
+    .branch-gallery { height: 200px; }
+
+    .branch-info { padding: 14px; }
+    .branch-info p { font-size: 13px; text-align: center; }
+    .gis-link img { width: 32px; }
+
+    /* ── FOOTER ── */
+    .footer { height: auto; padding: 14px; }
+    .footer-content { flex-direction: column; gap: 10px; text-align: center; }
+    .social-left, .social-right { margin: 0; justify-content: center; }
+    .social-icon img { width: 22px; }
+    .small-text { font-size: 13px; }
+    .footlogo img { width: 55px; }
+}
+@media (max-width: 768px) {
+
+    /* ── ФИЛЬТР КАТЕГОРИЙ ── */
+    .menu-filter-bar {
+        display: flex;
+        overflow-x: auto;
+        gap: 8px;
+        padding: 10px 12px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        background: #EFD9A2;
+        position: sticky;
+        top: 56px;
+        z-index: 50;
+        box-shadow: 0 10px 10px -10px rgba(97, 3, 3, 0.5);
+    }
+
+    .menu-filter-bar::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+        flex-shrink: 0;
+        padding: 7px 16px;
+        border-radius: 20px;
+        border: 1.5px solid #610303;
+        background: #EFD9A2;
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'Montserrat', sans-serif;
+        color: #610303;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+    }
+
+    .filter-chip.active {
+        background: #610303;
+        color: white;
+        border-color: #610303;
+    }
+
+    /* Скрываем старую навигацию категорий на мобилке */
+    .menu-categories { display: none; }
+
+    /* ── КАРТОЧКИ 2 В РЯД ── */
+    .dishes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
         padding: 12px;
     }
 
     .dish-item {
-        min-height: auto;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .dish-item img {
-        height: 200px;
+        height: 120px;
+        width: 100%;
+        object-fit: cover;
     }
 
-    .menu-section h2 {
-        font-size: 22px;
+    .dish-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 8px 10px 10px;
+        height: auto;
+    }
+
+    .dish-info h3 {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0 0 3px;
+        line-height: 1.3;
+        color: #222;
+    }
+
+    .dish-info .description {
+        font-size: 11px;
+        color: #999;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        flex: 1;
+        margin-bottom: 6px;
+    }
+
+    .dish-info .volume {
+        font-size: 11px;
+        color: #bbb;
+        margin-bottom: 4px;
+    }
+
+    .price {
+        font-size: 15px;
+        font-weight: 700;
+        color: #610303;
+        padding-right: 0;
+        text-align: left;
+        margin-bottom: 6px;
+    }
+
+    .add-to-cart-btn {
+        width: 100%;
+        margin: 0;
+        font-size: 12px;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: auto;
+    }
+
+    /* Заголовки секций */
+    .menu-container .menu-section h2 {
+        font-size: 18px;
+        padding: 12px 12px 4px;
+        color: #610303;
+    }
+
+    /* Поиск */
+    .menu-search-wrapper {
+        margin: 10px 12px 0;
+        max-width: 100%;
     }
 }
 
-/* =============================================
-   HAMBURGER — скрыт на десктопе по умолчанию
-   ============================================= */
-.hamburger-btn {
-    display: none;
-}
-
-.mobile-nav-drawer {
-    display: none;
+/* Десктоп — скрываем filter-bar */
+@media (min-width: 769px) {
+    .menu-filter-bar { display: none; }
 }

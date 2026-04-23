@@ -31,7 +31,11 @@ function openEditModal(dishId) {
 
             // Показываем текущее изображение
             if (dish.imageUrl) {
-                document.getElementById('currentImage').src = dish.imageUrl;
+                const finalSrc = dish.imageUrl.startsWith('http') 
+             ? dish.imageUrl 
+            : BACKEND_URL + dish.imageUrl;
+
+                document.getElementById('currentImage').src = finalSrc;
                 document.getElementById('currentImagePreview').style.display = 'block';
             } else {
                 document.getElementById('currentImagePreview').style.display = 'none';
@@ -140,4 +144,17 @@ async function handleEditSubmit(event) {
 // Вызываем инициализацию при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
     initEditHandlers();
+});
+
+function logout() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+    window.location.href = 'login-register.html';
+}
+
+// logout-button может отсутствовать на этой странице
+document.getElementById('logout-button')?.addEventListener('click', function (event) {
+    event.preventDefault();
+    logout();
 });

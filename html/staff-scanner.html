@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сканер QR — Adriano Coffee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/staff-scanner.css">
+</head>
+<body>
+
+<header class="scanner-header">
+    <div class="logo">
+        <img src="/images/logo.png" alt="Adriano Coffee">
+    </div>
+    <div class="header-right">
+        <span id="staff-name" class="staff-name"></span>
+        <a href="#" id="logout-btn" class="btn-logout">
+            <i class="fas fa-sign-out-alt"></i> Выйти
+        </a>
+    </div>
+</header>
+
+<main class="scanner-main">
+
+    <!-- Шаг 1: Сканирование -->
+    <div id="step-scan" class="scanner-step active">
+        <div class="step-title">
+            <div class="step-number">1</div>
+            <h2>Сканируйте QR-код клиента</h2>
+        </div>
+
+        <div class="qr-reader-wrapper">
+            <div id="qr-reader"></div>
+            <div class="scan-overlay">
+                <div class="scan-frame"></div>
+            </div>
+        </div>
+
+        <div class="manual-entry">
+            <p>Или введите ID клиента вручную:</p>
+            <div class="manual-input-row">
+                <input type="number" id="manual-user-id" placeholder="ID пользователя">
+                <button onclick="lookupUser(document.getElementById('manual-user-id').value)">
+                    <i class="fas fa-search"></i> Найти
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шаг 2: Информация о клиенте -->
+    <div id="step-client" class="scanner-step" style="display:none;">
+        <div class="step-title">
+            <div class="step-number">2</div>
+            <h2>Информация о клиенте</h2>
+        </div>
+
+        <div class="client-card">
+            <div class="client-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="client-info">
+                <div class="client-name" id="client-name">—</div>
+                <div class="client-balance">
+                    <i class="fas fa-star"></i>
+                    Баланс: <strong id="client-balance">0</strong> баллов
+                </div>
+            </div>
+        </div>
+
+        <div class="amount-section">
+            <label for="purchase-amount">Сумма покупки (сом):</label>
+            <input type="number" id="purchase-amount" placeholder="Например: 1500" min="1">
+            <div class="points-preview" id="points-preview" style="display:none;">
+                <i class="fas fa-star"></i>
+                Будет начислено: <strong id="points-to-earn">0</strong> баллов
+            </div>
+        </div>
+
+        <div class="step-actions">
+            <button class="btn-credit" onclick="creditPoints()">
+                <i class="fas fa-star"></i> Начислить баллы
+            </button>
+            <button class="btn-back-scan" onclick="resetScanner()">
+                <i class="fas fa-arrow-left"></i> Назад
+            </button>
+        </div>
+    </div>
+
+    <!-- Шаг 3: Успех -->
+    <div id="step-success" class="scanner-step" style="display:none;">
+        <div class="success-card">
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+            <h2>Баллы начислены!</h2>
+            <div class="success-details">
+                <div class="success-row">
+                    <span>Клиент:</span>
+                    <strong id="success-name">—</strong>
+                </div>
+                <div class="success-row">
+                    <span>Сумма покупки:</span>
+                    <strong id="success-amount">—</strong>
+                </div>
+                <div class="success-row highlight">
+                    <span>Начислено баллов:</span>
+                    <strong id="success-points">—</strong>
+                </div>
+                <div class="success-row">
+                    <span>Новый баланс:</span>
+                    <strong id="success-balance">—</strong>
+                </div>
+            </div>
+            <button class="btn-new-scan" onclick="resetScanner()">
+                <i class="fas fa-qrcode"></i> Новое сканирование
+            </button>
+        </div>
+    </div>
+
+</main>
+
+<nav class="mobile-bottom-nav">
+    <a href="manager-menu.html" class="bottom-nav-item">
+        <i class="fas fa-utensils"></i>
+        <span>Меню</span>
+    </a>
+    <a href="manager-orders.html" class="bottom-nav-item">
+        <i class="fas fa-clipboard-list"></i>
+        <span>Заказы</span>
+    </a>
+    <a href="staff-scanner.html" class="bottom-nav-item active">
+        <i class="fas fa-qrcode"></i>
+        <span>Сканер</span>
+    </a>
+    <a href="#" class="bottom-nav-item" onclick="localStorage.clear(); window.location.href='login-register.html'">
+        <i class="fas fa-user"></i>
+        <span>Профиль</span>
+    </a>
+</nav>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="/js/config.js"></script>
+<script src="/js/staff-scanner.js"></script>
+</body>
+</html>

@@ -441,3 +441,181 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== НОВЫЕ СТАТУСЫ ===== */
+.status-PAID       { background: #e8f5e9; color: #2e7d32; }
+.status-CONFIRMED  { background: #e3f2fd; color: #1565c0; }
+.status-PREPARING  { background: #f3e5f5; color: #6a1b9a; }
+.status-DELIVERING { background: #fff3e0; color: #e65100; }
+.status-DELIVERED  { background: #e8f5e9; color: #1b5e20; }
+.status-CANCELLED  { background: #fce4ec; color: #880e4f; }
+
+/* ===== КНОПКИ ДЕЙСТВИЙ В МОДАЛКЕ ===== */
+.status-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-status-change {
+    width: 100%;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+}
+
+/* Кнопка подтверждения/продвижения — бордовая */
+.btn-confirm {
+    background: #610303;
+    color: white;
+    box-shadow: 0 4px 12px rgba(97, 3, 3, 0.2);
+}
+
+.btn-confirm:hover {
+    background: #8b0000;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(97, 3, 3, 0.3);
+}
+
+.btn-confirm:active {
+    transform: translateY(0);
+}
+
+/* Кнопка отмены с возвратом — красная outline */
+.btn-cancel {
+    background: white;
+    color: #c62828;
+    border: 2px solid #c62828;
+    box-shadow: none;
+}
+
+.btn-cancel:hover {
+    background: #fce4ec;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.15);
+}
+
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+/* Иконки в кнопках */
+.btn-status-change i {
+    font-size: 16px;
+}
+
+/* Разделитель между кнопками */
+.status-actions-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 4px 0;
+}
+
+/* Финальный статус — серое сообщение */
+.status-final-message {
+    text-align: center;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #95a5a6;
+    font-size: 14px;
+}
+
+/* ===== ИНДИКАТОР ПРОГРЕССА ЗАКАЗА ===== */
+.order-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.order-progress::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+    flex: 1;
+}
+
+.progress-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.progress-dot.active {
+    background: #610303;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(97, 3, 3, 0.15);
+}
+
+.progress-dot.done {
+    background: #2e7d32;
+    color: white;
+}
+
+.progress-label {
+    font-size: 11px;
+    color: #7f8c8d;
+    text-align: center;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.progress-label.active {
+    color: #610303;
+    font-weight: 700;
+}
+
+.progress-label.done {
+    color: #2e7d32;
+}
+.order-totals { display: flex; flex-direction: column; gap: 8px; }
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    padding: 4px 0;
+}
+
+.bonus-used-row {
+    background: #f0fff4;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #2e7d32;
+    font-size: 14px;
+}

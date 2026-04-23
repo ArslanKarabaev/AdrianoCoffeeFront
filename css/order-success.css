@@ -1,0 +1,217 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f5f0e8;
+    min-height: 100vh;
+}
+
+.success-header {
+    background: #610303;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.success-header img { height: 44px; }
+
+.success-main {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 30px 16px 60px;
+}
+
+/* ── Герой ── */
+.success-hero {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.success-circle {
+    width: 80px;
+    height: 80px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 36px;
+    color: white;
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.success-hero h1 {
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.success-subtitle { font-size: 14px; color: #888; }
+
+/* ── Загрузка ── */
+.loading-state {
+    text-align: center;
+    padding: 30px;
+    color: #999;
+}
+
+.loading-state i { font-size: 28px; margin-bottom: 10px; display: block; }
+
+/* ── Карточки ── */
+.order-meta-card, .detail-card, .total-card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+}
+
+.order-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.order-meta-row:last-child { border-bottom: none; }
+
+.meta-label { font-size: 13px; color: #999; }
+.meta-value { font-size: 14px; color: #333; font-weight: 500; }
+
+.order-id-value { font-size: 18px; font-weight: 700; color: #610303; }
+
+.status-badge {
+    background: #fff8e1;
+    color: #f57f17;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ── Детали ── */
+.detail-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #610303;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-text { font-size: 14px; color: #555; line-height: 1.5; }
+
+/* ── Состав ── */
+.order-items-list { display: flex; flex-direction: column; gap: 12px; }
+
+.order-item-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.item-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.item-name { font-size: 14px; color: #333; font-weight: 500; }
+.item-qty  { font-size: 12px; color: #999; }
+.item-subtotal { font-size: 14px; font-weight: 600; color: #333; white-space: nowrap; }
+
+/* ── Итого ── */
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.main-total {
+    font-size: 17px;
+    font-weight: 700;
+    color: #333;
+    border-top: 1.5px solid #eee;
+    padding-top: 12px;
+    margin-top: 4px;
+}
+
+.total-amount { color: #610303; font-size: 20px; }
+
+.bonus-row { color: #2e7d32; }
+.bonus-amount { font-weight: 600; color: #4CAF50; }
+
+.bonus-earned-banner {
+    margin-top: 12px;
+    background: #fffbf0;
+    border: 1.5px solid #f0d080;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bonus-earned-banner i { color: #f5a623; }
+.bonus-earned-banner strong { color: #333; }
+
+/* ── Кнопки ── */
+.success-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-menu, .btn-orders {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+}
+
+.btn-menu {
+    background: #610303;
+    color: white;
+}
+
+.btn-orders {
+    background: white;
+    color: #610303;
+    border: 1.5px solid #610303;
+}
+
+.btn-menu:hover, .btn-orders:hover { opacity: 0.85; }
+
+@media (max-width: 400px) {
+    .success-actions { flex-direction: column; }
+}

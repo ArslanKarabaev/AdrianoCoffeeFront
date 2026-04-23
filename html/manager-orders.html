@@ -33,14 +33,14 @@
         <div class="filter-panel">
             <label class="filter-label">Фильтр по статусу:</label>
             <select id="statusFilter" class="status-select">
-                <option value="ALL">Все заказы</option>
-                <option value="PENDING">Ожидают подтверждения</option>
-                <option value="CONFIRMED">Подтверждённые</option>
-                <option value="PREPARING">Готовятся</option>
-                <option value="READY">Готовы</option>
-                <option value="DELIVERED">Доставлены</option>
-                <option value="CANCELLED">Отменённые</option>
-            </select>
+            <option value="ALL">Все заказы</option>
+            <option value="PAID">Оплаченные</option>
+            <option value="CONFIRMED">Подтверждённые</option>
+            <option value="PREPARING">Готовятся</option>
+            <option value="DELIVERING">У курьера</option>
+            <option value="DELIVERED">Доставлены</option>
+            <option value="CANCELLED">Отменённые</option>
+        </select>
         </div>
 
         <div class="stats-panel">
@@ -85,6 +85,25 @@
     </div>
 </div>
 
+<nav class="mobile-bottom-nav">
+    <a href="manager-menu.html" class="bottom-nav-item">
+        <i class="fas fa-utensils"></i>
+        <span>Меню</span>
+    </a>
+    <a href="manager-orders.html" class="bottom-nav-item active">
+        <i class="fas fa-clipboard-list"></i>
+        <span>Заказы</span>
+    </a>
+    <a href="staff-scanner.html" class="bottom-nav-item">
+        <i class="fas fa-qrcode"></i>
+        <span>Сканер</span>
+    </a>
+    <a href="#" class="bottom-nav-item" onclick="localStorage.clear(); window.location.href='login-register.html'">
+        <i class="fas fa-user"></i>
+        <span>Профиль</span>
+    </a>
+</nav>
+
 <!-- Футер -->
 <footer class="footer">
     <div class="footer-content">
@@ -106,6 +125,7 @@
     </div>
 </footer>
 
+<script src="/js/config.js"></script>
 <script src="/js/manager-orders.js"></script>
 </body>
 </html>

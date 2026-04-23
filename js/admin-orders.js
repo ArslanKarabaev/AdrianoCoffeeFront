@@ -1,11 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== ADMIN ORDERS ЗАГРУЖЕН ===');
-
     const token = localStorage.getItem('authToken');
     const userRole = localStorage.getItem('userRole');
-    const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
 
-    // Проверка авторизации и роли
     if (!token || (userRole !== 'ADMIN' && userRole !== 'admin')) {
         alert('Доступ запрещён');
         window.location.href = 'login-register.html';
@@ -17,59 +13,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadOrders();
 
-    // Обработчик фильтра
-    document.getElementById('statusFilter').addEventListener('change', function(e) {
+    document.getElementById('statusFilter')?.addEventListener('change', function(e) {
         currentFilter = e.target.value;
         renderOrders(filterOrders(allOrders, currentFilter));
     });
 
-    // Обработчик выхода
     document.getElementById('logout-button')?.addEventListener('click', function(e) {
         e.preventDefault();
-        logout();
+        localStorage.clear();
+        window.location.href = 'login-register.html';
     });
 
-    // Загрузить все заказы
+    // ───── ЗАГРУЗКА ────────────────────────────
     function loadOrders() {
         showLoading();
-
         fetch(BACKEND_URL + '/api/v2/AdrianoCoffee/Admin/getAllOrders', {
-            method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
         })
-            .then(response => {
-                if (!response.ok) throw new Error('Ошибка загрузки заказов');
-                return response.json();
-            })
+            .then(r => { if (!r.ok) throw new Error('Ошибка загрузки'); return r.json(); })
             .then(data => {
-                console.log('Orders loaded:', data);
                 allOrders = data.orders || [];
                 updateStatistics(allOrders);
                 renderOrders(filterOrders(allOrders, currentFilter));
             })
-            .catch(error => {
-                console.error('Ошибка:', error);
-                showError('Не удалось загрузить заказы');
-            });
+            .catch(() => showError('Не удалось загрузить заказы'));
     }
 
-    // Фильтровать заказы
     function filterOrders(orders, status) {
         if (status === 'ALL') return orders;
-        return orders.filter(order => order.status === status);
+        return orders.filter(o => o.status === status);
     }
 
-    // Обновить статистику
     function updateStatistics(orders) {
-        const pending = orders.filter(o => o.status === 'PENDING').length;
-        const confirmed = orders.filter(o => o.status === 'CONFIRMED' || o.status === 'PREPARING').length;
-
-        document.getElementById('pendingCount').textContent = pending;
-        document.getElementById('confirmedCount').textContent = confirmed;
+        document.getElementById('pendingCount').textContent =
+            orders.filter(o => o.status === 'PAID').length;
+        document.getElementById('confirmedCount').textContent =
+            orders.filter(o => o.status === 'CONFIRMED' || o.status === 'PREPARING').length;
         document.getElementById('totalCount').textContent = orders.length;
     }
 
-    // Отрисовать заказы
+    // ───── ОТРИСОВКА КАРТОЧЕК ──────────────────
     function renderOrders(orders) {
         const container = document.getElementById('orders-container');
 
@@ -79,44 +62,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     <i class="fas fa-clipboard-list"></i>
                     <h3>Заказов нет</h3>
                     <p>Пока нет заказов для отображения</p>
-                </div>
-            `;
+                </div>`;
             return;
         }
 
-        container.innerHTML = orders.map(order => createOrderCard(order)).join('');
+        container.innerHTML = orders.map(createOrderCard).join('');
 
-        // Добавляем обработчики
         document.querySelectorAll('.btn-view-details').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', e => {
                 e.stopPropagation();
-                const orderId = btn.dataset.orderId;
-                showOrderDetails(orderId);
+                showOrderDetails(btn.dataset.orderId);
             });
         });
 
         document.querySelectorAll('.order-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const orderId = card.dataset.orderId;
-                showOrderDetails(orderId);
-            });
+            card.addEventListener('click', () => showOrderDetails(card.dataset.orderId));
         });
     }
 
-    // Создать карточку заказа
     function createOrderCard(order) {
-        const statusText = getStatusText(order.status);
+        const statusInfo = getStatusInfo(order.status);
         const date = new Date(order.createdAt).toLocaleString('ru-RU');
 
         const itemsPreview = order.items.slice(0, 3).map(item =>
             `<div class="item-preview">
                 <i class="fas fa-utensils"></i>
-                ${item.menuItemName} x${item.quantity}
+                ${item.menuItemName} ×${item.quantity}
             </div>`
         ).join('');
-
-        const moreItems = order.items.length > 3 ?
-            `<div class="item-preview">+${order.items.length - 3} ещё</div>` : '';
+        const moreItems = order.items.length > 3
+            ? `<div class="item-preview">+${order.items.length - 3} ещё</div>` : '';
 
         return `
             <div class="order-card" data-order-id="${order.id}">
@@ -125,9 +100,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="order-number">Заказ #${order.id}</div>
                         <div class="order-date">${date}</div>
                     </div>
-                    <span class="order-status status-${order.status}">${statusText}</span>
+                    <span class="order-status status-${order.status}">
+                        ${statusInfo.emoji} ${statusInfo.text}
+                    </span>
                 </div>
-                
                 <div class="order-info">
                     <div class="info-item">
                         <span class="info-label">Гость</span>
@@ -146,53 +122,51 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="info-value">${order.userEmail}</span>
                     </div>
                 </div>
-
-                <div class="order-items-preview">
-                    ${itemsPreview}
-                    ${moreItems}
-                </div>
-
+                <div class="order-items-preview">${itemsPreview}${moreItems}</div>
                 <div class="order-footer">
-                    <div class="order-total">Итого: ${order.totalPrice} сом</div>
-                    <div class="order-actions">
-                        <button class="btn-view-details" data-order-id="${order.id}">
-                            <i class="fas fa-eye"></i> Подробнее
-                        </button>
-                    </div>
+                    <div class="order-total">${order.totalPrice} сом</div>
+                    <button class="btn-view-details" data-order-id="${order.id}">
+                        <i class="fas fa-eye"></i> Подробнее
+                    </button>
                 </div>
-            </div>
-        `;
+            </div>`;
     }
 
-    // Показать детали заказа
+    // ───── ДЕТАЛИ ЗАКАЗА ───────────────────────
     function showOrderDetails(orderId) {
         const order = allOrders.find(o => o.id == orderId);
         if (!order) return;
 
         const modal = document.getElementById('order-details-modal');
         const body = document.getElementById('order-details-body');
-
+        const statusInfo = getStatusInfo(order.status);
         const date = new Date(order.createdAt).toLocaleString('ru-RU');
-        const statusText = getStatusText(order.status);
 
-        const itemsHtml = order.items.map(item => `
+        const itemsHtml = order.items.map(item => {
+            const imgSrc = item.menuItemImage
+                ? (item.menuItemImage.startsWith('http') ? item.menuItemImage : BACKEND_URL + item.menuItemImage)
+                : BACKEND_URL + '/images/menu/default.jpg';
+            return `
             <div class="detail-item">
-                <div class="detail-item-image">
-                    <img src="${BACKEND_URL + item.menuItemImage}" ...>
-                </div>
+                <div class="detail-item-image"><img src="${imgSrc}" alt="${item.menuItemName}"></div>
                 <div class="detail-item-info">
                     <div class="detail-item-name">${item.menuItemName}</div>
                     <div class="detail-item-price">${item.menuItemPrice} сом × ${item.quantity}</div>
                 </div>
                 <div class="detail-item-subtotal">${item.subtotal} сом</div>
-            </div>
-        `).join('');
+            </div>`;
+        }).join('');
 
         body.innerHTML = `
             <div class="order-detail-header">
                 <h2>Заказ #${order.id}</h2>
-                <span class="order-status status-${order.status}">${statusText}</span>
+                <span class="order-status status-${order.status}">
+                    ${statusInfo.emoji} ${statusInfo.text}
+                </span>
             </div>
+
+            <!-- Прогресс-бар -->
+            ${buildProgressBar(order.status)}
 
             <div class="detail-section">
                 <h3>Информация о госте</h3>
@@ -225,94 +199,177 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="detail-section">
                     <h3>Комментарий</h3>
                     <p>${order.comment}</p>
-                </div>
-            ` : ''}
+                </div>` : ''}
 
             <div class="detail-section">
                 <h3>Состав заказа</h3>
-                <div class="order-items-detail">
-                    ${itemsHtml}
+                <div class="order-items-detail">${itemsHtml}</div>
+            </div>
+
+           <div class="detail-section">
+                <div class="order-totals">
+                    <div class="total-row">
+                        <span>Сумма заказа:</span>
+                        <strong>${order.totalPrice} сом</strong>
+                    </div>
+                    ${order.pointsUsed > 0 ? `
+                    <div class="total-row bonus-used-row">
+                        <span><i class="fas fa-star"></i> Оплачено баллами:</span>
+                        <strong style="color:#4CAF50;">− ${order.pointsUsed} сом</strong>
+                    </div>
+                    <div class="total-row">
+                        <span>Итого картой:</span>
+                        <strong style="color:#610303;">${order.totalPrice - order.pointsUsed} сом</strong>
+                    </div>` : `
+                    <div class="total-row">
+                        <span>Итого:</span>
+                        <strong style="color:#610303;">${order.totalPrice} сом</strong>
+                    </div>`}
                 </div>
             </div>
 
-            <div class="detail-section">
-                <h3>Итого: ${order.totalPrice} сом</h3>
-            </div>
-
-            <div class="detail-section">
-                <h3>Изменить статус</h3>
-                <div class="status-change-form">
-                    <select id="newStatus">
-                        <option value="PENDING" ${order.status === 'PENDING' ? 'selected' : ''}>Ожидает</option>
-                        <option value="CONFIRMED" ${order.status === 'CONFIRMED' ? 'selected' : ''}>Подтверждён</option>
-                        <option value="PREPARING" ${order.status === 'PREPARING' ? 'selected' : ''}>Готовится</option>
-                        <option value="READY" ${order.status === 'READY' ? 'selected' : ''}>Готов</option>
-                        <option value="DELIVERED" ${order.status === 'DELIVERED' ? 'selected' : ''}>Доставлен</option>
-                        <option value="CANCELLED" ${order.status === 'CANCELLED' ? 'selected' : ''}>Отменён</option>
-                    </select>
-                    <button onclick="updateOrderStatus(${order.id})">
-                        <i class="fas fa-save"></i> Сохранить
-                    </button>
-                </div>
-            </div>
+            <!-- Кнопки действий -->
+            ${buildStatusActions(order)}
         `;
 
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
 
-    // Обновить статус заказа (глобальная функция)
-    window.updateOrderStatus = function(orderId) {
-        const newStatus = document.getElementById('newStatus').value;
+    // ───── ПРОГРЕСС-БАР ────────────────────────
+    function buildProgressBar(currentStatus) {
+        if (currentStatus === 'CANCELLED') return '';
+
+        const steps = [
+            { status: 'PAID',       emoji: '💳', label: 'Оплачен' },
+            { status: 'CONFIRMED',  emoji: '✅', label: 'Подтверждён' },
+            { status: 'PREPARING',  emoji: '👨‍🍳', label: 'Готовится' },
+            { status: 'DELIVERING', emoji: '🚚', label: 'Курьер' },
+            { status: 'DELIVERED',  emoji: '🎉', label: 'Доставлен' },
+        ];
+
+        const currentIndex = steps.findIndex(s => s.status === currentStatus);
+
+        const stepsHtml = steps.map((step, i) => {
+            let dotClass = '';
+            let labelClass = '';
+            if (i < currentIndex) { dotClass = 'done'; labelClass = 'done'; }
+            else if (i === currentIndex) { dotClass = 'active'; labelClass = 'active'; }
+
+            return `
+            <div class="progress-step">
+                <div class="progress-dot ${dotClass}">${step.emoji}</div>
+                <div class="progress-label ${labelClass}">${step.label}</div>
+            </div>`;
+        }).join('');
+
+        return `
+            <div class="detail-section">
+                <div class="order-progress">${stepsHtml}</div>
+            </div>`;
+    }
+
+    // ───── КНОПКИ ДЕЙСТВИЙ ─────────────────────
+    function buildStatusActions(order) {
+        const nextStatus = getNextStatus(order.status);
+        const isFinal = order.status === 'DELIVERED' || order.status === 'CANCELLED';   
+
+        if (isFinal) {
+            return `
+                <div class="detail-section">
+                    <div class="status-final-message">
+                        <i class="fas fa-check-circle"></i>
+                        Заказ завершён — дальнейшие действия недоступны
+                    </div>
+                </div>`;
+        }
+
+        const currentInfo = getStatusInfo(order.status); // ← было nextStatus
+
+        let html = `<div class="detail-section"><h3>Действия</h3><div class="status-actions">`;
+
+        html += `
+            <button class="btn-status-change btn-confirm"
+                    onclick="changeOrderStatus(${order.id}, '${nextStatus}')">
+                ${currentInfo.actionText}
+            </button>`;
+
+        if (order.status === 'PAID') {
+            html += `<hr class="status-actions-divider">`;
+            html += `
+                <button class="btn-status-change btn-cancel"
+                        onclick="cancelOrderWithRefund(${order.id})">
+                    <i class="fas fa-times-circle"></i> Отменить и вернуть деньги
+                </button>`;
+        }
+
+        html += `</div></div>`;
+        return html;
+    }
+
+    // ───── ГЛОБАЛЬНЫЕ ФУНКЦИИ ──────────────────
+    window.changeOrderStatus = function(orderId, newStatus) {
+        const info = getStatusInfo(newStatus);
+        if (!confirm(`Изменить статус заказа #${orderId} на "${info.text}"?`)) return;
 
         fetch(BACKEND_URL + `/api/v2/AdrianoCoffee/Admin/updateOrderStatus/${orderId}`, {
             method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus })
         })
-            .then(response => {
-                if (!response.ok) throw new Error('Ошибка обновления статуса');
-                return response.json();
-            })
+            .then(r => r.json())
             .then(data => {
-                document.getElementById('order-details-modal').style.display = 'none';
-                loadOrders();
+                if (data.success) {
+                    document.getElementById('order-details-modal').style.display = 'none';
+                    document.body.style.overflow = '';
+                    loadOrders();
+                } else {
+                    alert('Ошибка: ' + data.message);
+                }
             })
-            .catch(error => {
-                alert('Ошибка обновления статуса');
-            });
+            .catch(() => alert('Ошибка обновления статуса'));
     };
 
-    // Закрытие модалки
-    document.getElementById('close-order-modal')?.addEventListener('click', () => {
-        document.getElementById('order-details-modal').style.display = 'none';
-        document.body.style.overflow = '';
-    });
-    // Закрытие при клике вне модалки
-    const modal = document.getElementById('order-details-modal');
-    if (modal) {
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-                document.body.style.overflow = '';
-            }
-        });
+    window.cancelOrderWithRefund = function(orderId) {
+        if (!confirm(`Отменить заказ #${orderId} и вернуть деньги клиенту?`)) return;
+
+        fetch(BACKEND_URL + `/api/v2/Payment/refund/${orderId}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('order-details-modal').style.display = 'none';
+                    document.body.style.overflow = '';
+                    loadOrders();
+                    alert('Заказ отменён. Возврат будет зачислен в течение 5-10 рабочих дней.');
+                } else {
+                    alert('Ошибка возврата: ' + data.message);
+                }
+            })
+            .catch(() => alert('Ошибка отмены заказа'));
+    };
+
+    // ───── ВСПОМОГАТЕЛЬНЫЕ ─────────────────────
+    function getStatusInfo(status) {
+        const map = {
+            'PAID':       { text: 'Оплачен',          emoji: '💳', actionText: '✅ Подтвердить заказ' },
+            'CONFIRMED':  { text: 'Подтверждён',       emoji: '✅', actionText: '👨‍🍳 Начать готовить' },
+            'PREPARING':  { text: 'Готовится',         emoji: '👨‍🍳', actionText: '🚚 Передать курьеру' },
+            'DELIVERING': { text: 'Передан курьеру',   emoji: '🚚', actionText: '🎉 Отметить доставленным' },
+            'DELIVERED':  { text: 'Доставлен',         emoji: '🎉', actionText: null },
+            'CANCELLED':  { text: 'Отменён',           emoji: '❌', actionText: null },
+        };
+        return map[status] || { text: status, emoji: '📦', actionText: null };
     }
 
-    // Вспомогательные функции
-    function getStatusText(status) {
-        const statuses = {
-            'PENDING': 'Ожидает',
-            'CONFIRMED': 'Подтверждён',
-            'PREPARING': 'Готовится',
-            'READY': 'Готов',
-            'DELIVERED': 'Доставлен',
-            'CANCELLED': 'Отменён'
+    function getNextStatus(current) {
+        const map = {
+            'PAID': 'CONFIRMED', 'CONFIRMED': 'PREPARING',
+            'PREPARING': 'DELIVERING', 'DELIVERING': 'DELIVERED'
         };
-        return statuses[status] || status;
+        return map[current] || null;
     }
 
     function showLoading() {
@@ -320,22 +377,26 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="loading-state">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Загрузка заказов...</p>
-            </div>
-        `;
+            </div>`;
     }
 
     function showError(message) {
         document.getElementById('orders-container').innerHTML = `
             <div class="empty-orders">
                 <i class="fas fa-exclamation-triangle"></i>
-                <h3>Ошибка</h3>
-                <p>${message}</p>
-            </div>
-        `;
+                <h3>Ошибка</h3><p>${message}</p>
+            </div>`;
     }
 
-    function logout() {
-        localStorage.clear();
-        window.location.href = 'login-register.html';
-    }
+    document.getElementById('close-order-modal')?.addEventListener('click', () => {
+        document.getElementById('order-details-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    });
+
+    document.getElementById('order-details-modal')?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
 });

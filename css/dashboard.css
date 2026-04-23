@@ -392,3 +392,475 @@ body {
     color: white;
     margin: 0;
 }
+
+/* ===== ВКЛАДКИ ДАШБОРДА ===== */
+
+.dashboard-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-bottom: 2px solid rgba(97, 3, 3, 0.2);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    color: #999;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+    width: auto;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #610303;
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+}
+
+.tab-btn.active {
+    color: #610303;
+}
+
+.tab-btn.active::after {
+    transform: scaleX(1);
+}
+
+.tab-btn:hover {
+    color: #610303;
+}
+
+.tab-btn i {
+    margin-right: 8px;
+}
+
+/* Контент вкладок */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ===== ИСТОРИЯ ЗАКАЗОВ ===== */
+
+.orders-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.order-history-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(97, 3, 3, 0.08);
+    border: 1px solid rgba(97, 3, 3, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.order-history-card:hover {
+    box-shadow: 0 4px 16px rgba(97, 3, 3, 0.15);
+}
+
+.order-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0e8e8;
+    cursor: pointer;
+}
+
+.order-history-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.order-history-number {
+    font-size: 16px;
+    font-weight: 700;
+    color: #610303;
+}
+
+.order-history-date {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.order-history-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.order-history-total {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+/* Статусы для истории */
+.order-history-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.history-status-PAID       { background: #e8f5e9; color: #2e7d32; }
+.history-status-CONFIRMED  { background: #e3f2fd; color: #1565c0; }
+.history-status-PREPARING  { background: #f3e5f5; color: #6a1b9a; }
+.history-status-DELIVERING { background: #fff3e0; color: #e65100; }
+.history-status-DELIVERED  { background: #e8f5e9; color: #1b5e20; }
+.history-status-CANCELLED  { background: #fce4ec; color: #880e4f; }
+
+/* Раскрываемые детали */
+.order-history-body {
+    display: none;
+    padding: 16px 20px;
+    background: #fdf8f8;
+    border-top: 1px solid #f0e8e8;
+}
+
+.order-history-body.open {
+    display: block;
+}
+
+.order-history-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.order-history-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-history-item-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.order-history-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.order-history-item-name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.order-history-item-qty {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.order-history-item-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #610303;
+}
+
+.order-history-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #e8d0d0;
+}
+
+.order-history-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.order-history-meta-label {
+    font-size: 11px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.order-history-meta-value {
+    font-size: 13px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Пустое состояние */
+.orders-empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: #bbb;
+}
+
+.orders-empty i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+    display: block;
+}
+
+.orders-empty p {
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.orders-empty a {
+    color: #610303;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.orders-empty a:hover {
+    text-decoration: underline;
+}
+
+/* Загрузка */
+.orders-loading {
+    text-align: center;
+    padding: 40px;
+    color: #bbb;
+}
+
+.orders-loading i {
+    font-size: 28px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* ── Бонусная вкладка ── */
+.bonus-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.bonus-balance-card {
+    background: linear-gradient(135deg, #610303, #8b0000);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: white;
+}
+
+.bonus-balance-icon {
+    font-size: 36px;
+    opacity: 0.9;
+}
+
+.bonus-balance-label {
+    display: block;
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 4px;
+}
+
+.bonus-balance-value {
+    display: block;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.bonus-balance-sub {
+    display: block;
+    font-size: 14px;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.bonus-qr-card {
+    background: #fff;
+    border: 1.5px solid #eee;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.qr-hint {
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+    line-height: 1.4;
+}
+
+#qr-code-container {
+    display: none;
+    justify-content: center;
+    padding: 8px;
+    background: white;
+    border-radius: 8px;
+}
+
+.btn-show-qr {
+    background: #610303;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.btn-show-qr:hover { background: #8b0000; }
+
+/* История */
+.bonus-history-section h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bonus-tx-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.bonus-tx-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.bonus-earned { background: #e8f5e9; color: #4CAF50; }
+.bonus-spent  { background: #fce4ec; color: #e53935; }
+
+.bonus-tx-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.bonus-tx-desc { font-size: 14px; color: #333; font-weight: 500; }
+.bonus-tx-date { font-size: 12px; color: #999; }
+
+.bonus-tx-points {
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 600px) {
+    .bonus-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+.password-modal-content {
+    max-width: 420px;
+    width: 90%;
+    padding: 32px 28px !important; 
+    border-radius: 16px;
+    margin: 20px;
+}
+
+.password-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.password-modal-header h3 {
+    font-size: 18px;
+    color: #610303;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.password-modal-content .form-group {
+    margin-bottom: 16px;
+}
+
+.password-modal-content .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.password-modal-content .form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.password-modal-content .form-group input:focus {
+    border-color: #610303;
+}
+
+.password-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.password-modal-actions .btn {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.password-modal-actions .btn-primary {
+    background: #610303;
+    color: white;
+    border: none;
+}

@@ -3,7 +3,7 @@
 // Глобальные переменные для фильтрации
 let allUsers = []; // Все пользователи из базы
 let filteredUsers = []; // Отфильтрованные пользователи
-const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
+
 
 
 // Инициализация обработчиков

@@ -238,14 +238,61 @@ header {
     text-decoration: underline;
 }
 
-/*.input-box input[type="date"] {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 1em;
-    color: #4c0303;
-    font-weight: 600;
-    padding: 0 35px 0 5px;
-}*/
+@media (max-width: 768px) {
+
+    /* Скрываем навигацию */
+    header .navigation {
+        display: none !important;
+    }
+
+    /* Двигаем форму ниже */
+    body:has(.wrapper) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 16px 30px;
+    }
+
+    .wrapper {
+        width: 100%;
+        max-width: 420px;
+        height: auto !important;
+        min-height: auto !important;
+        overflow: visible;
+    }
+
+    .wrapper.active {
+        height: auto !important;
+    }
+
+    .wrapper .form-box {
+        padding: 28px 22px;
+        transform: none !important;
+    }
+
+    .wrapper .form-box.register {
+        position: relative;
+        transform: none !important;
+        display: none;
+    }
+
+    .wrapper.active .form-box.login {
+        display: none;
+        transform: none !important;
+    }
+
+    .wrapper.active .form-box.register {
+        display: block;
+        transform: none !important;
+    }
+
+    /* Логотип в хедере */
+    header .logo img {
+        width: 60px;
+        margin-left: 0;
+    }
+
+    header {
+        padding: 12px 20px;
+    }
+}

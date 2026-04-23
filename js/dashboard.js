@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
+    
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
 
@@ -118,18 +118,13 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchUserData();
 
     // Обработчик выхода из системы
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            // Очищаем все данные
-            localStorage.clear();
-
-            // Перенаправляем на главную страницу (БЕЗ проверки токена)
-            window.location.href = 'pageuser.html'; // или 'index.html'
-        });
-    }
+    document.querySelectorAll('.logout-button').forEach(btn => {
+    btn.addEventListener('click', function(event) {
+        event.preventDefault();
+        localStorage.clear();
+        window.location.href = 'login-register.html';
+    });
+});
 
     // Обработчик для кнопки "Изменить"
     const changeBtn = document.getElementById("changeBtn");
@@ -145,62 +140,83 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Обработчик для кнопки "Изменить пароль"
-    const changePasswordBtn = document.getElementById("changePasswordBtn");
-    const savePasswordBtn = document.getElementById("savePasswordBtn");
+// ── МОДАЛКА СМЕНЫ ПАРОЛЯ ──────────────────────
+const changePasswordBtn = document.getElementById('changePasswordBtn');
+const passwordModal = document.getElementById('password-modal');
+const closePasswordModal = document.getElementById('close-password-modal');
+const cancelPasswordBtn = document.getElementById('cancelPasswordBtn');
+const savePasswordBtn = document.getElementById('savePasswordBtn');
+const passwordMessage = document.getElementById('password-modal-message');
 
-    if (changePasswordBtn && savePasswordBtn) {
-        changePasswordBtn.addEventListener("click", () => {
-            document.querySelectorAll(".password-field").forEach(field => {
-                field.disabled = false;
-            });
-            savePasswordBtn.style.display = "inline-block";
-            changePasswordBtn.style.display = "none";
-        });
+function openPasswordModal() {
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    passwordMessage.textContent = '';
+    passwordModal.style.display = 'flex';
+}
 
-        savePasswordBtn.addEventListener("click", () => {
-            const newPassword = document.getElementById("newPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+function closeModal() {
+    passwordModal.style.display = 'none';
+}
 
-            if (!newPassword || !confirmPassword) {
-                alert("Заполните все поля пароля");
-                return;
-            }
+if (changePasswordBtn) changePasswordBtn.addEventListener('click', openPasswordModal);
+if (closePasswordModal) closePasswordModal.addEventListener('click', closeModal);
+if (cancelPasswordBtn) cancelPasswordBtn.addEventListener('click', closeModal);
 
-            if (newPassword !== confirmPassword) {
-                alert("Пароли не совпадают");
-                return;
-            }
+// Закрытие по клику вне модалки
+passwordModal?.addEventListener('click', (e) => {
+    if (e.target === passwordModal) closeModal();
+});
 
-            fetch(BACKEND_URL + '/api/v2/AdrianoCoffee/User/ChangePassword', {
-                method: "PATCH",
+if (savePasswordBtn) {
+    savePasswordBtn.addEventListener('click', async () => {
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (!newPassword || !confirmPassword) {
+            passwordMessage.style.color = 'red';
+            passwordMessage.textContent = 'Заполните все поля';
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            passwordMessage.style.color = 'red';
+            passwordMessage.textContent = 'Пароли не совпадают';
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            passwordMessage.style.color = 'red';
+            passwordMessage.textContent = 'Пароль должен быть не менее 6 символов';
+            return;
+        }
+
+        savePasswordBtn.disabled = true;
+        savePasswordBtn.textContent = 'Сохраняем...';
+
+        try {
+            const response = await fetch(BACKEND_URL + '/api/v2/AdrianoCoffee/User/ChangePassword', {
+                method: 'PATCH',
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    newPassword: newPassword,
-                    confirmPassword: confirmPassword
-                })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка при изменении пароля');
-                    }
-                    return safeJsonParse(response);
-                })
-                .then(() => {
-                    document.querySelectorAll(".password-field").forEach(field => {
-                        field.disabled = true;
-                        field.value = '';
-                    });
-                    savePasswordBtn.style.display = "none";
-                    changePasswordBtn.style.display = "inline-block";
-                })
-                .catch(error => {
-                    console.error("Ошибка:", error);
-                    alert("Ошибка при изменении пароля");
-                });
-        });
-    }
+                body: JSON.stringify({ newPassword, confirmPassword })
+            });
+
+            if (!response.ok) throw new Error('Ошибка');
+
+            passwordMessage.style.color = 'green';
+            passwordMessage.textContent = 'Пароль успешно изменён!';
+            setTimeout(() => closeModal(), 1500);
+
+        } catch (e) {
+            passwordMessage.style.color = 'red';
+            passwordMessage.textContent = 'Ошибка при изменении пароля';
+        } finally {
+            savePasswordBtn.disabled = false;
+            savePasswordBtn.textContent = 'Сохранить';
+        }
+    });
+}
 });

@@ -1,7 +1,7 @@
 // ===== УНИВЕРСАЛЬНЫЙ ЗАГРУЗЧИК МЕНЮ =====
 
-const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
 const API_URL = BACKEND_URL + '/api/v2/AdrianoCoffee/Menu/getAllMenu';
+let allMenuItems = [];
 
 function getUserRole() {
     return localStorage.getItem('userRole') || 'GUEST';
@@ -19,12 +19,13 @@ async function fetchAndRenderMenu() {
         const menuItems = await response.json();
         console.log('Загружено блюд:', menuItems.length);
 
-        menuItems.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+        allMenuItems = menuItems;
+        allMenuItems.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+        renderMenu(allMenuItems);
+        initSearch();
+        initCategoryFilter();
 
-        const containers = document.querySelectorAll('.dishes');
-        containers.forEach(c => c.innerHTML = '');
-
-        const userRole = getUserRole();
+        
 
         menuItems.forEach(item => {
             const container = document.getElementById(`container-${item.category}`);
@@ -33,7 +34,7 @@ async function fetchAndRenderMenu() {
             }
         });
 
-        if (userRole === 'ADMIN' || userRole === 'admin'|| userRole === 'MANAGER') {
+        if (userRole === 'ADMIN' || userRole === 'admin' || userRole === 'MANAGER') {
             initAdminHandlers();
         }
     } catch (error) {
@@ -59,28 +60,44 @@ function createDishCard(item, userRole) {
             </div>
         `;
     } else if (isAuthenticated()) {
-        buttons = `<button class="add-to-cart-btn" onclick="addToCart(${item.id}, '${item.name}', ${item.price})"><i class="fas fa-shopping-cart"></i> Добавить в корзину</button>`;
+        buttons = `<button class="add-to-cart-btn" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">
+            <i class="fas fa-shopping-cart"></i> Добавить в корзину
+        </button>`;
     } else {
-        buttons = `<button class="add-to-cart-btn guest" onclick="promptLogin()"><i class="fas fa-shopping-cart"></i> Добавить в корзину</button>`;
+        buttons = `<button class="add-to-cart-btn guest" onclick="promptLogin()">
+            <i class="fas fa-shopping-cart"></i> Добавить в корзину
+        </button>`;
     }
 
-    // <img src="${item.imageUrl ? BACKEND_URL + item.imageUrl : BACKEND_URL + '/images/menu/default.jpg'}" alt="${item.name}">
+    const imgSrc = item.imageUrl
+        ? (item.imageUrl.startsWith('http') ? item.imageUrl : BACKEND_URL + item.imageUrl)
+        : BACKEND_URL + '/images/menu/default.jpg';
+
     div.innerHTML = `
-        <img src="${item.imageUrl ? item.imageUrl : BACKEND_URL + '/images/menu/default.jpg'}" alt="${item.name}">
+        <img src="${imgSrc}" alt="${item.name}">
         <div class="dish-info">
             <div class="name-and-gr">
                 <h3>${item.name}</h3>
-                <p class="volume">${item.volume || ''}</p> 
+                <p class="volume">${item.volume || ''}</p>
             </div>
             <p class="description">${item.description || ''}</p>
             <p class="price">${item.price} сом</p>
             ${buttons}
         </div>
     `;
+
+    // Вешаем обработчик на кнопку через JS (не inline onclick)
+    const addBtn = div.querySelector('.add-to-cart-btn:not(.guest)');
+    if (addBtn) {
+        addBtn.addEventListener('click', () => {
+            addToCart(item.id, item.name, item.price);
+        });
+    }
+
     return div;
 }
 
-// ADMIN HANDLERS
+// ───── ADMIN HANDLERS ──────────────────────────
 let currentDishId = null;
 let currentDishElement = null;
 
@@ -100,7 +117,7 @@ function initAdminHandlers() {
     });
 }
 
-// DELETE
+// ───── DELETE ──────────────────────────────────
 function openDeleteModal(id, el) {
     currentDishId = id;
     currentDishElement = el;
@@ -139,8 +156,9 @@ async function confirmDelete() {
         if (!response.ok) throw new Error('Ошибка удаления');
         currentDishElement?.remove();
         closeDeleteModal();
+        showNotification('Блюдо удалено');
     } catch (error) {
-        alert('Не удалось удалить блюдо');
+        showNotification('Не удалось удалить блюдо', 'error');
     }
 }
 
@@ -150,21 +168,48 @@ function closeDeleteModal() {
     currentDishElement = null;
 }
 
-
-
-// USER FUNCTIONS
-function addToCart(id, name, price) {
+// ───── ADD TO CART ─────────────────────────────
+async function addToCart(id, name, price) {
     const token = localStorage.getItem('authToken');
     if (!token) return promptLogin();
 
-    fetch(BACKEND_URL + '/api/v2/Cart/add', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ menuItemId: id, quantity: 1 })
-    })
-        .then(r => r.json())
-        .then(() => alert(`${name} добавлен в корзину!`))
-        .catch(() => alert('Ошибка добавления в корзину'));
+    try {
+        const response = await fetch(BACKEND_URL + '/api/v2/Cart/add', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ menuItemId: id, quantity: 1 })
+        });
+
+        if (!response.ok) throw new Error('Ошибка добавления');
+
+        // Toast уведомление вместо alert
+        showNotification(`${name} добавлен в корзину`);
+
+        // Обновляем счётчик сразу — без открытия корзины
+        refreshCartCount();
+
+    } catch (error) {
+        showNotification('Ошибка добавления в корзину', 'error');
+    }
+}
+
+// Обновить только счётчик корзины (тихо, без рендера)
+async function refreshCartCount() {
+    const token = localStorage.getItem('authToken');
+    if (!token) return;
+
+    try {
+        const response = await fetch(BACKEND_URL + '/api/v2/Cart', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        updateCartCount((data.items || []).length);
+    } catch (e) {
+        // молча игнорируем
+    }
 }
 
 function promptLogin() {
@@ -173,7 +218,115 @@ function promptLogin() {
     }
 }
 
-// INIT
+// ───── RENDER (выделено из fetchAndRenderMenu) ────
+function renderMenu(items) {
+    const containers = document.querySelectorAll('.dishes');
+    containers.forEach(c => c.innerHTML = '');
+
+    const userRole = getUserRole();
+
+    items.forEach(item => {
+        const container = document.getElementById(`container-${item.category}`);
+        if (container) {
+            container.appendChild(createDishCard(item, userRole));
+        }
+    });
+
+    // Скрываем секции без результатов
+    document.querySelectorAll('.menu-container .menu-section').forEach(section => {
+        const dishes = section.querySelector('.dishes');
+        if (dishes) {
+            section.style.display = dishes.children.length === 0 ? 'none' : '';
+        }
+    });
+
+    if (userRole === 'ADMIN' || userRole === 'MANAGER') {
+        initAdminHandlers();
+    }
+}
+
+// ───── SEARCH ─────────────────────────────────
+function initSearch() {
+    const input = document.getElementById('menu-search-input');
+    const clearBtn = document.getElementById('menu-search-clear');
+    if (!input) return;
+
+    input.addEventListener('input', () => {
+        const query = input.value.trim().toLowerCase();
+        clearBtn.style.display = query ? '' : 'none';
+
+        if (!query) {
+        renderMenu(allMenuItems);
+        const noResults = document.getElementById('search-no-results');
+        if (noResults) noResults.style.display = 'none';
+        return;
+}
+
+        const filtered = allMenuItems.filter(item =>
+            item.name.toLowerCase().split(' ').some(word => word.startsWith(query))
+        );
+        renderMenu(filtered);
+
+        // Показываем «не найдено» если пусто
+        const noResults = document.getElementById('search-no-results');
+        if (noResults) noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+    });
+
+    clearBtn.addEventListener('click', () => {
+        input.value = '';
+        clearBtn.style.display = 'none';
+        renderMenu(allMenuItems);
+        const noResults = document.getElementById('search-no-results');
+        if (noResults) noResults.style.display = 'none';
+    });
+}
+
+// ───── ФИЛЬТР КАТЕГОРИЙ ───────────────────────
+function initCategoryFilter() {
+    const chips = document.querySelectorAll('.filter-chip');
+    if (!chips.length) return;
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active'); // ← только кликнутая
+
+            const category = chip.dataset.category;
+            filterByCategory(category);
+
+            // Сбрасываем поиск при смене категории
+            const input = document.getElementById('menu-search-input');
+            const clearBtn = document.getElementById('menu-search-clear');
+            if (input) input.value = '';
+            if (clearBtn) clearBtn.style.display = 'none';
+            const noResults = document.getElementById('search-no-results');
+            if (noResults) noResults.style.display = 'none';
+        });
+    });
+}
+
+function filterByCategory(category) {
+    const sections = document.querySelectorAll('.menu-container .menu-section');
+
+    if (category === 'ALL') {
+        // Показываем все секции
+        sections.forEach(s => s.style.display = '');
+        renderMenu(allMenuItems);
+        return;
+    }
+
+    // Скрываем все секции кроме выбранной
+    sections.forEach(s => {
+        const container = s.querySelector('.dishes');
+        if (container && container.id === `container-${category}`) {
+            s.style.display = '';
+        } else {
+            s.style.display = 'none';
+        }
+    });
+}
+
+// ───── INIT ────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
     fetchAndRenderMenu();
 });

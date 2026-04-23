@@ -10,77 +10,127 @@
     <link rel="stylesheet" href="/css/mobile.css">
 </head>
 <body>
-<!-- Хедер с навигацией -->
+
 <header class="header">
     <div class="logo">
         <img src="/images/logo.png" alt="Логотип" />
     </div>
-
     <nav class="nav">
         <a href="pageuser.html#aboutus">О нас</a>
         <a href="menuuser.html">Меню</a>
         <a href="pageuser.html#order">Торты на заказ</a>
         <a href="pageuser.html#ourbranches">Филиалы</a>
         <a href="pageuser.html#ourbranches">Контакты</a>
-        <a href="#" id="open-cart-button" onclick="event.preventDefault(); openCart();">
-            <i class="fas fa-shopping-cart"></i> Корзина
-        </a>
-        <a href="login-register.html" id="logout-button">Выйти</a>
+        <a href="#" id="logout-button" class="logout-button">Выйти</a>
     </nav>
 </header>
 
-<!-- Секция личного кабинета -->
 <section class="dashboard-section">
     <h2>Личный кабинет</h2>
-    <form id="userForm" class="user-form">
-        <div class="form-group">
-            <label for="firstName">Имя:</label>
-            <input type="text" id="firstName" name="firstName" disabled required>
-        </div>
-        <div class="form-group">
-            <label for="secondName">Фамилия:</label>
-            <input type="text" id="secondName" name="secondName" disabled required>
-        </div>
 
-        <div class="form-group">
-            <label for="birthday">Дата рождения:</label>
-            <input type="date" id="birthday" name="birthday" disabled required>
-        </div>
-        <div class="form-group">
-            <label for="email">Почта:</label>
-            <input type="email" id="email" name="email" autocomplete="email" disabled required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Номер телефона:</label>
-            <input type="tel" id="phone" name="phone" autocomplete="phone" disabled required>
-        </div>
-        <div class="form-group">
-            <label for="age">Возраст:</label>
-            <input type="number" id="age" name="age" autocomplete="age" disabled>
-        </div>
+    <!-- Вкладки -->
+    <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab('profile')">
+            <i class="fas fa-user"></i> Профиль
+        </button>
+        <button class="tab-btn" onclick="switchTab('orders')">
+            <i class="fas fa-clipboard-list"></i> Мои заказы
+        </button>
+        <button class="tab-btn" onclick="switchTab('bonus')">
+            <i class="fas fa-star"></i> Бонусы
+        </button>
+    </div>
 
-        <!-- Секция смены пароля -->
-        <div class="password-section">
-            <h3>Смена пароля</h3>
+    <!-- Вкладка: Профиль -->
+    <div id="tab-profile" class="tab-content active">
+        <form id="userForm" class="user-form">
             <div class="form-group">
-                <label for="newPassword">Новый пароль:</label>
-                <input type="password" id="newPassword" class="password-field" placeholder="Новый пароль" disabled>
+                <label for="firstName">Имя:</label>
+                <input type="text" id="firstName" name="firstName" disabled required>
             </div>
             <div class="form-group">
-                <label for="confirmPassword">Подтвердите пароль:</label>
-                <input type="password" id="confirmPassword" class="password-field" placeholder="Подтвердите новый пароль" disabled>
+                <label for="secondName">Фамилия:</label>
+                <input type="text" id="secondName" name="secondName" disabled required>
             </div>
-            <button type="button" id="changePasswordBtn" class="btn">Изменить пароль</button>
-            <button type="button" id="savePasswordBtn" class="btn" style="display:none;">Сохранить пароль</button>
+            <div class="form-group">
+                <label for="birthday">Дата рождения:</label>
+                <input type="date" id="birthday" name="birthday" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="email">Почта:</label>
+                <input type="email" id="email" name="email" autocomplete="email" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Номер телефона:</label>
+                <input type="tel" id="phone" name="phone" autocomplete="phone" disabled required>
+            </div>
+            <div class="form-group">
+                <label for="age">Возраст:</label>
+                <input type="number" id="age" name="age" disabled>
+            </div>
+
+            <div class="password-section">
+                <button type="button" id="changePasswordBtn" class="btn">
+                    <i class="fas fa-lock"></i> Изменить пароль
+                </button>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="changeBtn" class="btn">Изменить данные</button>
+                <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Сохранить изменения</button>
+            </div>
+        </form>
+        <div id="responseMessage" class="response-message"></div>
+    </div>
+
+    <!-- Вкладка: Мои заказы -->
+    <div id="tab-orders" class="tab-content">
+        <div id="orders-history-container">
+            <div class="orders-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Загрузка заказов...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вкладка: Бонусы -->
+<div id="tab-bonus" class="tab-content">
+
+    <!-- Баланс + QR -->
+    <div class="bonus-dashboard">
+
+        <div class="bonus-balance-card">
+            <div class="bonus-balance-icon"><i class="fas fa-star"></i></div>
+            <div class="bonus-balance-info">
+                <span class="bonus-balance-label">Ваш баланс</span>
+                <span class="bonus-balance-value" id="bonus-balance-display">—</span>
+                <span class="bonus-balance-sub">баллов</span>
+            </div>
         </div>
 
-        <!-- Кнопки управления формой -->
-        <div class="form-actions">
-            <button type="button" id="changeBtn" class="btn">Изменить данные</button>
-            <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Сохранить изменения</button>
+        <div class="bonus-qr-card">
+            <p class="qr-hint">Покажите QR-код кассиру для начисления баллов за покупку в филиале</p>
+            <div id="qr-code-container"></div>
+            <button class="btn-show-qr" id="show-qr-btn" onclick="toggleQr()">
+                <i class="fas fa-qrcode"></i> Показать QR-код
+            </button>
         </div>
-    </form>
-    <div id="responseMessage" class="response-message"></div>
+
+    </div>
+
+    <!-- История транзакций -->
+    <div class="bonus-history-section">
+        <h3><i class="fas fa-history"></i> История баллов</h3>
+        <div id="bonus-history-container">
+            <div class="orders-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Загрузка...</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 </section>
 
 <!-- Модальное окно корзины -->
@@ -90,28 +140,23 @@
             <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
             <span class="close" id="close-cart-modal">&times;</span>
         </div>
-
         <div id="cart-items-container" class="cart-items-container">
-            <!-- Товары загружаются через JS -->
             <div class="loading-state">
                 <i class="fas fa-spinner fa-spin"></i>
                 <p>Загрузка корзины...</p>
             </div>
         </div>
-
         <div id="empty-cart-state" class="empty-state" style="display: none;">
             <i class="fas fa-shopping-bag"></i>
             <h3>Корзина пуста</h3>
             <p>Добавьте товары из меню</p>
         </div>
-
         <div id="cart-summary" class="cart-summary" style="display: none;">
             <div class="summary-row">
                 <span>Итого:</span>
                 <span id="cart-total" class="total-price">0 сом</span>
             </div>
         </div>
-
         <div id="order-form-container" class="order-form-container" style="display: none;">
             <h3>Оформление заказа</h3>
             <form id="orderForm">
@@ -119,36 +164,68 @@
                     <label for="orderAddress">Адрес доставки: *</label>
                     <input type="text" id="orderAddress" required placeholder="Улица, дом, квартира">
                 </div>
-
                 <div class="form-group">
                     <label for="orderPhone">Телефон: *</label>
                     <input type="tel" id="orderPhone" required placeholder="+996 555 123 456">
                 </div>
-
                 <div class="form-group">
                     <label for="orderComment">Комментарий:</label>
                     <textarea id="orderComment" rows="3" placeholder="Пожелания к заказу..."></textarea>
                 </div>
-
                 <div class="form-buttons">
                     <button type="submit" class="btn-submit">
-                        <i class="fas fa-check"></i> Оформить заказ
+                        <i class="fas fa-credit-card"></i> Перейти к оплате
                     </button>
                     <button type="button" class="btn-clear-cart" id="clearCartBtn">
-                        <i class="fas fa-trash"></i> Очистить корзину
+                        <i class="fas fa-trash"></i> Очистить
                     </button>
                 </div>
             </form>
         </div>
+        <div id="stripe-payment-section" class="stripe-payment-section" style="display: none;">
+            <div class="stripe-payment-header">
+                <button class="btn-back" onclick="backToOrderForm()">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+                <h3>Оплата</h3>
+            </div>
+            <div class="payment-amount-row">
+                <span>К оплате:</span>
+                <span id="payment-total" class="payment-total">0 сом</span>
+            </div>
+            <div id="stripe-payment-element" class="stripe-element-container"></div>
+            <div class="test-card-hint">
+                <i class="fas fa-info-circle"></i>
+                Тест: <strong>4242 4242 4242 4242</strong> · любой CVV · любая дата
+            </div>
+            <button id="stripe-pay-btn" class="btn-pay" onclick="confirmStripePayment()">
+                <i class="fas fa-lock"></i> Оплатить
+            </button>
+        </div>
     </div>
 </div>
 
-
-
-<!-- Контейнер для уведомлений -->
 <div id="notifications" class="notifications-container"></div>
 
-<!-- Футер -->
+<nav class="mobile-bottom-nav">
+    <a href="menuuser.html" class="bottom-nav-item">
+        <i class="fas fa-utensils"></i>
+        <span>Меню</span>
+    </a>
+    <button class="bottom-nav-item bottom-nav-item-cart" onclick="openCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Корзина</span>
+    </button>
+    <a href="dashboard.html?tab=bonus" class="bottom-nav-item">
+        <i class="fas fa-qrcode"></i>
+        <span>QR-код</span>
+    </a>
+    <a href="dashboard.html" class="bottom-nav-item active">
+        <i class="fas fa-user"></i>
+        <span>Профиль</span>
+    </a>
+</nav>
+
 <footer class="footer">
     <div class="footer-content">
         <div class="social-left">
@@ -169,8 +246,37 @@
     </div>
 </footer>
 
-<!-- Подключение скриптов в конце для лучшей производительности -->
+<!-- Модалка смены пароля -->
+<div id="password-modal" class="modal" style="display:none;">
+    <div class="modal-content password-modal-content">
+        <div class="password-modal-header">
+            <h3><i class="fas fa-lock"></i> Изменить пароль</h3>
+            <span class="close" id="close-password-modal">&times;</span>
+        </div>
+        <div class="form-group">
+            <label>Новый пароль:</label>
+            <input type="password" id="newPassword" placeholder="Введите новый пароль">
+        </div>
+        <div class="form-group">
+            <label>Подтвердите пароль:</label>
+            <input type="password" id="confirmPassword" placeholder="Повторите новый пароль">
+        </div>
+        <div id="password-modal-message" style="font-size:13px; margin-top:8px; text-align:center;"></div>
+        <div class="password-modal-actions">
+            <button id="savePasswordBtn" class="btn btn-primary">Сохранить</button>
+            <button id="cancelPasswordBtn" class="btn">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/js/config.js"></script>
 <script src="/js/dashboard.js"></script>
 <script src="/js/cart-functionality.js"></script>
+<script src="/js/orders-history.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="/js/bonus-dashboard.js"></script>
+
 </body>
 </html>

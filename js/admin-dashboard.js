@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('authToken');
     const userId = localStorage.getItem('userId');
     const userRole = localStorage.getItem('userRole');
-    const BACKEND_URL = "https://adrianocoffee-backend.onrender.com";
+    
 
     console.log('authToken:', token ? 'Есть' : 'ОТСУТСТВУЕТ');
     console.log('userId:', userId);
@@ -138,11 +138,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Функция выхода
-    function logout() {
-        console.log('=== ВЫХОД ИЗ СИСТЕМЫ ===');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userRole');
-        window.location.href = 'login-register.html';
-    }
+   function logout() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+    window.location.href = 'login-register.html';
+}
+
+// logout-button может отсутствовать на этой странице
+document.getElementById('logout-button')?.addEventListener('click', function (event) {
+    event.preventDefault();
+    logout();
+});
 });

@@ -224,54 +224,111 @@
 }
 
 /* Форма заказа */
+/* Форма заказа */
 .order-form-container {
-    padding: 20px 30px;
+    padding: 20px 30px 28px;
 }
 
 .order-form-container h3 {
+    color: #610303;
+    margin-bottom: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.order-form-container .form-group {
+    margin-bottom: 14px;
+}
+
+.order-form-container .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #7D0505;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.order-form-container .form-group input,
+.order-form-container .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #e0c8c8;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
     color: #2c3e50;
-    margin-bottom: 20px;
+    background: #fdf8f8;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.order-form-container .form-group input:focus,
+.order-form-container .form-group textarea:focus {
+    border-color: #610303;
+    box-shadow: 0 0 0 3px rgba(97, 3, 3, 0.08);
+    background: #fff;
+}
+
+.order-form-container .form-group input::placeholder,
+.order-form-container .form-group textarea::placeholder {
+    color: #bbb;
+    font-size: 13px;
+}
+
+.order-form-container .form-group textarea {
+    resize: vertical;
+    min-height: 70px;
 }
 
 .form-buttons {
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+    margin-top: 18px;
 }
 
 .btn-submit,
 .btn-clear-cart {
-    flex: 1;
-    padding: 12px 20px;
+    padding: 10px 16px;
     border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: bold;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .btn-submit {
-    background: #2ecc71;
+    flex: 2;                    /* кнопка оформления шире */
+    background: #610303;
     color: white;
 }
 
 .btn-submit:hover {
-    background: #27ae60;
-    transform: translateY(-2px);
+    background: #8b0000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(97, 3, 3, 0.25);
 }
 
 .btn-clear-cart {
-    background: #e74c3c;
-    color: white;
+    flex: 1;
+    background: white;
+    color: #e74c3c;
+    border: 1.5px solid #e74c3c;  /* outline стиль — менее агрессивный */
 }
 
 .btn-clear-cart:hover {
-    background: #c0392b;
+    background: #fdf0f0;
+    transform: translateY(-1px);
 }
 
 /* Загрузка */
@@ -306,4 +363,155 @@
     .form-buttons {
         flex-direction: column;
     }
+}
+
+/* ===== СЕКЦИЯ ОПЛАТЫ STRIPE ===== */
+
+.stripe-payment-section {
+    padding: 20px 30px 28px;
+}
+
+.stripe-payment-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stripe-payment-header h3 {
+    margin: 0;
+    color: #610303;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.btn-back {
+    background: none;
+    border: 1.5px solid #e0c8c8;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #7D0505;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Montserrat', sans-serif;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: #fdf8f8;
+    border-color: #610303;
+}
+
+.payment-amount-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: #fdf8f8;
+    border-radius: 8px;
+    border: 1.5px solid #e8d0d0;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.payment-total {
+    font-size: 20px;
+    font-weight: 700;
+    color: #610303;
+}
+
+/* Контейнер для Stripe Elements */
+.stripe-element-container {
+    margin-bottom: 16px;
+    min-height: 44px;
+}
+
+/* Подсказка тестовой карты */
+.test-card-hint {
+    background: #fff8e1;
+    border: 1.5px solid #ffe082;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #795548;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.test-card-hint i {
+    color: #f57f17;
+    flex-shrink: 0;
+}
+
+/* Кнопка оплаты */
+.btn-pay {
+    width: 100%;
+    padding: 14px;
+    background: #610303;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+}
+
+.btn-pay:hover {
+    background: #8b0000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(97, 3, 3, 0.3);
+}
+
+.btn-pay:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+/* ── Бонусный блок ── */
+.bonus-block {
+    background: #fffbf0;
+    border: 1.5px solid #f0d080;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+}
+
+.bonus-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.bonus-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #610303;
+    cursor: pointer;
+}
+
+.bonus-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #666;
 }

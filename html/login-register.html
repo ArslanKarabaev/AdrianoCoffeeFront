@@ -24,9 +24,6 @@
     </header>
 
     <div class="wrapper">
-        <span class="icon-close">
-            <ion-icon name="close"></ion-icon>
-        </span>
         <div class="form-box login">
             <h2>Вход</h2>
             <form id="loginForm" action="#">
@@ -45,7 +42,6 @@
                     <label>Пароль</label>
                 </div>
                 <div class="remember-forgot">
-                    <label><input type="checkbox">Запомнить меня</label>
                     <a href="#">Забыли пароль?</a>
                 </div>
                 <button type="submit" class="btn"> Войти </button>
@@ -85,14 +81,14 @@
                     <span class="icon">
                         <ion-icon name="calendar"></ion-icon>
                     </span>
-                    <input type="date" required id="registerBirthdate" placeholder="ДД-ММ-ГГГГ">
+                    <input type="date" required id="registerBirthdate">
                     <label>Дата рождения</label>
                 </div>
                 
                 <div class="input-box">
                     <span class="icon">
                         <ion-icon name="mail"></ion-icon>
-                    </span>
+                    </span> 
                     <input type="email" id="registerEmail" required>
                     <label>Почта</label>
                 </div>
@@ -103,9 +99,6 @@
                     <input type="password" id="registerPassword" required>
                     <label>Пароль</label>
                 </div>
-                <!--<div class="remember-forgot">
-                    <label><input type="checkbox">Я согласен</label>
-                </div>-->
                 <button type="submit" class="btn"> Зарегистрироваться </button>
                 <div class="login-register">
                     <p>Уже есть аккаунт?<a href="#" class="login-link">Войти</a></p>
@@ -116,6 +109,7 @@
     </div>
 
 
+    <script src="/js/config.js"></script>
     <script src="/js/login-register.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
