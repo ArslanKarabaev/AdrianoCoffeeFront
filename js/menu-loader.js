@@ -9,7 +9,10 @@ if (typeof getDishDescription === 'undefined') {
 
 if (typeof t === 'undefined') {
     window.t = key => {
-        const fallback = { 'menu.add_to_cart': 'Добавить в корзину' };
+        const fallback = {
+            'menu.add_to_cart': 'Добавить в корзину',
+            'success.som': 'сом',
+        };
         return fallback[key] || key;
     };
 }
