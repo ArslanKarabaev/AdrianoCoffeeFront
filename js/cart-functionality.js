@@ -138,8 +138,14 @@ function renderCart(items, total) {
         <div class="cart-item">
             <div class="cart-item-image"><img src="${imgSrc}" alt="${item.menuItemName}"></div>
             <div class="cart-item-details">
-                <div class="cart-item-name">${item.menuItemName}</div>
-                <div class="cart-item-price">${item.menuItemPrice} сом</div>
+            
+                <div class="cart-item-name">${getDishName({
+                    name: item.menuItemName,
+                    nameEn: item.nameEn,
+                    nameKg: item.nameKg
+                })}</div>
+
+                <div class="cart-item-price">${item.menuItemPrice} ${t('success.som')}</div>
             </div>
             <div class="cart-item-controls">
                 <div class="quantity-control">
@@ -150,12 +156,12 @@ function renderCart(items, total) {
                 <button class="remove-item-btn" onclick="removeItem(${item.id})">
                     <i class="fas fa-trash"></i>
                 </button>
-                <div class="item-subtotal">${item.subtotal} сом</div>
+                <div class="item-subtotal">${item.subtotal} ${t('success.som')}</div>
             </div>
         </div>`;
     }).join('');
 
-    document.getElementById('cart-total').textContent = `${total} сом`;
+    document.getElementById('cart-total').textContent = `${total} ${t('success.som')}`;
     renderBonusBlock(total);
 }
 
@@ -170,7 +176,7 @@ async function changeQuantity(cartId, newQuantity) {
             body: JSON.stringify({ quantity: newQuantity })
         });
         loadCart();
-    } catch { showNotification('Ошибка обновления количества', 'error'); }
+    } catch { showNotification(t('cart.quantity_error'), 'error'); }
 }
 
 // ───── УДАЛИТЬ ТОВАР ───────────────────────────
@@ -182,8 +188,8 @@ async function removeItem(cartId) {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         loadCart();
-        showNotification('Товар удалён из корзины');
-    } catch { showNotification('Ошибка удаления товара', 'error'); }
+        showNotification(t('cart.item_removed'));
+    } catch { showNotification(t('cart.remove_error'), 'error'); }
 }
 
 // ───── ШАГ 1: ЗАПОЛНИТЬ АДРЕС → СОЗДАТЬ PAYMENT INTENT ──
@@ -203,7 +209,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
 
     const submitBtn = e.target.querySelector('.btn-submit');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Подготовка к оплате...';
+    submitBtn.textContent = t('cart.processing');
 
     try {
         const response = await fetch(BACKEND_URL + '/api/v2/Payment/create-intent', {
@@ -220,17 +226,17 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
 
         const data = await response.json();
         if (!data.success) {
-            showNotification(data.message || 'Ошибка создания платежа', 'error');
+            showNotification(data.message || t('cart.payment_error'), 'error');
             return;
         }
 
         showStripePaymentForm(data.clientSecret, data.pointsUsed || 0);
 
     } catch (error) {
-        showNotification('Ошибка: ' + error.message, 'error');
+        showNotification(t('cart.payment_error') + ': ' + error.message, 'error');
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-credit-card"></i> Перейти к оплате';
+        submitBtn.innerHTML = `<i class="fas fa-credit-card"></i> <span data-i18n="cart.to_payment">${t('cart.to_payment')}</span>`;
     }
 });
 
@@ -246,11 +252,11 @@ function showStripePaymentForm(clientSecret, pointsUsed = 0) {
     const total = document.getElementById('cart-total').textContent;
     const rawTotal = parseFloat(total.replace(/[^0-9.]/g, ''));
     const finalTotal = rawTotal - pointsUsed;
-    document.getElementById('payment-total').textContent = `${finalTotal} сом`;
+    document.getElementById('payment-total').textContent = `${finalTotal} ${t('success.som')}`;
     if (pointsUsed > 0) {
         document.getElementById('payment-total').insertAdjacentHTML('afterend',
             `<div style="font-size:12px;color:#4CAF50;margin-top:4px;">
-                Скидка по баллам: −${pointsUsed} сом
+                ${t('cart.discount')} −${pointsUsed} ${t('success.som')}
             </div>`);
     }
 
@@ -266,7 +272,7 @@ function showStripePaymentForm(clientSecret, pointsUsed = 0) {
 async function confirmStripePayment() {
     const payBtn = document.getElementById('stripe-pay-btn');
     payBtn.disabled = true;
-    payBtn.textContent = 'Обрабатываем...';
+    payBtn.textContent = t('cart.processing');
 
     const { error, paymentIntent } = await stripe.confirmPayment({
         elements: stripeElements,
@@ -277,32 +283,19 @@ async function confirmStripePayment() {
     if (error) {
         showNotification(error.message, 'error');
         payBtn.disabled = false;
-        payBtn.innerHTML = '<i class="fas fa-lock"></i> Оплатить';
+        payBtn.innerHTML = `<i class="fas fa-lock"></i> <span data-i18n="cart.pay">${t('cart.pay')}</span>`;
         return;
     }
 
     const token = localStorage.getItem('authToken');
     const pointsUsed = document.getElementById('stripe-payment-section').dataset.pointsUsed || '0';
 
-    try {
-        await fetch(BACKEND_URL + '/api/v2/Payment/confirm', {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                paymentIntentId: paymentIntent.id,
-                pointsUsed: pointsUsed
-            })
-        });
-    } catch (e) {
-        console.error('Ошибка подтверждения:', e);
-    }
-
    const confirmData = await fetch(BACKEND_URL + '/api/v2/Payment/confirm', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
             paymentIntentId: paymentIntent.id,
-            pointsUsed: pointsUsed
+            pointsUsed: parseInt(pointsUsed) || 0 
         })
     }).then(r => r.json());
 
@@ -314,7 +307,7 @@ async function confirmStripePayment() {
 
 // ───── ОЧИСТИТЬ КОРЗИНУ ────────────────────────
 document.getElementById('clearCartBtn')?.addEventListener('click', async () => {
-    if (!confirm('Очистить всю корзину?')) return;
+    if (!confirm(t('cart.clear_confirm'))) return;
     const token = localStorage.getItem('authToken');
     try {
         await fetch(BACKEND_URL + '/api/v2/Cart/clear', {
@@ -322,8 +315,8 @@ document.getElementById('clearCartBtn')?.addEventListener('click', async () => {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         loadCart();
-        showNotification('Корзина очищена');
-    } catch { showNotification('Ошибка очистки корзины', 'error'); }
+        showNotification(t('cart.cleared'));
+    } catch { showNotification(t('cart.clear_error'), 'error'); }
 });
 
 // ───── БОНУСНЫЕ БАЛЛЫ ─────────────────────────
@@ -354,12 +347,12 @@ function renderBonusBlock(cartTotal) {
     block.innerHTML = `
         <label class="bonus-label">
             <input type="checkbox" id="use-bonus-checkbox">
-            <span>Использовать бонусные баллы</span>
+            <span data-i18n="cart.use_bonus">${t('cart.use_bonus')}</span>
         </label>
         <div class="bonus-info">
-            <span>Баланс: <strong>${userBonusPoints} баллов</strong></span>
+            <span data-i18n="cart.balance">${t('cart.balance')}</span> <strong>${userBonusPoints} <span data-i18n="cart.points">${t('cart.points')}</span></strong></span>
             <span id="bonus-discount-text" style="display:none; color:#4CAF50;">
-                − <strong id="bonus-discount-amount">${maxSpend}</strong> сом
+                − <strong id="bonus-discount-amount">${maxSpend}</strong> ${t('success.som')}
             </span>
         </div>
     `;
@@ -385,7 +378,7 @@ function renderBonusBlock(cartTotal) {
                 displayRow = document.createElement('div');
                 displayRow.id = 'discounted-total-row';
                 displayRow.className = 'summary-row';
-                displayRow.innerHTML = `<span>К оплате:</span><span class="total-price" style="color:#4CAF50;">${rawTotal - discount} сом</span>`;
+                displayRow.innerHTML = `<span data-i18n="cart.total">${t('cart.total')}</span><span class="total-price" style="color:#4CAF50;">${rawTotal - discount} ${t('success.som')}</span>`;
                 summary.appendChild(displayRow);
             }
         } else {

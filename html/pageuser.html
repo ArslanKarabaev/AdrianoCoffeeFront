@@ -14,26 +14,34 @@
         <div class="logo">
             <img src="/images/logo.png" alt="Логотип" />
         </div>
-        
-        <nav class="nav">
-            <a href="pageuser.html#aboutus">О нас</a>
-            <a href="menuuser.html">Меню</a>
-            <a href="pageuser.html#order">Торты на заказ</a>
-            <a href="pageuser.html#ourbranches">Филиалы</a>
-            <a href="pageuser.html#ourbranches">Контакты</a>
-            <a href="dashboard.html"><i class="fas fa-user"></i></a>
 
+        <nav class="nav">
+            <a href="pageuser.html#aboutus" data-i18n="nav.about">О нас</a>
+            <a href="menuuser.html" data-i18n="nav.menu">Меню</a>
+            <a href="pageuser.html#order" data-i18n="nav.cakes">Торты на заказ</a>
+            <a href="pageuser.html#ourbranches" data-i18n="nav.branches">Филиалы</a>
+            <a href="pageuser.html#ourbranches" data-i18n="nav.contacts">Контакты</a>
+            <a href="dashboard.html"><i class="fas fa-user"></i></a>
+        
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" data-lang="kg" onclick="setLang('kg')">KG</button>
+        </div>
+        
         </nav>
-    </header>
+</header>
 
     <section class="hero">
-        <div class="overlay">
-            <h1 class="main-title">Adriano Coffee</h1>
-            <p class="description">Оставьте все мысли, которые отвлекают вас<br>
-                от прекрасного за дверями нашей кофейни<br>
-                и проведите время с близкими в Adriano Coffee.</p>
-        </div>
-    </section>
+    <div class="overlay">
+        <h1 class="main-title">Adriano Coffee</h1>
+        <p class="description" data-i18n="page.hero_desc">
+            Оставьте все мысли, которые отвлекают вас<br>
+            от прекрасного за дверями нашей кофейни<br>
+            и проведите время с близкими в Adriano Coffee.
+        </p>
+    </div>
+</section>
 
     <main>
         
@@ -44,8 +52,8 @@
                 <img src="/images/aboutuscoffee.jpg" alt="Ellipse Image">
             </div>
             <div class="details">
-                <h2 class="about-us">О нас</h2>
-                <p class="additional-text">
+                <h2 class="about-us" data-i18n="page.about_title">О нас</h2>
+                <p class="additional-text" data-i18n="page.about_text">
                     Добро пожаловать в наше кофейное заведение! Мы — команда настоящих энтузиастов, которые любят кофе и стремятся поделиться этой страстью с вами. Наша цель — создать уютное пространство, где каждый сможет насладиться высококачественным кофе и вкусной едой в приятной атмосфере.
                     Мы предлагаем широкий ассортимент кофе, приготовленных с использованием только лучших сортов кофейных зерен. Наши бариста — настоящие мастера своего дела, которые с любовью и вниманием готовят каждый заказ.
                     В нашем меню вы также найдете разнообразные десерты и легкие закуски, которые идеально дополнят ваш кофе. Мы уделяем особое внимание качеству ингредиентов и стараемся поддерживать местных производителей.
@@ -57,35 +65,34 @@
         <section class="new-container">
             <a href="menuuser.html#coffee-section" class="inner-container">
                 <img src="/images/cupofcoffee.png" alt="Кофе">
-                <p>Кофе</p>
+                <p data-i18n="page.cat_coffee">Кофе</p>
             </a>
             <a href="menuuser.html#breakfast-section" class="inner-container">
                 <img src="/images/breakfast.png" alt="Завтраки">
-                <p>Завтраки</p>
+                <p data-i18n="page.cat_breakfast">Завтраки</p>
             </a>
-                <a href="menuuser.html#teas-section" class="inner-container">
+            <a href="menuuser.html#teas-section" class="inner-container">
                 <img src="/images/tea.png" alt="Чай">
-                <p>Чай</p>
-                </a>
-                <a href="menuuser.html#soups-section" class="inner-container">
+                <p data-i18n="page.cat_tea">Чай</p>
+            </a>
+            <a href="menuuser.html#soups-section" class="inner-container">
                 <img src="/images/soup.png" alt="Супы">
-                <p>Супы</p>
+                <p data-i18n="page.cat_soups">Супы</p>
             </a>
-                <a href="menuuser.html#deserts-section" class="inner-container">
+            <a href="menuuser.html#deserts-section" class="inner-container">
                 <img src="/images/bake.png" alt="Выпечка">
-                <p>Выпечка</p>
+                <p data-i18n="page.cat_pastry">Выпечка</p>
             </a>
-            </div>
             <div class="review-menu-rectangle">
-                <a href="menuuser.html" class="reviewmenu">Посмотреть меню</a>
+                <a href="menuuser.html" class="reviewmenu" data-i18n="page.view_menu">Посмотреть меню</a>
             </div>
         </section>
         
         <section class="roasting-section">
             <div class="roasting-title">
                 <img src="/images/roasting.png" alt="Coffee Icon">
-                <h1>ОБЖАРОЧНЫЙ ЦЕХ</h1>
-                <p>
+                <h1 data-i18n="page.roasting_title">ОБЖАРОЧНЫЙ ЦЕХ</h1>
+                <p data-i18n="page.roasting_text">
                     Где находится сердце Адриано? Конечно, в обжарочном цехе!
                     Его история простирается с самого основания Адриано и Академии кофе с сертифицированным обучением бариста в Бишкеке.
                     Обучение кофейному искусству не останавливается на бариста, команда официантов и поваров нашей команды проходят базовое обучение с интеграцией в процесс обжарки.
@@ -102,10 +109,11 @@
 
         <section id="order" class="order-cakes">
             <div class="text-content">
-                <h3>Торты на заказ</h3>
-                <p>Торт — это не просто сладость, это десерт, созданный для того, чтобы делиться с близкими, превращать праздник в воспоминание и отмечать важные моменты. За каждым тортом стоят забота, нежность и любовь.</p>
+                <h3 data-i18n="page.cakes_title">Торты на заказ</h3>
+                <p data-i18n="page.cakes_text">Торт — это не просто сладость, это десерт, созданный для того, чтобы делиться с близкими, превращать праздник в воспоминание и отмечать важные моменты. За каждым тортом стоят забота, нежность и любовь.</p>
                 
-                <p style="margin-top: 60px; color: #610303;">Для оформления заказа напишите нам на 
+                <p style="margin-top: 60px; color: #610303;">
+                    <span data-i18n="page.cakes_order">Для оформления заказа напишите нам на</span>
                     <a href="https://wa.me/996555707083" class="order-link" target="_blank">
                         <img src="/images/whatsapp.png" alt="WhatsApp" class="whatsapp-icon"> WhatsApp
                     </a>
@@ -131,7 +139,7 @@
         <section id="ourbranches" class="ourbranches-section">
             <div class="our-branches">
             <img src="/images/branches.png" alt="Coffee shop Icon">
-            <h1>НАШИ КОФЕЙНИ</h1>
+            <h1 data-i18n="page.branches_title">НАШИ КОФЕЙНИ</h1>
         </div>
         </section>
 
@@ -270,19 +278,19 @@
     <nav class="mobile-bottom-nav">
     <a href="pageuser.html" class="bottom-nav-item active">
         <i class="fas fa-home"></i>
-        <span>Главная</span>
+        <span data-i18n="page.nav_home">Главная</span>
     </a>
     <a href="menuuser.html" class="bottom-nav-item">
         <i class="fas fa-utensils"></i>
-        <span>Меню</span>
+        <span data-i18n="nav.menu">Меню</span>
     </a>
     <a href="pageuser.html#ourbranches" class="bottom-nav-item">
         <i class="fas fa-map-marker-alt"></i>
-        <span>Филиалы</span>
+        <span data-i18n="page.nav_branches">Филиалы</span>
     </a>
     <a href="dashboard.html" class="bottom-nav-item">
         <i class="fas fa-user"></i>
-        <span>Профиль</span>
+        <span data-i18n="page.nav_profile">Профиль</span>
     </a>
 </nav>
 
@@ -309,7 +317,7 @@
     </footer>
     
       
-
+    <script src="/js/i18n.js"></script>
     <script src="/js/config.js"></script>
     <script src="/js/scriptuser.js"></script>
 

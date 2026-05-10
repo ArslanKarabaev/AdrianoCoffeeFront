@@ -17,87 +17,87 @@
 
 <main class="success-main">
 
-    <!-- Анимация успеха -->
     <div class="success-hero">
         <div class="success-circle">
             <i class="fas fa-check"></i>
         </div>
-        <h1>Заказ оформлен!</h1>
-        <p class="success-subtitle">Оплата прошла успешно. Ожидайте подтверждения.</p>
+        <h1 data-i18n="success.title">Заказ оформлен!</h1>
+        <p class="success-subtitle" data-i18n="success.subtitle">Оплата прошла успешно. Ожидайте подтверждения.</p>
     </div>
 
-    <!-- Загрузка -->
     <div id="loading-state" class="loading-state">
         <i class="fas fa-spinner fa-spin"></i>
-        <p>Загружаем детали заказа...</p>
+        <p data-i18n="success.loading">Загружаем детали заказа...</p>
     </div>
 
-    <!-- Детали заказа -->
     <div id="order-details" style="display:none;">
 
-        <!-- Номер и статус -->
         <div class="order-meta-card">
             <div class="order-meta-row">
-                <span class="meta-label">Номер заказа</span>
+                <span class="meta-label" data-i18n="success.order_number">Номер заказа</span>
                 <span class="meta-value order-id-value" id="order-number">—</span>
             </div>
             <div class="order-meta-row">
-                <span class="meta-label">Статус</span>
+                <span class="meta-label" data-i18n="success.status">Статус</span>
                 <span class="meta-value"><span class="status-badge" id="order-status">—</span></span>
             </div>
             <div class="order-meta-row">
-                <span class="meta-label">Дата</span>
+                <span class="meta-label" data-i18n="success.date">Дата</span>
                 <span class="meta-value" id="order-date">—</span>
             </div>
         </div>
 
-        <!-- Адрес доставки -->
         <div class="detail-card">
             <div class="detail-card-title">
-                <i class="fas fa-map-marker-alt"></i> Адрес доставки
+                <i class="fas fa-map-marker-alt"></i>
+                <span data-i18n="success.address_title">Адрес доставки</span>
             </div>
             <p id="order-address" class="detail-text">—</p>
         </div>
 
-        <!-- Состав заказа -->
         <div class="detail-card">
             <div class="detail-card-title">
-                <i class="fas fa-utensils"></i> Состав заказа
+                <i class="fas fa-utensils"></i>
+                <span data-i18n="success.items_title">Состав заказа</span>
             </div>
             <div id="order-items" class="order-items-list"></div>
         </div>
 
-        <!-- Итого -->
         <div class="total-card">
             <div id="points-used-row" class="total-row bonus-row" style="display:none;">
-                <span><i class="fas fa-star"></i> Оплачено баллами</span>
+                <span><i class="fas fa-star"></i> <span data-i18n="success.points_used">Оплачено баллами</span></span>
                 <span id="points-used-amount" class="bonus-amount">— сом</span>
             </div>
             <div class="total-row main-total">
-                <span>Итого оплачено</span>
+                <span data-i18n="success.total">Итого оплачено</span>
                 <span id="order-total" class="total-amount">— сом</span>
             </div>
             <div id="bonus-earned-row" class="bonus-earned-banner" style="display:none;">
                 <i class="fas fa-star"></i>
-                За этот заказ вам начислят <strong id="bonus-earned-amount">0</strong> баллов после доставки
+                <span data-i18n="success.bonus_earned">За этот заказ вам начислят</span>
+                <strong id="bonus-earned-amount">0</strong>
+                <span data-i18n="success.bonus_after">баллов после доставки</span>
             </div>
         </div>
 
     </div>
 
-    <!-- Навигация -->
     <div class="success-actions">
         <a href="menuuser.html" class="btn-menu">
-            <i class="fas fa-utensils"></i> Вернуться в меню
+            <i class="fas fa-utensils"></i>
+            <span data-i18n="success.btn_menu">Вернуться в меню</span>
         </a>
         <a href="dashboard.html" class="btn-orders">
-            <i class="fas fa-clipboard-list"></i> Мои заказы
+            <i class="fas fa-clipboard-list"></i>
+            <span data-i18n="success.btn_orders">Мои заказы</span>
         </a>
     </div>
 
 </main>
 
+<!-- i18n подключается ДО order-success.js чтобы t() был доступен -->
 <script src="/js/config.js"></script>
+<script src="/js/i18n.js"></script>
 <script src="/js/order-success.js"></script>
 </body>
 </html>

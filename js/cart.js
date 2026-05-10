@@ -1,5 +1,5 @@
 // Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('authToken');
 
     // Если пользователь авторизован, загружаем корзину с сервера
@@ -421,4 +421,4 @@ function showNotification(message) {
     setTimeout(() => {
         notification.remove();
     }, 3000);
-}
+}*/

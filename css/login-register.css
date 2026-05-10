@@ -48,7 +48,7 @@ header {
     color: #610303;
     text-decoration: none;
     font-weight: 500;
-    margin-left: 40px;
+    margin-left: 15px;
 
 }
 
@@ -295,4 +295,39 @@ header {
     header {
         padding: 12px 20px;
     }
+}
+.navigation {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.lang-switcher {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.lang-btn {
+    background: transparent;
+    border: 1px solid rgba(97, 3, 3, 0.4);
+    color: #610303;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Poppins', sans-serif;
+}
+
+.lang-btn:hover {
+    background: rgba(97, 3, 3, 0.1);
+}
+
+.lang-btn.active {
+    background: #610303;
+    color: white;
+    border-color: #610303;
 }

@@ -306,3 +306,13 @@ body {
     align-items: center;
     gap: 8px;
 }
+/* Скрываем мобильную навигацию на десктопе */
+.mobile-bottom-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: flex;
+    }
+}

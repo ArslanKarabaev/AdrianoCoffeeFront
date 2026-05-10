@@ -16,68 +16,81 @@
         <img src="/images/logo.png" alt="Логотип" />
     </div>
     <nav class="nav">
-        <a href="pageuser.html#aboutus">О нас</a>
-        <a href="menuuser.html">Меню</a>
-        <a href="pageuser.html#order">Торты на заказ</a>
-        <a href="pageuser.html#ourbranches">Филиалы</a>
-        <a href="pageuser.html#ourbranches">Контакты</a>
-        <a href="#" id="logout-button" class="logout-button">Выйти</a>
+        <a href="pageuser.html#aboutus" data-i18n="nav.about">О нас</a>
+        <a href="menuuser.html" data-i18n="nav.menu">Меню</a>
+        <a href="pageuser.html#order" data-i18n="nav.cakes">Торты на заказ</a>
+        <a href="pageuser.html#ourbranches" data-i18n="nav.branches">Филиалы</a>
+        <a href="pageuser.html#ourbranches" data-i18n="nav.contacts">Контакты</a>
+        <a href="#" id="logout-button" class="logout-button" data-i18n="nav.logout">Выйти</a>
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+            <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" data-lang="kg" onclick="setLang('kg')">KG</button>
+        </div>
     </nav>
 </header>
 
 <section class="dashboard-section">
-    <h2>Личный кабинет</h2>
+    <h2 data-i18n="dashboard.title">Личный кабинет</h2>
 
     <!-- Вкладки -->
     <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab('profile')">
-            <i class="fas fa-user"></i> Профиль
-        </button>
-        <button class="tab-btn" onclick="switchTab('orders')">
-            <i class="fas fa-clipboard-list"></i> Мои заказы
-        </button>
-        <button class="tab-btn" onclick="switchTab('bonus')">
-            <i class="fas fa-star"></i> Бонусы
-        </button>
-    </div>
+    <button class="tab-btn active" onclick="switchTab('profile')">
+        <i class="fas fa-user"></i>
+        <span data-i18n="dashboard.profile">Профиль</span>
+    </button>
+    
+    <button class="tab-btn" onclick="switchTab('orders')">
+        <i class="fas fa-clipboard-list"></i>
+        <span data-i18n="dashboard.orders">Мои заказы</span>
+    </button>
+    
+    <button class="tab-btn" onclick="switchTab('bonus')">
+        <i class="fas fa-star"></i>
+        <span data-i18n="dashboard.bonus">Бонусы</span>
+    </button>
+</div>  
 
     <!-- Вкладка: Профиль -->
     <div id="tab-profile" class="tab-content active">
         <form id="userForm" class="user-form">
             <div class="form-group">
-                <label for="firstName">Имя:</label>
+                <label for="firstName" data-i18n="dashboard.firstName">Имя:</label>
                 <input type="text" id="firstName" name="firstName" disabled required>
             </div>
             <div class="form-group">
-                <label for="secondName">Фамилия:</label>
+                <label for="secondName" data-i18n="dashboard.secondName">Фамилия:</label>
                 <input type="text" id="secondName" name="secondName" disabled required>
             </div>
             <div class="form-group">
-                <label for="birthday">Дата рождения:</label>
+                <label for="birthday" data-i18n="dashboard.birthday">Дата рождения:</label>
                 <input type="date" id="birthday" name="birthday" disabled required>
             </div>
             <div class="form-group">
-                <label for="email">Почта:</label>
+                <label for="email" data-i18n="dashboard.email">Почта:</label>
                 <input type="email" id="email" name="email" autocomplete="email" disabled required>
             </div>
             <div class="form-group">
-                <label for="phone">Номер телефона:</label>
+                <label for="phone" data-i18n="dashboard.phone">Номер телефона:</label>
                 <input type="tel" id="phone" name="phone" autocomplete="phone" disabled required>
             </div>
             <div class="form-group">
-                <label for="age">Возраст:</label>
+                <label for="age" data-i18n="dashboard.age">Возраст:</label>
                 <input type="number" id="age" name="age" disabled>
             </div>
 
             <div class="password-section">
                 <button type="button" id="changePasswordBtn" class="btn">
-                    <i class="fas fa-lock"></i> Изменить пароль
+                    <i class="fas fa-lock"></i> 
+                    <span data-i18n="dashboard.change_password">Изменить пароль</span>
                 </button>
             </div>
 
             <div class="form-actions">
-                <button type="button" id="changeBtn" class="btn">Изменить данные</button>
-                <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Сохранить изменения</button>
+                <button type="button" id="changeBtn" class="btn"  data-i18n='dashboard.change'>Изменить данные</button>
+                <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;" data-i18n="dashboard.save">
+                    Сохранить изменения
+                </button>
             </div>
         </form>
         <div id="responseMessage" class="response-message"></div>
@@ -102,16 +115,16 @@
         <div class="bonus-balance-card">
             <div class="bonus-balance-icon"><i class="fas fa-star"></i></div>
             <div class="bonus-balance-info">
-                <span class="bonus-balance-label">Ваш баланс</span>
+                <span class="bonus-balance-label" data-i18n="dashboard.bonus_balance">Ваш баланс</span>
                 <span class="bonus-balance-value" id="bonus-balance-display">—</span>
-                <span class="bonus-balance-sub">баллов</span>
+                <span class="bonus-balance-sub" data-i18n="dashboard.bonus_points">баллов</span>
             </div>
         </div>
 
         <div class="bonus-qr-card">
-            <p class="qr-hint">Покажите QR-код кассиру для начисления баллов за покупку в филиале</p>
+            <p class="qr-hint" data-i18n="dashboard.qr_hint">Покажите QR-код кассиру для начисления баллов за покупку в филиале</p>
             <div id="qr-code-container"></div>
-            <button class="btn-show-qr" id="show-qr-btn" onclick="toggleQr()">
+            <button class="btn-show-qr" id="show-qr-btn" onclick="toggleQr()" data-i18n="dashboard.show_qr">
                 <i class="fas fa-qrcode"></i> Показать QR-код
             </button>
         </div>
@@ -120,7 +133,7 @@
 
     <!-- История транзакций -->
     <div class="bonus-history-section">
-        <h3><i class="fas fa-history"></i> История баллов</h3>
+        <h3  data-i18n="dashboard.bonus_history"><i class="fas fa-history"></i> История баллов</h3>
         <div id="bonus-history-container">
             <div class="orders-loading">
                 <i class="fas fa-spinner fa-spin"></i>
@@ -137,7 +150,7 @@
 <div id="cart-modal" class="modal">
     <div class="modal-content cart-modal-content">
         <div class="cart-header">
-            <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
+            <h2  data-i18n="dashboard.cart"><i class="fas fa-shopping-cart"></i> Корзина</h2>
             <span class="close" id="close-cart-modal">&times;</span>
         </div>
         <div id="cart-items-container" class="cart-items-container">
@@ -148,35 +161,35 @@
         </div>
         <div id="empty-cart-state" class="empty-state" style="display: none;">
             <i class="fas fa-shopping-bag"></i>
-            <h3>Корзина пуста</h3>
-            <p>Добавьте товары из меню</p>
+            <h3 data-i18n="dashboard.emptyCart">Корзина пуста</h3>
+            <p data-i18n="dashboard.addItems">Добавьте товары из меню</p>
         </div>
         <div id="cart-summary" class="cart-summary" style="display: none;">
             <div class="summary-row">
-                <span>Итого:</span>
+                <span data-i18n="dashboard.total">Итого:</span>
                 <span id="cart-total" class="total-price">0 сом</span>
             </div>
         </div>
         <div id="order-form-container" class="order-form-container" style="display: none;">
-            <h3>Оформление заказа</h3>
+            <h3 data-i18n="dashboard.orderForm">Оформление заказа</h3>
             <form id="orderForm">
                 <div class="form-group">
-                    <label for="orderAddress">Адрес доставки: *</label>
+                    <label for="orderAddress" data-i18n="dashboard.orderAddress">Адрес доставки: *</label>
                     <input type="text" id="orderAddress" required placeholder="Улица, дом, квартира">
                 </div>
                 <div class="form-group">
-                    <label for="orderPhone">Телефон: *</label>
+                    <label for="orderPhone" data-i18n="dashboard.orderPhone">Телефон: *</label>
                     <input type="tel" id="orderPhone" required placeholder="+996 555 123 456">
                 </div>
                 <div class="form-group">
-                    <label for="orderComment">Комментарий:</label>
+                    <label for="orderComment" data-i18n="dashboard.orderComment">Комментарий:</label>
                     <textarea id="orderComment" rows="3" placeholder="Пожелания к заказу..."></textarea>
                 </div>
                 <div class="form-buttons">
-                    <button type="submit" class="btn-submit">
+                    <button type="submit" class="btn-submit" data-i18n="dashboard.proceedToPayment">
                         <i class="fas fa-credit-card"></i> Перейти к оплате
                     </button>
-                    <button type="button" class="btn-clear-cart" id="clearCartBtn">
+                    <button type="button" class="btn-clear-cart" id="clearCartBtn" data-i18n="dashboard.clearCart">
                         <i class="fas fa-trash"></i> Очистить
                     </button>
                 </div>
@@ -184,13 +197,13 @@
         </div>
         <div id="stripe-payment-section" class="stripe-payment-section" style="display: none;">
             <div class="stripe-payment-header">
-                <button class="btn-back" onclick="backToOrderForm()">
+                <button class="btn-back" onclick="backToOrderForm()" data-i18n="dashboard.back">
                     <i class="fas fa-arrow-left"></i> Назад
                 </button>
-                <h3>Оплата</h3>
+                <h3 data-i18n="dashboard.payment">Оплата</h3>
             </div>
             <div class="payment-amount-row">
-                <span>К оплате:</span>
+                <span data-i18n="dashboard.paymentTotal">К оплате:</span>
                 <span id="payment-total" class="payment-total">0 сом</span>
             </div>
             <div id="stripe-payment-element" class="stripe-element-container"></div>
@@ -198,7 +211,7 @@
                 <i class="fas fa-info-circle"></i>
                 Тест: <strong>4242 4242 4242 4242</strong> · любой CVV · любая дата
             </div>
-            <button id="stripe-pay-btn" class="btn-pay" onclick="confirmStripePayment()">
+            <button id="stripe-pay-btn" class="btn-pay" onclick="confirmStripePayment()" data-i18n="dashboard.pay">
                 <i class="fas fa-lock"></i> Оплатить
             </button>
         </div>
@@ -210,19 +223,19 @@
 <nav class="mobile-bottom-nav">
     <a href="menuuser.html" class="bottom-nav-item">
         <i class="fas fa-utensils"></i>
-        <span>Меню</span>
+        <span data-i18n="dashboard.menu">Меню</span>
     </a>
     <button class="bottom-nav-item bottom-nav-item-cart" onclick="openCart()">
         <i class="fas fa-shopping-cart"></i>
-        <span>Корзина</span>
+        <span data-i18n="dashboard.cart">Корзина</span>
     </button>
     <a href="dashboard.html?tab=bonus" class="bottom-nav-item">
         <i class="fas fa-qrcode"></i>
-        <span>QR-код</span>
+        <span data-i18n="nav.qr">QR-код</span>
     </a>
     <a href="dashboard.html" class="bottom-nav-item active">
         <i class="fas fa-user"></i>
-        <span>Профиль</span>
+        <span data-i18n="dashboard.profile">Профиль</span>
     </a>
 </nav>
 
@@ -250,25 +263,26 @@
 <div id="password-modal" class="modal" style="display:none;">
     <div class="modal-content password-modal-content">
         <div class="password-modal-header">
-            <h3><i class="fas fa-lock"></i> Изменить пароль</h3>
+            <h3 data-i18n="dashboard.change_password"><i class="fas fa-lock"></i> Изменить пароль</h3>
             <span class="close" id="close-password-modal">&times;</span>
         </div>
         <div class="form-group">
-            <label>Новый пароль:</label>
-            <input type="password" id="newPassword" placeholder="Введите новый пароль">
+            <label for="newPassword" data-i18n="dashboard.new_password">Новый пароль:</label>
+            <input type="password" id="newPassword"  data-i18n="dashboard.new_password" placeholder="Введите новый пароль">
         </div>
         <div class="form-group">
-            <label>Подтвердите пароль:</label>
-            <input type="password" id="confirmPassword" placeholder="Повторите новый пароль">
+            <label for="confirmPassword" data-i18n="dashboard.confirm_password">Подтвердите пароль:</label>
+            <input type="password" id="confirmPassword" data-i18n="dashboard.confirm_password" placeholder="Повторите новый пароль">
         </div>
         <div id="password-modal-message" style="font-size:13px; margin-top:8px; text-align:center;"></div>
         <div class="password-modal-actions">
-            <button id="savePasswordBtn" class="btn btn-primary">Сохранить</button>
-            <button id="cancelPasswordBtn" class="btn">Отмена</button>
+            <button id="savePasswordBtn" class="btn btn-primary" data-i18n="dashboard.save">Сохранить</button>
+            <button id="cancelPasswordBtn" class="btn" data-i18n="dashboard.cancel">Отмена</button>
         </div>
     </div>
 </div>
 
+<script src="/js/i18n.js"></script>
 <script src="https://js.stripe.com/v3/"></script>
 <script src="/js/config.js"></script>
 <script src="/js/dashboard.js"></script>

@@ -1,5 +1,20 @@
-// ===== УНИВЕРСАЛЬНЫЙ ЗАГРУЗЧИК МЕНЮ =====
+// ───── I18N FALLBACK (если i18n.js не подключён) ─────
+if (typeof getDishName === 'undefined') {
+    window.getDishName = item => item.name;
+}
 
+if (typeof getDishDescription === 'undefined') {
+    window.getDishDescription = item => item.description || '';
+}
+
+if (typeof t === 'undefined') {
+    window.t = key => {
+        const fallback = { 'menu.add_to_cart': 'Добавить в корзину' };
+        return fallback[key] || key;
+    };
+}
+
+// ===== УНИВЕРСАЛЬНЫЙ ЗАГРУЗЧИК МЕНЮ =====
 const API_URL = BACKEND_URL + '/api/v2/AdrianoCoffee/Menu/getAllMenu';
 let allMenuItems = [];
 
@@ -25,18 +40,6 @@ async function fetchAndRenderMenu() {
         initSearch();
         initCategoryFilter();
 
-        
-
-        menuItems.forEach(item => {
-            const container = document.getElementById(`container-${item.category}`);
-            if (container) {
-                container.appendChild(createDishCard(item, userRole));
-            }
-        });
-
-        if (userRole === 'ADMIN' || userRole === 'admin' || userRole === 'MANAGER') {
-            initAdminHandlers();
-        }
     } catch (error) {
         console.error("Ошибка загрузки меню:", error);
     }
@@ -61,11 +64,13 @@ function createDishCard(item, userRole) {
         `;
     } else if (isAuthenticated()) {
         buttons = `<button class="add-to-cart-btn" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">
-            <i class="fas fa-shopping-cart"></i> Добавить в корзину
+            <i class="fas fa-shopping-cart"></i> 
+            <span data-i18n="menu.add_to_cart">${t('menu.add_to_cart')}</span>
         </button>`;
     } else {
         buttons = `<button class="add-to-cart-btn guest" onclick="promptLogin()">
-            <i class="fas fa-shopping-cart"></i> Добавить в корзину
+            <i class="fas fa-shopping-cart"></i> 
+            <span data-i18n="menu.add_to_cart">${t('menu.add_to_cart')}</span>
         </button>`;
     }
 
@@ -74,17 +79,17 @@ function createDishCard(item, userRole) {
         : BACKEND_URL + '/images/menu/default.jpg';
 
     div.innerHTML = `
-        <img src="${imgSrc}" alt="${item.name}">
-        <div class="dish-info">
-            <div class="name-and-gr">
-                <h3>${item.name}</h3>
-                <p class="volume">${item.volume || ''}</p>
-            </div>
-            <p class="description">${item.description || ''}</p>
-            <p class="price">${item.price} сом</p>
-            ${buttons}
+    <img src="${imgSrc}" alt="${getDishName(item)}">
+    <div class="dish-info">
+        <div class="name-and-gr">
+            <h3>${getDishName(item)}</h3>
+            <p class="volume">${item.volume || ''}</p>
         </div>
-    `;
+        <p class="description">${getDishDescription(item)}</p>
+        <p class="price">${item.price} ${t('success.som')}</p>
+        ${buttons}
+    </div>
+`;
 
     // Вешаем обработчик на кнопку через JS (не inline onclick)
     const addBtn = div.querySelector('.add-to-cart-btn:not(.guest)');
@@ -186,13 +191,13 @@ async function addToCart(id, name, price) {
         if (!response.ok) throw new Error('Ошибка добавления');
 
         // Toast уведомление вместо alert
-        showNotification(`${name} добавлен в корзину`);
+        showNotification(`${name} ${t('cart.added')}`);
 
         // Обновляем счётчик сразу — без открытия корзины
         refreshCartCount();
 
     } catch (error) {
-        showNotification('Ошибка добавления в корзину', 'error');
+        showNotification(t('cart.add_error'), 'error');
     }
 }
 

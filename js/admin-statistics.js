@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const popularContainer = document.getElementById('mostPopular');
         if (mostPopular) {
             popularContainer.innerHTML = `
-                ${mostPopular.imageUrl ? `<img src="${BACKEND_URL}${mostPopular.imageUrl}" alt="${mostPopular.name}">` : ''}
+                ${mostPopular.imageUrl ? `<img src="${mostPopular.imageUrl.startsWith('http') ? mostPopular.imageUrl : BACKEND_URL + mostPopular.imageUrl}" alt="${mostPopular.name}">` : ''}
                 <h5>${mostPopular.name}</h5>
                 <p><strong>Категория:</strong> ${translateCategory(mostPopular.category)}</p>
                 <p><strong>Заказано раз:</strong> ${mostPopular.timesOrdered}</p>
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const profitableContainer = document.getElementById('mostProfitable');
         if (mostProfitable) {
             profitableContainer.innerHTML = `
-                ${mostProfitable.imageUrl ? `<img src="${BACKEND_URL}${mostProfitable.imageUrl}" alt="${mostProfitable.name}">` : ''}
+                ${mostProfitable.imageUrl ? `<img src="${mostProfitable.imageUrl.startsWith('http') ? mostProfitable.imageUrl : BACKEND_URL + mostProfitable.imageUrl}" alt="${mostProfitable.name}">` : ''}
                 <h5>${mostProfitable.name}</h5>
                 <p><strong>Категория:</strong> ${translateCategory(mostProfitable.category)}</p>
                 <p><strong>Заказано раз:</strong> ${mostProfitable.timesOrdered}</p>

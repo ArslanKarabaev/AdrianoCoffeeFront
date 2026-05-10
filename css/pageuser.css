@@ -46,7 +46,9 @@ html{
     transition: background 0.5s;
 }
 .header nav{
-    margin-right: 100px;
+    display: flex;
+    align-items: center;  
+    gap: 4px; 
 }
 
 .hero {
@@ -569,4 +571,33 @@ html{
     font-size: 20px;
     color: white;
     margin: 0;
+}
+.lang-switcher {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-right: 100px;
+}
+
+.lang-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.7);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lang-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.lang-btn.active {
+    background: white;
+    color: #610303;
+    border-color: white;
 }

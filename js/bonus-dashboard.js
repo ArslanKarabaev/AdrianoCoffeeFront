@@ -42,8 +42,8 @@ function toggleQr() {
     qrVisible = !qrVisible;
     container.style.display = qrVisible ? 'flex' : 'none';
     btn.innerHTML = qrVisible
-        ? '<i class="fas fa-eye-slash"></i> Скрыть QR-код'
-        : '<i class="fas fa-qrcode"></i> Показать QR-код';
+        ? `<i class="fas fa-eye-slash"></i> <span data-i18n="dashboard.hide_qr">${t('dashboard.hide_qr')}</span>`
+        : `<i class="fas fa-qrcode"></i> <span data-i18n="dashboard.show_qr">${t('dashboard.show_qr')}</span>`;
 }
 
 async function fetchUserIdAndGenerateQr() {
@@ -61,7 +61,7 @@ async function fetchUserIdAndGenerateQr() {
             const container = document.getElementById('qr-code-container');
             const btn = document.getElementById('show-qr-btn');
             container.style.display = 'flex';
-            btn.innerHTML = '<i class="fas fa-eye-slash"></i> Скрыть QR-код';
+            btn.innerHTML = '<i class="fas fa-eye-slash"></i> <span data-i18n="dashboard.hide_qr">Скрыть QR-код</span>';
             qrVisible = true;
         }
     } catch (e) {

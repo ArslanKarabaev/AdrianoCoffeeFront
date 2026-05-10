@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const rememberMe = document.querySelector('.remember-forgot input[type="checkbox"]')?.checked;
 
             if (!email || !password) {
-                showFormError('Пожалуйста, заполните все поля');
+                showFormError(t('register.missing_fields'));
                 return;
             }
 
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (!response.ok) {
                     if (response.status === 403 || response.status === 401) {
-                        showFormError('Неверный email или пароль');
+                        showFormError(t('login.error'));
                     } else {
                         showFormError('Ошибка входа: ' + (data.message || response.status));
                     }
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (data.token && data.userId) {
                     if (data.status === false || data.status === 'false' || data.status === 0) {
-                        showFormError('Ваш аккаунт заблокирован. Обратитесь к администратору.');
+                        showFormError(t('login.account_blocked'));
                         return;
                     }
 
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const password = document.getElementById('registerPassword').value;
 
             if (!firstName || !secondName || !phone || !email || !password) {
-                showFormError('Пожалуйста, заполните все обязательные поля');
+                showFormError(t('register.missing_fields'));
                 return;
             }
 
@@ -137,12 +137,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 const data = await response.json();
 
                 if (data.token) {
-                    showFormSuccess('Регистрация успешна! Теперь войдите в аккаунт.');
+                    showFormSuccess(t('register.success'));
                     wrapper.classList.remove('active');
                     registerForm.reset();
                 }
             } catch (error) {
-                showFormError('Ошибка при регистрации: ' + error.message);
+                showFormError(t('register.unexpected_error'));
             }
         });
     }
@@ -183,70 +183,69 @@ function openForgotPasswordModal() {
     `;
 
     modal.innerHTML = `
-        <div style="background:white;border-radius:16px;padding:36px 32px;
-                    width:90%;max-width:420px;position:relative;
-                    box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-            
-            <button onclick="document.getElementById('forgot-modal').remove()"
-                    style="position:absolute;top:14px;right:16px;background:none;
-                           border:none;font-size:22px;cursor:pointer;color:#aaa;">✕</button>
+    <div style="background:white;border-radius:16px;padding:36px 32px;
+                width:90%;max-width:420px;position:relative;
+                box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+        
+        <button onclick="document.getElementById('forgot-modal').remove()"
+                style="position:absolute;top:14px;right:16px;background:none;
+                       border:none;font-size:22px;cursor:pointer;color:#aaa;">✕</button>
 
-            <div id="forgot-step-1">
-                <h3 style="margin:0 0 8px;color:#610303;font-size:20px;">Сброс пароля</h3>
-                <p style="margin:0 0 20px;color:#888;font-size:14px;">
-                    Введите email вашего аккаунта — мы отправим код подтверждения.
-                </p>
-                <input type="email" id="forgot-email" placeholder="Ваш email"
-                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
-                              border-radius:8px;font-size:14px;font-family:inherit;
-                              outline:none;box-sizing:border-box;margin-bottom:12px;">
-                <div id="forgot-error-1" style="color:#e74c3c;font-size:13px;
-                     margin-bottom:10px;display:none;"></div>
-                <button onclick="sendResetCode()"
-                        style="width:100%;padding:12px;background:#610303;color:white;
-                               border:none;border-radius:8px;font-size:14px;
-                               font-weight:600;cursor:pointer;font-family:inherit;">
-                    Отправить код
-                </button>
-            </div>
-
-            <div id="forgot-step-2" style="display:none;">
-                <h3 style="margin:0 0 8px;color:#610303;font-size:20px;">Введите код</h3>
-                <p style="margin:0 0 20px;color:#888;font-size:14px;">
-                    Код отправлен на вашу почту. Действует 15 минут.
-                </p>
-                <input type="text" id="forgot-code" placeholder="6-значный код"
-                       maxlength="6"
-                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
-                              border-radius:8px;font-size:18px;font-family:monospace;
-                              letter-spacing:6px;text-align:center;outline:none;
-                              box-sizing:border-box;margin-bottom:12px;">
-                <input type="password" id="forgot-new-password" placeholder="Новый пароль"
-                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
-                              border-radius:8px;font-size:14px;font-family:inherit;
-                              outline:none;box-sizing:border-box;margin-bottom:12px;">
-                <input type="password" id="forgot-confirm-password" placeholder="Подтвердите пароль"
-                       style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
-                              border-radius:8px;font-size:14px;font-family:inherit;
-                              outline:none;box-sizing:border-box;margin-bottom:12px;">
-                <div id="forgot-error-2" style="color:#e74c3c;font-size:13px;
-                     margin-bottom:10px;display:none;"></div>
-                <button onclick="confirmResetCode()"
-                        style="width:100%;padding:12px;background:#610303;color:white;
-                               border:none;border-radius:8px;font-size:14px;
-                               font-weight:600;cursor:pointer;font-family:inherit;">
-                    Сменить пароль
-                </button>
-                <button onclick="document.getElementById('forgot-step-1').style.display='block';
-                                 document.getElementById('forgot-step-2').style.display='none';"
-                        style="width:100%;padding:10px;background:none;color:#aaa;
-                               border:none;font-size:13px;cursor:pointer;margin-top:8px;">
-                    ← Назад
-                </button>
-            </div>
+        <div id="forgot-step-1">
+            <h3 style="margin:0 0 8px;color:#610303;font-size:20px;">${t('forgot.title1')}</h3>
+            <p style="margin:0 0 20px;color:#888;font-size:14px;">
+                ${t('forgot.desc1')}
+            </p>
+            <input type="email" id="forgot-email" placeholder="${t('forgot.email_placeholder')}"
+                   style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                          border-radius:8px;font-size:14px;font-family:inherit;
+                          outline:none;box-sizing:border-box;margin-bottom:12px;">
+            <div id="forgot-error-1" style="color:#e74c3c;font-size:13px;
+                 margin-bottom:10px;display:none;"></div>
+            <button onclick="sendResetCode()"
+                    style="width:100%;padding:12px;background:#610303;color:white;
+                           border:none;border-radius:8px;font-size:14px;
+                           font-weight:600;cursor:pointer;font-family:inherit;">
+                ${t('forgot.send_code')}
+            </button>
         </div>
-    `;
 
+        <div id="forgot-step-2" style="display:none;">
+            <h3 style="margin:0 0 8px;color:#610303;font-size:20px;">${t('forgot.title2')}</h3>
+            <p style="margin:0 0 20px;color:#888;font-size:14px;">
+                ${t('forgot.desc2')}
+            </p>
+            <input type="text" id="forgot-code" placeholder="${t('forgot.code_placeholder')}"
+                   maxlength="6"
+                   style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                          border-radius:8px;font-size:18px;font-family:monospace;
+                          letter-spacing:6px;text-align:center;outline:none;
+                          box-sizing:border-box;margin-bottom:12px;">
+            <input type="password" id="forgot-new-password" placeholder="${t('forgot.new_password')}"
+                   style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                          border-radius:8px;font-size:14px;font-family:inherit;
+                          outline:none;box-sizing:border-box;margin-bottom:12px;">
+            <input type="password" id="forgot-confirm-password" placeholder="${t('forgot.confirm_password')}"
+                   style="width:100%;padding:11px 14px;border:1.5px solid #e0c8c8;
+                          border-radius:8px;font-size:14px;font-family:inherit;
+                          outline:none;box-sizing:border-box;margin-bottom:12px;">
+            <div id="forgot-error-2" style="color:#e74c3c;font-size:13px;
+                 margin-bottom:10px;display:none;"></div>
+            <button onclick="confirmResetCode()"
+                    style="width:100%;padding:12px;background:#610303;color:white;
+                           border:none;border-radius:8px;font-size:14px;
+                           font-weight:600;cursor:pointer;font-family:inherit;">
+                ${t('forgot.submit')}
+            </button>
+            <button onclick="document.getElementById('forgot-step-1').style.display='block';
+                             document.getElementById('forgot-step-2').style.display='none';"
+                    style="width:100%;padding:10px;background:none;color:#aaa;
+                           border:none;font-size:13px;cursor:pointer;margin-top:8px;">
+                ${t('forgot.back')}
+            </button>
+        </div>
+    </div>
+`;
     document.body.appendChild(modal);
     modal.addEventListener('click', (e) => {
         if (e.target === modal) modal.remove();
@@ -278,11 +277,11 @@ async function sendResetCode() {
             document.getElementById('forgot-step-1').style.display = 'none';
             document.getElementById('forgot-step-2').style.display = 'block';
         } else {
-            errorEl.textContent = data.message || 'Ошибка отправки кода';
+            errorEl.textContent = data.message ||  t('forgot.error_send');
             errorEl.style.display = 'block';
         }
     } catch {
-        errorEl.textContent = 'Ошибка соединения с сервером';
+        errorEl.textContent = t('forgot.error_connection');
         errorEl.style.display = 'block';
     }
 }
@@ -295,19 +294,19 @@ async function confirmResetCode() {
     const errorEl = document.getElementById('forgot-error-2');
 
     if (!code || !newPassword || !confirmPassword) {
-        errorEl.textContent = 'Заполните все поля';
+        errorEl.textContent = t('forgot.error_fill_all');
         errorEl.style.display = 'block';
         return;
     }
 
     if (newPassword !== confirmPassword) {
-        errorEl.textContent = 'Пароли не совпадают';
+        errorEl.textContent = t('forgot.error_passwords');
         errorEl.style.display = 'block';
         return;
     }
 
     if (newPassword.length < 6) {
-        errorEl.textContent = 'Пароль должен быть не менее 6 символов';
+        errorEl.textContent = t('forgot.error_short');
         errorEl.style.display = 'block';
         return;
     }
@@ -325,11 +324,11 @@ async function confirmResetCode() {
             document.getElementById('forgot-modal').remove();
             showFormSuccess('Пароль успешно изменён! Войдите с новым паролем.');
         } else {
-            errorEl.textContent = data.message || 'Неверный код';
+            errorEl.textContent = data.message || t('forgot.error_code');
             errorEl.style.display = 'block';
         }
     } catch {
-        errorEl.textContent = 'Ошибка соединения с сервером';
+        errorEl.textContent = t('forgot.error_connection');
         errorEl.style.display = 'block';
     }
 }

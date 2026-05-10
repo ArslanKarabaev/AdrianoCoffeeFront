@@ -15,23 +15,31 @@
             <img src="/images/logo.png" alt="Логотип" />
         </div>
         <nav class="nav">
-            <a href="pageuser.html#aboutus">О нас</a>
-            <a href="menuuser.html">Меню</a>
-            <a href="pageuser.html#order">Торты на заказ</a>
-            <a href="pageuser.html#ourbranches">Филиалы</a>
-            <a href="pageuser.html#ourbranches">Контакты</a>
+            <a href="pageuser.html#aboutus" data-i18n="nav.about">О нас</a>
+            <a href="menuuser.html" data-i18n="nav.menu">Меню</a>
+            <a href="pageuser.html#order" data-i18n="nav.cakes">Торты на заказ</a>
+            <a href="pageuser.html#ourbranches" data-i18n="nav.branches">Филиалы</a>
+            <a href="pageuser.html#ourbranches" data-i18n="nav.contacts">Контакты</a>
             <a href="#" id="open-cart-button" onclick="event.preventDefault(); openCart();">
-                <i class="fas fa-shopping-cart"></i> Корзина
+                <i class="fas fa-shopping-cart"></i> 
+                <span data-i18n="nav.cart">Корзина</span>
             </a>
             <a href="dashboard.html"><i class="fas fa-user"></i></a>
+        <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="ru" onclick="setLang('ru')">RU</button>
+                <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                <button class="lang-btn" data-lang="kg" onclick="setLang('kg')">KG</button>
+            </div>
+
         </nav>
     </header>
 
     <section class="menu-section">
+        <h2 data-i18n="menu.title">Меню</h2>
     <!-- Поиск -->
     <div class="menu-search-wrapper">
         <i class="fas fa-search"></i>
-        <input type="text" id="menu-search-input" placeholder="Поиск по меню..." autocomplete="off">
+        <input type="text" id="menu-search-input" data-i18n="menu.search" placeholder="Поиск по меню..." autocomplete="off">
         <button id="menu-search-clear" style="display:none;">
             <i class="fas fa-times"></i>
         </button>
@@ -39,37 +47,37 @@
 
     <!-- Фильтр категорий -->
     <div class="menu-filter-bar" id="menu-filter-bar">
-        <button class="filter-chip active" data-category="ALL">Все</button>
-        <button class="filter-chip" data-category="COFFEE">Кофе</button>
-        <button class="filter-chip" data-category="BREAKFAST">Завтраки</button>
-        <button class="filter-chip" data-category="SALADS">Салаты</button>
-        <button class="filter-chip" data-category="SOUPS">Супы</button>
-        <button class="filter-chip" data-category="PASTAS">Паста</button>
-        <button class="filter-chip" data-category="HOTDISHES">Горячие блюда</button>
-        <button class="filter-chip" data-category="BOWLS">Боулы</button>
-        <button class="filter-chip" data-category="DESSERTS">Десерты</button>
-        <button class="filter-chip" data-category="TEAS">Чаи</button>
-        <button class="filter-chip" data-category="DRINKS">Напитки</button>
+        <button class="filter-chip active" data-category="ALL" data-i18n="menu.all">Все</button>
+        <button class="filter-chip" data-category="COFFEE" data-i18n="cat.COFFEE">Кофе</button>
+        <button class="filter-chip" data-category="BREAKFAST" data-i18n="cat.BREAKFAST">Завтраки</button>
+        <button class="filter-chip" data-category="SALADS" data-i18n="cat.SALADS">Салаты</button>
+        <button class="filter-chip" data-category="SOUPS" data-i18n="cat.SOUPS">Супы</button>
+        <button class="filter-chip" data-category="PASTAS" data-i18n="cat.PASTAS">Паста</button>
+        <button class="filter-chip" data-category="HOTDISHES" data-i18n="cat.HOTDISHES">Горячие блюда</button>
+        <button class="filter-chip" data-category="BOWLS" data-i18n="cat.BOWLS">Боулы</button>
+        <button class="filter-chip" data-category="DESSERTS" data-i18n="cat.DESSERTS">Десерты</button>
+        <button class="filter-chip" data-category="TEAS" data-i18n="cat.TEAS">Чаи</button>
+        <button class="filter-chip" data-category="DRINKS" data-i18n="cat.DRINKS">Напитки</button>
     </div>
 </section>
 
 <!-- Сообщение "ничего не найдено" -->
 <div id="search-no-results" style="display:none;" class="search-no-results">
     <i class="fas fa-search"></i>
-    <p>Ничего не найдено</p>
+    <span data-i18n="menu.not_found">Ничего не найдено</span>
 </div>
 
 <main class="menu-container">
-    <section id="coffee-section" class="menu-section"><h2>Кофе</h2><div class="dishes" id="container-COFFEE"></div></section>
-    <section id="breakfast-section" class="menu-section"><h2>Завтраки</h2><div class="dishes" id="container-BREAKFAST"></div></section>
-    <section id="salads-section" class="menu-section"><h2>Салаты</h2><div class="dishes" id="container-SALADS"></div></section>
-    <section id="soups-section" class="menu-section"><h2>Супы</h2><div class="dishes" id="container-SOUPS"></div></section>
-    <section id="pasts-section" class="menu-section"><h2>Пасты</h2><div class="dishes" id="container-PASTAS"></div></section>
-    <section id="hotDishes-section" class="menu-section"><h2>Горячие блюда</h2><div class="dishes" id="container-HOTDISHES"></div></section>
-    <section id="bowels-section" class="menu-section"><h2>Боулы</h2><div class="dishes" id="container-BOWLS"></div></section>
-    <section id="deserts-section" class="menu-section"><h2>Десерты</h2><div class="dishes" id="container-DESSERTS"></div></section>
-    <section id="teas-section" class="menu-section"><h2>Чаи</h2><div class="dishes" id="container-TEAS"></div></section>
-    <section id="drinks-section" class="menu-section"><h2>Холодные напитки</h2><div class="dishes" id="container-DRINKS"></div></section>
+    <section id="coffee-section" class="menu-section"><h2 data-i18n="cat.COFFEE">Кофе</h2><div class="dishes" id="container-COFFEE"></div></section>
+    <section id="breakfast-section" class="menu-section"><h2 data-i18n="cat.BREAKFAST">Завтраки</h2><div class="dishes" id="container-BREAKFAST"></div></section>
+    <section id="salads-section" class="menu-section"><h2 data-i18n="cat.SALADS">Салаты</h2><div class="dishes" id="container-SALADS"></div></section>
+    <section id="soups-section" class="menu-section"><h2 data-i18n="cat.SOUPS">Супы</h2><div class="dishes" id="container-SOUPS"></div></section>
+    <section id="pasts-section" class="menu-section"><h2 data-i18n="cat.PASTAS">Пасты</h2><div class="dishes" id="container-PASTAS"></div></section>
+    <section id="hotDishes-section" class="menu-section"><h2 data-i18n="cat.HOTDISHES">Горячие блюда</h2><div class="dishes" id="container-HOTDISHES"></div></section>
+    <section id="bowels-section" class="menu-section"><h2 data-i18n="cat.BOWLS">Боулы</h2><div class="dishes" id="container-BOWLS"></div></section>
+    <section id="deserts-section" class="menu-section"><h2 data-i18n="cat.DESSERTS">Десерты</h2><div class="dishes" id="container-DESSERTS"></div></section>
+    <section id="teas-section" class="menu-section"><h2 data-i18n="cat.TEAS">Чаи</h2><div class="dishes" id="container-TEAS"></div></section>
+    <section id="drinks-section" class="menu-section"><h2 data-i18n="cat.DRINKS">Холодные напитки</h2><div class="dishes" id="container-DRINKS"></div></section>
 </main>
 
     <!-- Модальное окно корзины -->
@@ -77,52 +85,52 @@
         <div class="modal-content cart-modal-content">
 
             <div class="cart-header">
-                <h2><i class="fas fa-shopping-cart"></i> Корзина</h2>
+                <h2><i class="fas fa-shopping-cart"></i> <span data-i18n="cart.title">Корзина</span></h2>
                 <span class="close" id="close-cart-modal">&times;</span>
             </div>
 
             <div id="cart-items-container" class="cart-items-container">
                 <div class="loading-state">
                     <i class="fas fa-spinner fa-spin"></i>
-                    <p>Загрузка корзины...</p>
+                    <p data-i18n="cart.loading">Загрузка корзины...</p>
                 </div>
             </div>
 
             <div id="empty-cart-state" class="empty-state" style="display: none;">
                 <i class="fas fa-shopping-bag"></i>
-                <h3>Корзина пуста</h3>
-                <p>Добавьте товары из меню</p>
+                <span data-i18n="cart.empty">Корзина пуста</span>
+                <p data-i18n="cart.empty_sub">Добавьте товары из меню</p>
             </div>
 
             <div id="cart-summary" class="cart-summary" style="display: none;">
                 <div class="summary-row">
-                    <span>Итого:</span>
+                    <span data-i18n="cart.total">Итого:</span>
                     <span id="cart-total" class="total-price">0 сом</span>
                 </div>
             </div>
 
             <!-- Шаг 1: Форма оформления заказа -->
             <div id="order-form-container" class="order-form-container" style="display: none;">
-                <h3>Оформление заказа</h3>
+                <h3 data-i18n="cart.order_form">Оформление заказа</h3>
                 <form id="orderForm">
                     <div class="form-group">
-                        <label for="orderAddress">Адрес доставки: *</label>
-                        <input type="text" id="orderAddress" required placeholder="Улица, дом, квартира">
+                        <label for="orderAddress" data-i18n="cart.address">Адрес доставки: *</label>
+                        <input type="text" id="orderAddress" data-i18n="cart.address" required placeholder="Улица, дом, квартира">
                     </div>
                     <div class="form-group">
-                        <label for="orderPhone">Телефон: *</label>
+                        <label for="orderPhone" data-i18n="cart.phone">Телефон: *</label>
                         <input type="tel" id="orderPhone" required placeholder="+996 555 123 456">
                     </div>
                     <div class="form-group">
-                        <label for="orderComment">Комментарий:</label>
-                        <textarea id="orderComment" rows="3" placeholder="Пожелания к заказу..."></textarea>
+                        <label for="orderComment" data-i18n="cart.comment">Комментарий:</label>
+                        <textarea id="orderComment" rows="3" data-i18n="cart.comment" placeholder="Пожелания к заказу..."></textarea>
                     </div>
                     <div class="form-buttons">
                         <button type="submit" class="btn-submit">
-                            <i class="fas fa-credit-card"></i> Перейти к оплате
+                            <i class="fas fa-credit-card"></i> <span data-i18n="cart.to_payment">Перейти к оплате</span>
                         </button>
                         <button type="button" class="btn-clear-cart" id="clearCartBtn">
-                            <i class="fas fa-trash"></i> Очистить
+                            <i class="fas fa-trash"></i> <span data-i18n="cart.clear">Очистить</span>
                         </button>
                     </div>
                 </form>
@@ -133,13 +141,13 @@
 
                 <div class="stripe-payment-header">
                     <button class="btn-back" onclick="backToOrderForm()">
-                        <i class="fas fa-arrow-left"></i> Назад
+                        <i class="fas fa-arrow-left"></i> <span data-i18n="cart.back">Назад</span>
                     </button>
-                    <h3>Оплата</h3>
+                    <h3 data-i18n="cart.payment">Оплата</h3>
                 </div>
 
                 <div class="payment-amount-row">
-                    <span>К оплате:</span>
+                    <span data-i18n="cart.total">К оплате:</span>
                     <span id="payment-total" class="payment-total">0 сом</span>
                 </div>
 
@@ -152,7 +160,7 @@
                 </div>
 
                 <button id="stripe-pay-btn" class="btn-pay" onclick="confirmStripePayment()">
-                    <i class="fas fa-lock"></i> Оплатить
+                    <i class="fas fa-lock"></i> <span data-i18n="cart.pay">${t('cart.pay')}</span>
                 </button>
 
             </div>
@@ -179,6 +187,7 @@
     </a>
 </nav>
 
+    <script src="/js/i18n.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="/js/config.js"></script>
     <script src="/js/cart-functionality.js"></script>

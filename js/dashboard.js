@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     if (data.success === true || data.success === 'true') {
-                        responseMessage.textContent = 'Данные успешно обновлены!';
+                        responseMessage.textContent = t('dashboard.change_saved');
                         responseMessage.style.color = 'green';
 
                         // Блокируем поля обратно
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => {
                     console.error('Ошибка:', error);
-                    responseMessage.textContent = 'Произошла ошибка при обновлении данных.';
+                    responseMessage.textContent = t('dashboard.change_saved_error');
                     responseMessage.style.color = 'red';
                 });
         });
