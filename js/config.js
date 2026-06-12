@@ -1,6 +1,6 @@
 const host = window.location.hostname;
 
-const BACKEND_URL = (host === 'localhost' || host === '127.0.0.1' || host === '172.20.10.4')
+const BACKEND_URL = (host === 'localhost' || host === '127.0.0.1' || host === '192.168.10.224')
     ? `http://${host}:8080`
     : 'https://adrianocoffee-production.up.railway.app';
 

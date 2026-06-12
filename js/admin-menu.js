@@ -28,6 +28,10 @@ function openEditModal(dishId) {
             document.getElementById('editDishDescription').value = dish.description || '';
             document.getElementById('editDishPrice').value = dish.price;
             document.getElementById('editDishVolume').value = dish.volume || '';
+            document.getElementById('editNameEn').value = dish.nameEn || '';
+            document.getElementById('editNameKg').value = dish.nameKg || '';
+            document.getElementById('editDescriptionEn').value = dish.descriptionEn || '';
+            document.getElementById('editDescriptionKg').value = dish.descriptionKg || '';
 
             // Показываем текущее изображение
             if (dish.imageUrl) {
@@ -106,6 +110,11 @@ async function handleEditSubmit(event) {
     formData.append('description', document.getElementById('editDishDescription').value);
     formData.append('price', document.getElementById('editDishPrice').value);
     formData.append('volume', document.getElementById('editDishVolume').value || '');
+    formData.append('nameEn', document.getElementById('editNameEn').value || '');
+    formData.append('nameKg', document.getElementById('editNameKg').value || '');
+    formData.append('descriptionEn', document.getElementById('editDescriptionEn').value || '');
+    formData.append('descriptionKg', document.getElementById('editDescriptionKg').value || '');
+
 
     // Добавляем изображение только если выбрано новое
     if (imageFile) {

@@ -83,13 +83,5 @@ function renderOrder(order) {
 }
 
 function translateStatus(status) {
-    const map = {
-        'PAID': '💳 Ожидает подтверждения',
-        'CONFIRMED': '✅ Подтверждён',
-        'PREPARING': '👨‍🍳 Готовится',
-        'DELIVERING': '🚚 В пути',
-        'DELIVERED': '🎉 Доставлен',
-        'CANCELLED': '❌ Отменён'
-    };
-    return map[status] || status;
+    return t(`status.${status}.text`) || status;
 }

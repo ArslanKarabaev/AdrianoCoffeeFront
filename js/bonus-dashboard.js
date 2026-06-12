@@ -101,7 +101,7 @@ async function loadBonusHistory() {
             container.innerHTML = `
                 <div class="no-orders">
                     <i class="fas fa-star"></i>
-                    <p>История пуста. Делайте заказы и получайте баллы!</p>
+                    <p>${t('bonus.empty')}</p>
                 </div>`;
             return;
         }
@@ -122,17 +122,17 @@ async function loadBonusHistory() {
             <div class="bonus-tx-item">
                 <div class="bonus-tx-icon ${colorClass}">${icon}</div>
                 <div class="bonus-tx-info">
-                    <span class="bonus-tx-desc">${tx.description || '—'}</span>
+                    <span class="bonus-tx-desc">${translateBonusDescription(tx)}</span>
                     <span class="bonus-tx-date">${date}</span>
                 </div>
                 <div class="bonus-tx-points ${colorClass}">
-                    ${sign}${Math.abs(tx.points)} баллов
+                    ${sign}${Math.abs(tx.points)} ${t('bonus.points')}
                 </div>
             </div>`;
         }).join('');
 
     } catch (e) {
-        container.innerHTML = '<p style="color:#999;text-align:center;">Ошибка загрузки истории</p>';
+        container.innerHTML = `<p style="color:#999;text-align:center;">${t('bonus.error')}</p>`;
     }
 }
 
@@ -142,6 +142,47 @@ document.addEventListener('DOMContentLoaded', () => {
         switchTab('bonus');
     }
 });
+
+function translateBonusDescription(tx) {
+    // Паттерн: "Списано при оплате заказа # 26"
+    const spentMatch = tx.description?.match(/заказа\s*#\s*(\d+)/);
+    if (spentMatch) {
+        const orderNum = spentMatch[1];
+        const map = {
+            ru: `Списано при оплате заказа #${orderNum}`,
+            en: `Deducted for order #${orderNum}`,
+            kg: `#${orderNum} буйрутма үчүн эсептен чыгарылды`
+        };
+        return map[getCurrentLang()] || map.ru;
+    }
+
+    // Паттерн: "Покупка в филиале на 1100 сом"
+    const purchaseMatch = tx.description?.match(/на\s*(\d+)\s*сом/);
+    if (purchaseMatch) {
+        const amount = purchaseMatch[1];
+        const map = {
+            ru: `Покупка в филиале на ${amount} сом`,
+            en: `Branch purchase for ${amount} som`,
+            kg: `Филиалда ${amount} сомго сатып алуу`
+        };
+        return map[getCurrentLang()] || map.ru;
+    }
+
+    // Паттерн: "Начислено за заказ # 26"
+    const earnedMatch = tx.description?.match(/заказ\s*#\s*(\d+)/);
+    if (earnedMatch) {
+        const orderNum = earnedMatch[1];
+        const map = {
+            ru: `Начислено за заказ #${orderNum}`,
+            en: `Earned for order #${orderNum}`,
+            kg: `#${orderNum} буйрутма үчүн эсептелди`
+        };
+        return map[getCurrentLang()] || map.ru;
+    }
+
+    // Если паттерн не совпал — возвращаем как есть
+    return tx.description || '—';
+}
 
 // ───── ИНТЕГРАЦИЯ С switchTab ──────────────────
 // Перехватываем переключение на вкладку bonus

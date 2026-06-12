@@ -757,5 +757,39 @@
 
 /* Десктоп — скрываем filter-bar */
 @media (min-width: 769px) {
-    .menu-filter-bar { display: none; }
+    .menu-filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 16px 20px;
+        background: #EFD9A2;
+    }
+
+    .filter-chip {
+        padding: 8px 18px;
+        border-radius: 8px;
+        border: 1.5px solid #610303;
+        background: white;
+        color: #610303;
+        font-size: 15px;
+        font-weight: 500;
+        font-family: 'Montserrat', sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+    .filter-chip:hover {
+        background: #610303;
+        color: white;
+    }
+
+    .filter-chip.active {
+        background: #610303;
+        color: white;
+        border-color: #610303;
+    }
+
+    .menu-categories { display: none; }
 }
